@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import { useXp } from '../context/XpContext';
+import Achievements from "../Achievements.tsx";
 
 const lessons = [
     { id: 'vectors', title: 'Vectors', xp: 25 },
@@ -40,35 +41,6 @@ const ProgressDashboard: React.FC = () => {
     const { xp, completedLessons } = useXp();
     const progressPercent = Math.round((xp / totalPossibleXp) * 100);
     const lastVisited = localStorage.getItem('lastVisited');
-    const earnedBadges: string[] = [];
-
-    Object.entries(quizMeta).forEach(([id, meta]) => {
-        const score = getQuizScore(id);
-
-        if (score === meta.total) {
-            const name = id.replace('-quiz', '').replace('-', ' ');
-            earnedBadges.push(`🎯 Perfect Score: ${name}`);
-        }
-    });
-
-    if (
-        ['vectors', 'dot-product', 'gradient'].every((id) => completedLessons.has(id))
-    ) {
-        earnedBadges.push('📘 All Lessons Completed');
-    }
-
-    if (
-        ['vectors-quiz', 'dot-product-quiz', 'gradient-quiz'].every((id) =>
-            completedLessons.has(id)
-        )
-    ) {
-        earnedBadges.push('🧠 All Quizzes Completed');
-    }
-
-    if (xp >= 100) {
-        earnedBadges.push('🌟 100 XP Earned');
-    }
-
 
     return (
         <div className="p-6 space-y-6">
@@ -83,16 +55,12 @@ const ProgressDashboard: React.FC = () => {
                 </div>
             </div>
             <p className="text-lg">⭐ Total XP: {xp}</p>
-            {earnedBadges.length > 0 && (
-                <div className="mt-4">
-                    <h3 className="text-lg font-semibold mb-2">🏅 Achievements</h3>
-                    <ul className="space-y-1 list-disc list-inside">
-                        {earnedBadges.map((badge) => (
-                            <li key={badge}>{badge}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
+            <Achievements
+                completedLessons={completedLessons}
+                xp={xp}
+                getQuizScore={getQuizScore}
+                quizMeta={quizMeta}
+            />
             {lastVisited && (
                 <div className="mt-4">
                     <Link
