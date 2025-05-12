@@ -40,6 +40,16 @@ const ProgressDashboard: React.FC = () => {
     const { xp, completedLessons } = useXp();
     const progressPercent = Math.round((xp / totalPossibleXp) * 100);
     const lastVisited = localStorage.getItem('lastVisited');
+    const earnedBadges: string[] = [];
+
+    Object.entries(quizMeta).forEach(([id, meta]) => {
+        const score = getQuizScore(id);
+
+        if (score === meta.total) {
+            const name = id.replace('-quiz', '').replace('-', ' ');
+            earnedBadges.push(`🎯 Perfect Score: ${name}`);
+        }
+    });
 
 
     return (
@@ -55,6 +65,16 @@ const ProgressDashboard: React.FC = () => {
                 </div>
             </div>
             <p className="text-lg">⭐ Total XP: {xp}</p>
+            {earnedBadges.length > 0 && (
+                <div className="mt-4">
+                    <h3 className="text-lg font-semibold mb-2">🏅 Achievements</h3>
+                    <ul className="space-y-1 list-disc list-inside">
+                        {earnedBadges.map((badge) => (
+                            <li key={badge}>{badge}</li>
+                        ))}
+                    </ul>
+                </div>
+            )}
             {lastVisited && (
                 <div className="mt-4">
                     <Link
