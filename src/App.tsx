@@ -57,7 +57,7 @@ const App: React.FC = () => {
                 {isUnlocked('dot-product') ? (
                     <Link to="/lesson/dot-product" className="text-green-600 hover:underline">Dot Product</Link>
                 ) : (
-                    <span className="text-gray-400 cursor-not-allowed" title="Complete 'Vectors' and the 'Vectors: Quiz' to unlock">
+                    <span className="text-gray-400 cursor-not-allowed" title="Complete 'Quiz: Vectors' to unlock">
                         🔒 Dot Product
                     </span>
                 )}
@@ -66,7 +66,7 @@ const App: React.FC = () => {
                         Quiz: Dot Product
                     </Link>
                 ) : (
-                    <span className="text-gray-400 cursor-not-allowed">🔒 Quiz: Dot Product</span>
+                    <span className="text-gray-400 cursor-not-allowed" title="Complete 'Dot Product' to unlock">🔒 Quiz: Dot Product</span>
                 )}
                 {isUnlocked('gradient') ? (
                     <Link to="/lesson/gradients" className="text-green-600 hover:underline">
@@ -81,7 +81,7 @@ const App: React.FC = () => {
                         Quiz: Gradient
                     </Link>
                 ) : (
-                    <span className="text-gray-400 cursor-not-allowed">🔒 Quiz: Gradient</span>
+                    <span className="text-gray-400 cursor-not-allowed" title="Complete 'Gradient' to unlock">🔒 Quiz: Gradient</span>
                 )}
 
                 <Link to="/progress" className="text-purple-600 hover:underline">Progress</Link>
