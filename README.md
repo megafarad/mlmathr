@@ -1,54 +1,100 @@
-# React + TypeScript + Vite
+# MLMathr 🧠📐
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive, gamified web app to help self-learners brush up on the essential math behind machine learning.
 
-Currently, two official plugins are available:
+Built with React, TypeScript, Vite, and Tailwind CSS.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 🧮 **Lessons** on vectors, dot product, and gradients
+- 🖱️ **Interactive visualizations** (drag, snap, scale)
+- 🧠 **Quizzes** with scoring, retry logic, and XP rewards
+- 🔓 **Lesson unlock system** based on quiz completion
+- 🌟 **Persistent XP tracking** and score storage (localStorage)
+- 📊 **Progress dashboard** showing XP, quiz results, and completion bar
+- ▶️ **Resume last lesson** feature for smooth continuation
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+---
+
+## 🧰 Tech Stack
+
+- React + TypeScript
+- Vite (build system)
+- Tailwind CSS (styling)
+- LocalStorage (persistence)
+- SVG (vector graphics + interactivity)
+
+---
+
+## 🛠️ Getting Started
+
+1. **Clone the repo**
+
+```bash
+git clone https://github.com/your-username/mlmathr.git
+cd mlmathr
+````
+
+2. **Install dependencies**
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+3. **Run the dev server**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+4. Open [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 📦 Project Structure
+
+```
+
+src/
+├── App.tsx               # Main app entry and routes
+├── main.tsx              # React + Vite bootstrap
+├── index.css             # Global styles
+├── App.css               # App-specific styles
+├── assets/               # Static assets (e.g. logos)
+├── components/
+│   ├── Quiz.tsx          # Reusable quiz engine
+│   ├── context/          # XP context + unlock logic
+│   ├── lessons/          # Interactive visualizers and lessons
+│   ├── pages/            # Page-level components (dashboard, etc.)
+│   └── quizzes/          # Individual quiz route components
+└── vite-env.d.ts         # Vite/TypeScript globals
+
+```
+
+---
+
+## 📌 Roadmap
+
+* [x] 3 core lessons
+* [x] Interactive SVG-based learning
+* [x] Quiz + XP engine
+* [x] Progress dashboard
+* [ ] Matrix Multiplication lesson
+* [ ] User accounts + cloud sync
+* [ ] Leaderboards or achievements
+
+---
+
+## 🧑‍💻 Author
+
+Made with love by Chris Carrington
+Inspired by self-learners prepping for ML/AI
+
+---
+
+## 📖 License
+
+MIT
+

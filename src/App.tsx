@@ -2,11 +2,11 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import VectorLesson from './components/lessons/VectorLesson';
-import VectorQuiz from "./components/quizes/VectorQuiz.tsx";
+import VectorQuiz from "./components/quizzes/VectorQuiz.tsx";
 import DotProductLesson from './components/lessons/DotProductLesson';
-import DotProductQuiz from "./components/quizes/DotProductQuiz.tsx";
+import DotProductQuiz from "./components/quizzes/DotProductQuiz.tsx";
 import GradientLesson from "./components/lessons/GradientLesson.tsx";
-import GradientQuiz from "./components/quizes/GradientQuiz.tsx";
+import GradientQuiz from "./components/quizzes/GradientQuiz.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 import { useXp } from "./components/context/XpContext.tsx";
 
