@@ -8,6 +8,7 @@ import DotProductQuiz from "./components/quizzes/DotProductQuiz.tsx";
 import GradientLesson from "./components/lessons/GradientLesson.tsx";
 import GradientQuiz from "./components/quizzes/GradientQuiz.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
+import RoadmapPage from "./components/pages/RoadmapPage.tsx";
 import { useXp } from "./components/context/XpContext.tsx";
 
 const App: React.FC = () => {
@@ -85,6 +86,7 @@ const App: React.FC = () => {
                 )}
 
                 <Link to="/progress" className="text-purple-600 hover:underline">Progress</Link>
+                <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
                 <button
                     onClick={resetProgress}
                     className="ml-4 text-sm bg-red-100 px-3 py-1 rounded hover:bg-red-200"
@@ -100,6 +102,7 @@ const App: React.FC = () => {
                 <Route path="/lesson/gradients" element={<GradientLesson/>} />
                 <Route path="/quiz/gradient" element={<GradientQuiz />} />
                 <Route path="/progress" element={<ProgressDashboard />} />
+                <Route path="/roadmap" element={<RoadmapPage />} />
                 <Route path="*" element={<p>Choose a lesson to begin 🚀</p>} />
             </Routes>
         </div>
