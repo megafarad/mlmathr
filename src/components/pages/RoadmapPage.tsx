@@ -24,6 +24,13 @@ const modules = [
             { id: 'gradient-quiz', type: 'quiz', title: 'Quiz: Gradients' },
         ],
     },
+    {
+        title: 'Matrix Multiplication',
+        items: [
+            { id: 'matrix', type: 'lesson', title: 'Lesson: Matrix Multiplication' },
+            { id: 'matrix-quiz', type: 'quiz', title: 'Quiz: Matrix Multiplication' },
+        ],
+    },
 ];
 
 const RoadmapPage: React.FC = () => {

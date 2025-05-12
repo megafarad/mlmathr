@@ -7,6 +7,8 @@ import DotProductLesson from './components/lessons/DotProductLesson';
 import DotProductQuiz from "./components/quizzes/DotProductQuiz.tsx";
 import GradientLesson from "./components/lessons/GradientLesson.tsx";
 import GradientQuiz from "./components/quizzes/GradientQuiz.tsx";
+import MatrixLesson from "./components/lessons/MatrixLesson.tsx";
+import MatrixQuiz from "./components/quizzes/MatrixQuiz.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 import RoadmapPage from "./components/pages/RoadmapPage.tsx";
 import SettingsPage from "./components/pages/SettingsPage.tsx";
@@ -85,6 +87,20 @@ const App: React.FC = () => {
                 ) : (
                     <span className="text-gray-400 cursor-not-allowed" title="Complete 'Gradient' to unlock">🔒 Quiz: Gradient</span>
                 )}
+                {isUnlocked('matrix') ? (
+                    <Link to="/lesson/matrix" className="text-green-600 hover:underline">
+                        Matrix Multiplication
+                    </Link>
+                ) : (
+                    <span className="text-gray-400 cursor-not-allowed" title="Complete 'Gradient Quiz' to unlock">🔒 Matrix Multiplication</span>
+                )}
+                {isUnlocked('matrix-quiz') ? (
+                    <Link to="/quiz/matrix" className="text-indigo-600 hover:underline">
+                        Quiz: Matrix Multiplication
+                    </Link>
+                ) : (
+                    <span className="text-gray-400 cursor-not-allowed">🔒 Quiz: Matrix</span>
+                )}
 
                 <Link to="/progress" className="text-purple-600 hover:underline">Progress</Link>
                 <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
@@ -97,6 +113,8 @@ const App: React.FC = () => {
                 <Route path="/quiz/dot-product" element={<DotProductQuiz />} />
                 <Route path="/lesson/gradients" element={<GradientLesson/>} />
                 <Route path="/quiz/gradient" element={<GradientQuiz />} />
+                <Route path="/lesson/matrix" element={<MatrixLesson />} />
+                <Route path="/quiz/matrix" element={<MatrixQuiz />} />
                 <Route path="/progress" element={<ProgressDashboard />} />
                 <Route path="/roadmap" element={<RoadmapPage />} />
                 <Route path="/settings" element={<SettingsPage/>} />

@@ -25,7 +25,7 @@ const Achievements: React.FC<Props> = ({ completedLessons, xp, getQuizScore, qui
     }
 
     if (
-        ['vectors-quiz', 'dot-product-quiz', 'gradient-quiz'].every((id) =>
+        ['vectors-quiz', 'dot-product-quiz', 'gradient-quiz', 'matrix-quiz'].every((id) =>
             completedLessons.has(id)
         )
     ) {

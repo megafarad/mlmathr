@@ -10,6 +10,8 @@ const lessons = [
     { id: 'dot-product-quiz', title: 'Dot Product Quiz', xp: 20 },
     { id: 'gradient', title: 'Gradient', xp: 25 },
     { id: 'gradient-quiz', title: 'Gradients Quiz', xp: 20 },
+    { id: 'matrix', title: 'Matrix Multiplication', xp: 25 },
+    { id: 'matrix-quiz', title: 'Quiz: Matrix Multiplication', xp: 20 },
 ];
 
 const totalPossibleXp = lessons.reduce((sum, lesson) => sum + lesson.xp, 0);
@@ -22,6 +24,7 @@ const quizMeta: QuizMeta = {
     'vectors-quiz': { total: 2 },
     'dot-product-quiz': { total: 3 },
     'gradient-quiz': { total: 3 },
+    'matrix-quiz': { total: 3 },
 };
 
 const getQuizScore = (id: string) => {

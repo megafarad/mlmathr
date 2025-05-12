@@ -73,6 +73,8 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
             'dot-product-quiz': ['dot-product'],
             'gradient': ['dot-product-quiz'],
             'gradient-quiz': ['gradient'],
+            'matrix': ['gradient-quiz'],
+            'matrix-quiz': ['matrix'],
         };
         const required = dependencies[lessonId] || [];
         return required.every((dep) => completedLessons.has(dep));
