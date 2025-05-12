@@ -51,6 +51,24 @@ const ProgressDashboard: React.FC = () => {
         }
     });
 
+    if (
+        ['vectors', 'dot-product', 'gradient'].every((id) => completedLessons.has(id))
+    ) {
+        earnedBadges.push('📘 All Lessons Completed');
+    }
+
+    if (
+        ['vectors-quiz', 'dot-product-quiz', 'gradient-quiz'].every((id) =>
+            completedLessons.has(id)
+        )
+    ) {
+        earnedBadges.push('🧠 All Quizzes Completed');
+    }
+
+    if (xp >= 100) {
+        earnedBadges.push('🌟 100 XP Earned');
+    }
+
 
     return (
         <div className="p-6 space-y-6">
