@@ -9,10 +9,11 @@ import GradientLesson from "./components/lessons/GradientLesson.tsx";
 import GradientQuiz from "./components/quizzes/GradientQuiz.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 import RoadmapPage from "./components/pages/RoadmapPage.tsx";
+import SettingsPage from "./components/pages/SettingsPage.tsx";
 import { useXp } from "./components/context/XpContext.tsx";
 
 const App: React.FC = () => {
-    const { xp, isUnlocked, resetProgress } = useXp();
+    const { xp, isUnlocked } = useXp();
     const [xpFlash, setXpFlash] = useState<number | null>(null);
 
     const location = useLocation();
@@ -87,12 +88,7 @@ const App: React.FC = () => {
 
                 <Link to="/progress" className="text-purple-600 hover:underline">Progress</Link>
                 <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
-                <button
-                    onClick={resetProgress}
-                    className="ml-4 text-sm bg-red-100 px-3 py-1 rounded hover:bg-red-200"
-                >
-                    🔄 Reset Progress
-                </button>
+                <Link to="/settings" className="text-gray-600 hover:underline">⚙️ Settings</Link>
             </nav>
             <Routes>
                 <Route path="/lesson/vectors" element={<VectorLesson />} />
@@ -103,6 +99,7 @@ const App: React.FC = () => {
                 <Route path="/quiz/gradient" element={<GradientQuiz />} />
                 <Route path="/progress" element={<ProgressDashboard />} />
                 <Route path="/roadmap" element={<RoadmapPage />} />
+                <Route path="/settings" element={<SettingsPage/>} />
                 <Route path="*" element={<p>Choose a lesson to begin 🚀</p>} />
             </Routes>
         </div>
