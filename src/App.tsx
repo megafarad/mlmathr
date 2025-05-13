@@ -21,9 +21,11 @@ import SettingsPage from "./components/pages/SettingsPage.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
 import {useXp} from "./components/context/XpContext.tsx";
 import NavBar from "./components/NavBar.tsx";
+import {useAuth} from "./components/context/AuthContext.tsx";
 
 const App: React.FC = () => {
     const {xp} = useXp();
+    const { user } = useAuth();
     const [xpFlash, setXpFlash] = useState<number | null>(null);
     const location = useLocation();
 
@@ -47,14 +49,14 @@ const App: React.FC = () => {
                 <h1 className="text-xl font-bold">
                     <Link to="/">MLMathr Lessons</Link>
                 </h1>
-                <div className="relative">
+                {user && (<div className="relative">
                     <span className="text-sm bg-yellow-100 px-3 py-1 rounded-full">⭐ XP: {xp}</span>
                     {xpFlash && (
                         <div className="animate-xp-float left-1/2 transform -translate-x-1/2">
                             +{xpFlash - (xpFlash - 25)} XP
                         </div>
                     )}
-                </div>
+                </div>)}
             </header>
             <NavBar/>
             <Routes>
