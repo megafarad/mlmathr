@@ -53,3 +53,20 @@
     font-weight: bold;
     color: #fbbf24; /* Tailwind amber-400 */
 }
+
+@layer utilities {
+    @keyframes fade-slide {
+        from {
+            opacity: 0;
+            transform: translateY(-0.5rem);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade-slide {
+        animation: fade-slide 0.2s ease-out forwards;
+    }
+}

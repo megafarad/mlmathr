@@ -38,7 +38,10 @@ const NavDropdown: React.FC<NavDropdownProps> = ({ label, items, lockedIds = new
                 {label} ▼
             </button>
             {open && (
-                <div className="absolute bg-white shadow-md rounded z-10 mt-1 w-48 text-left">
+                <div
+                    className="absolute bg-white shadow-md rounded z-10 mt-1 w-48 text-left
+               animate-fade-slide"
+                >
                     {items.map(({ label, to, id }) => {
                         const isLocked = lockedIds.has(id);
                         return isLocked ? (
