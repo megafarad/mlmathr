@@ -1,6 +1,7 @@
 // src/App.tsx
 import {useState, useEffect} from "react";
 import {Routes, Route, Link, useLocation} from 'react-router-dom';
+import HomePage from "./components/pages/HomePage.tsx";
 import VectorLesson from './components/lessons/VectorLesson';
 import VectorQuiz from "./components/quizzes/VectorQuiz.tsx";
 import DotProductLesson from './components/lessons/DotProductLesson';
@@ -125,6 +126,7 @@ const App: React.FC = () => {
                 }
             </nav>
             <Routes>
+                <Route path="/" element={<HomePage />} />
                 <Route path="/lesson/vectors" element={<PrivateRoute><VectorLesson/></PrivateRoute>}/>
                 <Route path="/quiz/vectors" element={<PrivateRoute><VectorQuiz/></PrivateRoute>}/>
                 <Route path="/lesson/dot-product" element={<PrivateRoute><DotProductLesson/></PrivateRoute>}/>
