@@ -1,62 +1,31 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-
-const LOCAL_STORAGE_KEY = 'mlmathrProgress';
+import React, { createContext, useContext, useState } from 'react';
+import { useProgressSync } from "../../hooks/useProgressSync.ts";
 
 type XpContextType = {
     xp: number;
     completedLessons: Set<string>;
+    quizScores: Record<string, number>;
+    setQuizScores: React.Dispatch<React.SetStateAction<Record<string, number>>>;
+    getQuizScore: (id: string) => number;
     addXpForLesson: (lessonId: string, amount: number) => void;
     hasCompleted: (lessonId: string) => boolean;
     isUnlocked: (lessonId: string) => boolean;
     resetProgress: () => void;
     revision: number;
+    setRevision: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const XpContext = createContext<XpContextType | undefined>(undefined);
 
 export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const getInitialState = () => {
-        const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-                return {
-                    xp: parsed.xp || 0,
-                    completedLessons: new Set<string>(parsed.completedLessons || []),
-                };
-            } catch {
-                return { xp: 0, completedLessons: new Set<string>() };
-            }
-        }
-        return { xp: 0, completedLessons: new Set<string>() };
-    };
 
-    const initialState = getInitialState();
 
-    const [xp, setXp] = useState(initialState.xp);
-    const [revision, setRevision] = useState(0);
-    const [completedLessons, setCompletedLessons] = useState(initialState.completedLessons);
+    const [xp, setXp] = useState(0);
+    const [revision, setRevision] = useState<number>(0);
+    const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
+    const [quizScores, setQuizScores] = useState<Record<string, number>>({});
 
-    // Load from localStorage on first render
-    useEffect(() => {
-        const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
-        if (saved) {
-            const { xp, completedLessons } = JSON.parse(saved);
-            setXp(xp || 0);
-            setCompletedLessons(new Set(completedLessons || []));
-        }
-    }, []);
 
-    // Save to localStorage anytime state changes
-    useEffect(() => {
-        localStorage.setItem(
-            LOCAL_STORAGE_KEY,
-            JSON.stringify({
-                xp,
-                completedLessons: Array.from(completedLessons),
-            })
-        );
-    }, [xp, completedLessons]);
 
     const addXpForLesson = (lessonId: string, amount: number) => {
         if (completedLessons.has(lessonId)) return;
@@ -80,28 +49,38 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         return required.every((dep) => completedLessons.has(dep));
     };
 
+
+    const getQuizScore = (id: string) => quizScores[id] ?? null;
+
     const resetProgress = () => {
         setXp(0);
         setCompletedLessons(new Set<string>());
-        localStorage.removeItem(LOCAL_STORAGE_KEY);
-
-        Object.keys(localStorage)
-            .filter((key) => key.startsWith('quiz:'))
-            .forEach((key) => localStorage.removeItem(key));
-
+        setQuizScores({});
         setRevision((r) => r + 1); // 👈 trigger subscribers to re-evaluate
     };
+    useProgressSync({
+        xp,
+        completedLessons,
+        quizScores,
+        setXp,
+        setCompletedLessons,
+        setQuizScores,
+    });
 
 
     return (
         <XpContext.Provider value={{
             xp,
             completedLessons,
+            quizScores,
+            setQuizScores,
             addXpForLesson,
             hasCompleted,
             isUnlocked,
+            getQuizScore,
             resetProgress,
             revision,
+            setRevision,
         }}>
             {children}
         </XpContext.Provider>

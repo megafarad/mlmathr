@@ -14,8 +14,7 @@ type Props = {
 };
 
 const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
-    const quizStorageKey = `quiz:${lessonId}`;
-    const { addXpForLesson, hasCompleted, revision } = useXp();
+    const { addXpForLesson, hasCompleted, quizScores, setQuizScores, revision, setRevision } = useXp();
     const [isCompleted] = useState(() => hasCompleted(lessonId));
     const initialSelected = useMemo(() => Array(questions.length).fill(null), [questions.length]);
     const [selected, setSelected] = useState<(number | null)[]>(initialSelected);
@@ -23,59 +22,55 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
     const [score, setScore] = useState<number | null>(null);
     const [justFailed, setJustFailed] = useState(false);
 
-
-    useEffect(() => {
-        const saved = localStorage.getItem(quizStorageKey);
-
-        if (saved) {
-            try {
-                const parsed = JSON.parse(saved);
-
-                // ✅ Make sure parsed data is valid
-                const isValid =
-                    Array.isArray(parsed.selected) &&
-                    typeof parsed.submitted === 'boolean';
-
-                if (isValid) {
-                    setSelected(parsed.selected);
-                    setSubmitted(parsed.submitted);
-                    return;
-                }
-            } catch {
-                // Ignore parsing errors
-            }
-        }
-
-        // 🔁 Fallback if no valid data is found
-        setSelected(Array(questions.length).fill(null));
+    const handleRetry = () => {
+        setSelected(initialSelected);
         setSubmitted(false);
-    }, [quizStorageKey, questions.length, revision]);
+        setScore(null);
+        setJustFailed(false);
+
+        // Remove quiz score from cloud progress state
+        setQuizScores((prev) => {
+            const copy = { ...prev };
+            delete copy[lessonId];
+            return copy;
+        });
+
+        setRevision((r) => r + 1);
+    };
+
 
 
     useEffect(() => {
-        const allNull = selected.every((val) => val === null);
-        const nothingToSave = !submitted && allNull;
-        if (!nothingToSave) {
-            localStorage.setItem(
-                quizStorageKey,
-                JSON.stringify({ selected, submitted, score })
-            );
-        }
-    }, [selected, submitted, score, quizStorageKey]);
+        const savedScore = quizScores[lessonId];
+        const wasSubmitted = savedScore !== undefined;
 
+        setSubmitted(wasSubmitted);
+        setScore(savedScore ?? null);
+
+        // Only reset answers if user hasn't submitted yet
+        if (!wasSubmitted) {
+            setSelected(initialSelected);
+        }
+    }, [lessonId, revision, quizScores, questions.length, initialSelected]);
 
     const handleSubmit = () => {
         if (submitted || selected.includes(null)) return;
 
-        const correctCount = selected.reduce((total, answer, i) => {
-            return answer === questions[i].correctIndex ? (total ? total : 0) + 1 : total;
+        const correctCount = selected.reduce<number>((total, answer, i) => {
+            return answer === questions[i].correctIndex ? total + 1 : total;
         }, 0);
 
         setSubmitted(true);
         setScore(correctCount);
 
         const passed = correctCount === questions.length;
-        setJustFailed(!passed); // 👈 set shake trigger
+        setJustFailed(!passed); // shows retry button if needed
+
+        setQuizScores((prev) => ({
+            ...prev,
+            [lessonId]: correctCount,
+        }));
+
         if (passed) addXpForLesson(lessonId, xpReward);
     };
 
@@ -137,12 +132,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
                                 <>
                                     <p>❌ Some answers were incorrect. Try again.</p>
                                     <button
-                                        onClick={() => {
-                                            setSelected(Array(questions.length).fill(null));
-                                            setSubmitted(false);
-                                            setScore(null);
-                                            setJustFailed(false);
-                                        }}
+                                        onClick={handleRetry}
                                         className={`mt-2 bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 ${
                                             justFailed ? 'animate-shake' : ''
                                         }`}
