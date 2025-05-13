@@ -43,6 +43,7 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
             'matrix': ['gradient-quiz'],
             'matrix-quiz': ['matrix'],
             'linear-combinations' : ['matrix-quiz'],
+            'linear-combinations-quiz': ['linear-combinations'],
         };
         const required = dependencies[lessonId] || [];
         return required.every((dep) => completedLessons.has(dep));

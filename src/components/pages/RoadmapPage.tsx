@@ -31,6 +31,13 @@ const modules = [
             { id: 'matrix-quiz', type: 'quiz', title: 'Quiz: Matrix Multiplication' },
         ],
     },
+    {
+        title: 'Linear Combinations',
+        items: [
+            { id: 'linear-combinations', type: 'lesson', title: 'Lesson: Linear Combinations' },
+            { id: 'linear-combinations-quiz', type: 'quiz', title: 'Quiz: Linear Combinations' },
+        ]
+    }
 ];
 
 const RoadmapPage: React.FC = () => {

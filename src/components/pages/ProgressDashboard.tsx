@@ -12,6 +12,8 @@ const lessons = [
     { id: 'gradient-quiz', title: 'Gradients Quiz', xp: 20 },
     { id: 'matrix', title: 'Matrix Multiplication', xp: 25 },
     { id: 'matrix-quiz', title: 'Quiz: Matrix Multiplication', xp: 20 },
+    { id: 'linear-combinations', title: 'Linear Combinations', xp: 10 },
+    { id: 'linear-combinations-quiz', title: 'Quiz: Linear Combinations', xp: 10 },
 ];
 
 const totalPossibleXp = lessons.reduce((sum, lesson) => sum + lesson.xp, 0);
@@ -25,23 +27,10 @@ const quizMeta: QuizMeta = {
     'dot-product-quiz': { total: 3 },
     'gradient-quiz': { total: 3 },
     'matrix-quiz': { total: 3 },
+    'linear-combinations': { total: 3 },
 };
-
-const getQuizScore = (id: string) => {
-    const raw = localStorage.getItem(`quiz:${id}`);
-
-    if (!raw) return null;
-    try {
-        const parsed = JSON.parse(raw);
-        return typeof parsed.score === 'number' ? parsed.score : null;
-    } catch {
-        return null;
-    }
-};
-
-
 const ProgressDashboard: React.FC = () => {
-    const { xp, completedLessons } = useXp();
+    const { xp, completedLessons, getQuizScore } = useXp();
     const progressPercent = Math.round((xp / totalPossibleXp) * 100);
     const lastVisited = localStorage.getItem('lastVisited');
 
