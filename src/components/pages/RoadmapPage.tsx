@@ -37,6 +37,13 @@ const modules = [
             { id: 'linear-combinations', type: 'lesson', title: 'Lesson: Linear Combinations' },
             { id: 'linear-combinations-quiz', type: 'quiz', title: 'Quiz: Linear Combinations' },
         ]
+    },
+    {
+        title: 'Span and Basis',
+        items: [
+            { id: 'span-basis', type: 'lesson', title: 'Lesson: Span and Basis' },
+            { id: 'span-basis-quiz', type: 'quiz', title: 'Quiz: Span and Basis' },
+        ]
     }
 ];
 

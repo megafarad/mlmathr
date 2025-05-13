@@ -14,6 +14,8 @@ const lessons = [
     { id: 'matrix-quiz', title: 'Quiz: Matrix Multiplication', xp: 20 },
     { id: 'linear-combinations', title: 'Linear Combinations', xp: 10 },
     { id: 'linear-combinations-quiz', title: 'Quiz: Linear Combinations', xp: 10 },
+    { id: 'span-basis', title: 'Span and Basis', xp: 10 },
+    { id: 'span-basis-quiz', title: 'Quiz: Span and Basis', xp: 10 },
 ];
 
 const totalPossibleXp = lessons.reduce((sum, lesson) => sum + lesson.xp, 0);
@@ -27,7 +29,8 @@ const quizMeta: QuizMeta = {
     'dot-product-quiz': { total: 3 },
     'gradient-quiz': { total: 3 },
     'matrix-quiz': { total: 3 },
-    'linear-combinations': { total: 3 },
+    'linear-combinations-quiz': { total: 3 },
+    'span-basis-quiz': { total: 3 },
 };
 const ProgressDashboard: React.FC = () => {
     const { xp, completedLessons, getQuizScore } = useXp();

@@ -10,6 +10,7 @@ const lessonItems = [
     {id: 'gradient', label: 'Gradient', to: '/lesson/gradients'},
     {id: 'matrix', label: 'Matrix Multiplication', to: '/lesson/matrix'},
     {id: 'linear-combinations', label: 'Linear Combinations', to: '/lesson/linear-combinations'},
+    {id: 'span-basis', label: 'Span and Basis', to: '/lesson/span-basis'},
 ];
 
 const quizItems = [
@@ -18,6 +19,7 @@ const quizItems = [
     {id: 'gradient-quiz', label: 'Gradient Quiz', to: '/quiz/gradient'},
     {id: 'matrix-quiz', label: 'Matrix Multiplication Quiz', to: '/quiz/matrix'},
     {id: 'linear-combinations-quiz', label: 'Linear Combo Quiz', to: '/quiz/linear-combinations'},
+    {id: 'span-basis quiz', label: 'Span and Basis Quiz', to: '/quiz/span-basis'},
 ];
 
 const NavBar: React.FC = () => {

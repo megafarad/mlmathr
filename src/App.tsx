@@ -12,6 +12,8 @@ import MatrixLesson from "./components/lessons/MatrixLesson.tsx";
 import MatrixQuiz from "./components/quizzes/MatrixQuiz.tsx";
 import LinearCombinationLesson from "./components/lessons/LinearCombinationLesson.tsx";
 import LinearCombinationQuiz from "./components/quizzes/LinearCombinationQuiz.tsx";
+import SpanBasisLesson from "./components/lessons/SpanBasisLesson.tsx";
+import SpanBasisQuiz from "./components/quizzes/SpanBasisQuiz.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 import AuthPage from "./components/pages/AuthPage.tsx";
 import RoadmapPage from "./components/pages/RoadmapPage.tsx";
@@ -67,6 +69,8 @@ const App: React.FC = () => {
                 <Route path="/quiz/matrix" element={<PrivateRoute><MatrixQuiz/></PrivateRoute>}/>
                 <Route path="/lesson/linear-combinations" element={<PrivateRoute><LinearCombinationLesson/></PrivateRoute>}/>
                 <Route path="/quiz/linear-combinations" element={<PrivateRoute><LinearCombinationQuiz/></PrivateRoute>}/>
+                <Route path="/lesson/span-basis" element={<PrivateRoute><SpanBasisLesson/></PrivateRoute>}/>
+                <Route path="/quiz/span-basis" element={<PrivateRoute><SpanBasisQuiz/></PrivateRoute>}/>
                 <Route path="/auth" element={<AuthPage/>}/>
                 <Route path="/progress" element={<PrivateRoute><ProgressDashboard/></PrivateRoute>}/>
                 <Route path="/roadmap" element={<PrivateRoute><RoadmapPage/></PrivateRoute>}/>

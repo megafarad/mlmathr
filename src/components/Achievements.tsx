@@ -19,7 +19,7 @@ const Achievements: React.FC<Props> = ({ completedLessons, xp, getQuizScore, qui
     });
 
     if (
-        ['vectors', 'dot-product', 'gradient', 'linear-combinations'].every((id) => completedLessons.has(id))
+        ['vectors', 'dot-product', 'matrix', 'gradient', 'linear-combinations', 'span-basis'].every((id) => completedLessons.has(id))
     ) {
         earnedBadges.push('📘 All Lessons Completed');
     }
