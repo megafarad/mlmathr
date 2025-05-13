@@ -1,5 +1,6 @@
 import React from 'react';
 import { useXp } from "../context/XpContext.tsx";
+import ChangePasswordForm from "../settings/ChangePasswordForm.tsx";
 
 const SettingsPage: React.FC = () => {
     const { resetProgress } =  useXp();
@@ -24,7 +25,9 @@ const SettingsPage: React.FC = () => {
                         Reset All Progress
                     </button>
                 </div>
-
+                <div>
+                    <ChangePasswordForm/>
+                </div>
                 {/*<div>
                     <h3 className="text-lg font-medium mb-1">Theme</h3>
                     <button
