@@ -50,7 +50,7 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     };
 
 
-    const getQuizScore = (id: string) => quizScores[id].score ?? null;
+    const getQuizScore = (id: string) => quizScores[id]?.score ?? null;
 
     const resetProgress = () => {
         if (!hasLoaded) {
