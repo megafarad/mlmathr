@@ -4,8 +4,8 @@ import { useProgressSync } from "../../hooks/useProgressSync.ts";
 type XpContextType = {
     xp: number;
     completedLessons: Set<string>;
-    quizScores: Record<string, number>;
-    setQuizScores: React.Dispatch<React.SetStateAction<Record<string, number>>>;
+    quizScores: Record<string, { score: number; answers: (number | null)[] }>
+    setQuizScores: React.Dispatch<React.SetStateAction<Record<string, { score: number; answers: (number| null)[] }>>>;
     getQuizScore: (id: string) => number;
     addXpForLesson: (lessonId: string, amount: number) => void;
     hasCompleted: (lessonId: string) => boolean;
@@ -23,7 +23,7 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     const [xp, setXp] = useState(0);
     const [revision, setRevision] = useState<number>(0);
     const [completedLessons, setCompletedLessons] = useState<Set<string>>(new Set());
-    const [quizScores, setQuizScores] = useState<Record<string, number>>({});
+    const [quizScores, setQuizScores] = useState<Record<string, { score: number; answers: (number | null)[] }>>({});
 
     const addXpForLesson = (lessonId: string, amount: number) => {
         if (completedLessons.has(lessonId)) return;
@@ -50,7 +50,7 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     };
 
 
-    const getQuizScore = (id: string) => quizScores[id] ?? null;
+    const getQuizScore = (id: string) => quizScores[id].score ?? null;
 
     const resetProgress = () => {
         if (!hasLoaded) {

@@ -12,10 +12,10 @@ export function useProgressSync({
                                 }: {
     xp: number;
     completedLessons: Set<string>;
-    quizScores: Record<string, number>;
+    quizScores: Record<string, { score: number; answers: (number | null)[] }>;
     setXp: (v: number) => void;
     setCompletedLessons: (v: Set<string>) => void;
-    setQuizScores: (v: Record<string, number>) => void;
+    setQuizScores: (v: Record<string, { score: number; answers: number[] }>) => void;
 }) {
     const { user } = useAuth();
     const [hasLoaded, setHasLoaded] = useState(false);

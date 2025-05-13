@@ -41,17 +41,17 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
 
 
     useEffect(() => {
-        const savedScore = quizScores[lessonId];
-        const wasSubmitted = savedScore !== undefined;
+        const saved = quizScores[lessonId];
+        setSubmitted(!!saved);
+        setScore(saved?.score ?? null);
 
-        setSubmitted(wasSubmitted);
-        setScore(savedScore ?? null);
-
-        // Only reset answers if user hasn't submitted yet
-        if (!wasSubmitted) {
+        if (saved?.answers) {
+            setSelected(saved.answers);
+        } else {
             setSelected(initialSelected);
         }
-    }, [lessonId, revision, quizScores, questions.length, initialSelected]);
+    }, [lessonId, revision, quizScores, initialSelected]);
+
 
     const handleSubmit = () => {
         if (submitted || selected.includes(null)) return;
@@ -68,8 +68,12 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
 
         setQuizScores((prev) => ({
             ...prev,
-            [lessonId]: correctCount,
+            [lessonId]: {
+                score: correctCount,
+                answers: selected,
+            },
         }));
+
 
         if (passed) addXpForLesson(lessonId, xpReward);
     };
