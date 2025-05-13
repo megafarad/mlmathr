@@ -73,4 +73,6 @@ export function useProgressSync({
             upsert();
         }, 1000);
     }, [user, hasLoaded, xp, completedLessons, quizScores]);
+
+    return hasLoaded;
 }

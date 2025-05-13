@@ -1,11 +1,9 @@
 import React from 'react';
 import VectorVisualizer from './VectorVisualizer';
-import {useXp} from "../context/XpContext.tsx";
+import CompleteLessonButton from "./CompleteLessonButton.tsx";
 
+const lessonId = 'vectors';
 const VectorLesson: React.FC = () => {
-    const {addXpForLesson, completedLessons} = useXp();
-    const isCompleted = completedLessons.has('vectors');
-
     return (
         <div className="flex flex-col lg:flex-row lg:items-start gap-6">
             <div className="lg:w-1/2">
@@ -41,18 +39,7 @@ const VectorLesson: React.FC = () => {
             </div>
             <div className="flex flex-col items-center space-y-4">
                 <VectorVisualizer />
-
-                <button
-                    onClick={() => addXpForLesson('vectors', 25)}
-                    disabled={isCompleted}
-                    className={`mt-4 px-4 py-2 rounded ${
-                        isCompleted
-                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                            : 'bg-blue-600 text-white hover:bg-blue-700'
-                    }`}
-                >
-                    {isCompleted ? '✅ Lesson Completed' : 'Complete Lesson (+25 XP)'}
-                </button>
+                <CompleteLessonButton lessonId={lessonId} xpReward={25}/>
             </div>
 
         </div>

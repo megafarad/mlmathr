@@ -10,6 +10,7 @@ import GradientLesson from "./components/lessons/GradientLesson.tsx";
 import GradientQuiz from "./components/quizzes/GradientQuiz.tsx";
 import MatrixLesson from "./components/lessons/MatrixLesson.tsx";
 import MatrixQuiz from "./components/quizzes/MatrixQuiz.tsx";
+import LinearCombinationLesson from "./components/lessons/LinearCombinationLesson.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 import AuthPage from "./components/pages/AuthPage.tsx";
 import RoadmapPage from "./components/pages/RoadmapPage.tsx";
@@ -107,9 +108,15 @@ const App: React.FC = () => {
                                 Quiz: Matrix Multiplication
                             </Link>
                         ) : (
-                            <span className="text-gray-400 cursor-not-allowed">🔒 Quiz: Matrix</span>
+                            <span className="text-gray-400 cursor-not-allowed">🔒 Quiz: Matrix Multiplication</span>
                         )}
-
+                        {isUnlocked('linear-combinations') ? (
+                            <Link to="/lesson/linear-combination" className="text-green-600 hover:underline">
+                                Linear Combinations
+                            </Link>
+                        ) : (
+                            <span className="text-gray-400 cursor-not-allowed">🔒 Linear Combinations</span>
+                        )}
                         <Link to="/progress" className="text-purple-600 hover:underline">Progress</Link>
                         <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
                         <Link to="/settings" className="text-gray-600 hover:underline">⚙️ Settings</Link>
@@ -135,6 +142,7 @@ const App: React.FC = () => {
                 <Route path="/quiz/gradient" element={<PrivateRoute><GradientQuiz/></PrivateRoute>}/>
                 <Route path="/lesson/matrix" element={<PrivateRoute><MatrixLesson/></PrivateRoute>}/>
                 <Route path="/quiz/matrix" element={<PrivateRoute><MatrixQuiz/></PrivateRoute>}/>
+                <Route path="/lesson/linear-combination" element={<PrivateRoute><LinearCombinationLesson/></PrivateRoute>}/>
                 <Route path="/auth" element={<AuthPage/>}/>
                 <Route path="/progress" element={<PrivateRoute><ProgressDashboard/></PrivateRoute>}/>
                 <Route path="/roadmap" element={<PrivateRoute><RoadmapPage/></PrivateRoute>}/>

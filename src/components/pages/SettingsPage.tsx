@@ -7,7 +7,6 @@ const SettingsPage: React.FC = () => {
     const handleResetProgress = () => {
         if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
             resetProgress();
-            window.location.reload();
         }
     };
 

@@ -1,11 +1,12 @@
 import React from 'react';
 import DotProductVisualizer from './DotProductVisualizer';
-import {useXp} from "../context/XpContext.tsx";
+import { useXp } from "../context/XpContext.tsx";
+import CompleteLessonButton from "./CompleteLessonButton.tsx";
 
 const DotProductLesson: React.FC = () => {
-    const { addXpForLesson, hasCompleted, isUnlocked } = useXp();
-    const isCompleted = hasCompleted('dot-product');
-    const unlocked = isUnlocked('dot-product');
+    const { isUnlocked } = useXp()
+    const lessonId = 'dot-product';
+    const unlocked = isUnlocked(lessonId);
 
     if (!unlocked) {
         return (
@@ -69,17 +70,7 @@ const DotProductLesson: React.FC = () => {
             <div className="flex flex-col items-center space-y-4">
                 <DotProductVisualizer />
                 <div className="mt-6 flex justify-center">
-                    <button
-                        onClick={() => addXpForLesson('dot-product', 25)}
-                        disabled={isCompleted}
-                        className={`px-4 py-2 rounded ${
-                            isCompleted
-                                ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                                : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }`}
-                    >
-                        {isCompleted ? '✅ Lesson Completed' : 'Complete Lesson (+25 XP)'}
-                    </button>
+                    <CompleteLessonButton lessonId={lessonId} xpReward={25}/>
                 </div>
             </div>
         </div>

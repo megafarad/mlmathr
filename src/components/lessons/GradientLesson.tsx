@@ -1,9 +1,8 @@
 import GradientVisualizer from './GradientVisualizer';
-import { useXp } from "../context/XpContext.tsx";
+import CompleteLessonButton from "./CompleteLessonButton.tsx";
 
 const GradientLesson: React.FC = () => {
-    const { addXpForLesson, hasCompleted } = useXp();
-    const isCompleted = hasCompleted('gradient');
+    const lessonId = 'gradient';
 
     return (
         <div className="flex flex-col lg:flex-row lg:items-start gap-6">
@@ -34,17 +33,7 @@ const GradientLesson: React.FC = () => {
             <div className="lg:w-1/2 flex flex-col items-center space-y-4">
                 <GradientVisualizer />
                 <div className="mt-4">
-                    <button
-                        onClick={() => addXpForLesson('gradient', 25)}
-                        disabled={isCompleted}
-                        className={`px-4 py-2 rounded ${
-                            isCompleted
-                                ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                                : 'bg-blue-600 text-white hover:bg-blue-700'
-                        }`}
-                    >
-                        {isCompleted ? '✅ Lesson Completed' : 'Complete Lesson (+25 XP)'}
-                    </button>
+                    <CompleteLessonButton lessonId={lessonId} xpReward={25}/>
                 </div>
             </div>
         </div>
