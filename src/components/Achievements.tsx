@@ -19,13 +19,13 @@ const Achievements: React.FC<Props> = ({ completedLessons, xp, getQuizScore, qui
     });
 
     if (
-        ['vectors', 'dot-product', 'matrix', 'gradient', 'linear-combinations', 'span-basis'].every((id) => completedLessons.has(id))
+        ['vectors', 'dot-product', 'matrix', 'gradient', 'linear-combinations', 'span-basis', 'projections'].every((id) => completedLessons.has(id))
     ) {
         earnedBadges.push('📘 All Lessons Completed');
     }
 
     if (
-        ['vectors-quiz', 'dot-product-quiz', 'gradient-quiz', 'matrix-quiz', 'linear-combinations-quiz'].every((id) =>
+        ['vectors-quiz', 'dot-product-quiz', 'gradient-quiz', 'matrix-quiz', 'linear-combinations-quiz', 'projections-quiz'].every((id) =>
             completedLessons.has(id)
         )
     ) {

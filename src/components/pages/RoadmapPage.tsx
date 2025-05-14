@@ -44,6 +44,13 @@ const modules = [
             { id: 'span-basis', type: 'lesson', title: 'Lesson: Span and Basis' },
             { id: 'span-basis-quiz', type: 'quiz', title: 'Quiz: Span and Basis' },
         ]
+    },
+    {
+        title: 'Vector Projections',
+        items: [
+            { id: 'projections', type: 'lesson', title: 'Lesson: Vector Projections' },
+            { id: 'projections-quiz', type: 'quiz', title: 'Quiz: Vector Projections' },
+        ]
     }
 ];
 

@@ -22,6 +22,8 @@ import PrivateRoute from "./components/PrivateRoute.tsx";
 import {useXp} from "./components/context/XpContext.tsx";
 import NavBar from "./components/NavBar.tsx";
 import {useAuth} from "./components/context/AuthContext.tsx";
+import ProjectionLesson from "./components/lessons/ProjectionLesson.tsx";
+import ProjectionQuiz from "./components/quizzes/ProjectionQuiz.tsx";
 
 const App: React.FC = () => {
     const {xp} = useXp();
@@ -73,6 +75,8 @@ const App: React.FC = () => {
                 <Route path="/quiz/linear-combinations" element={<PrivateRoute><LinearCombinationQuiz/></PrivateRoute>}/>
                 <Route path="/lesson/span-basis" element={<PrivateRoute><SpanBasisLesson/></PrivateRoute>}/>
                 <Route path="/quiz/span-basis" element={<PrivateRoute><SpanBasisQuiz/></PrivateRoute>}/>
+                <Route path="/lesson/projections" element={<PrivateRoute><ProjectionLesson/></PrivateRoute>}/>
+                <Route path="/quiz/projections" element={<PrivateRoute><ProjectionQuiz/></PrivateRoute>}/>
                 <Route path="/auth" element={<AuthPage/>}/>
                 <Route path="/progress" element={<PrivateRoute><ProgressDashboard/></PrivateRoute>}/>
                 <Route path="/roadmap" element={<PrivateRoute><RoadmapPage/></PrivateRoute>}/>

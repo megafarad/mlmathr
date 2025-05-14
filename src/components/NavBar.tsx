@@ -11,6 +11,7 @@ const lessonItems = [
     {id: 'matrix', label: 'Matrix Multiplication', to: '/lesson/matrix'},
     {id: 'linear-combinations', label: 'Linear Combinations', to: '/lesson/linear-combinations'},
     {id: 'span-basis', label: 'Span and Basis', to: '/lesson/span-basis'},
+    {id: 'projections', label: 'Vector Projections', to: '/lesson/projections'},
 ];
 
 const quizItems = [
@@ -20,6 +21,7 @@ const quizItems = [
     {id: 'matrix-quiz', label: 'Matrix Multiplication Quiz', to: '/quiz/matrix'},
     {id: 'linear-combinations-quiz', label: 'Linear Combo Quiz', to: '/quiz/linear-combinations'},
     {id: 'span-basis quiz', label: 'Span and Basis Quiz', to: '/quiz/span-basis'},
+    {id: 'projections-quiz', label: 'Vector Projections Quiz', to: '/quiz/projections'},
 ];
 
 const NavBar: React.FC = () => {

@@ -36,11 +36,14 @@ const spanBasisQuestions = [
 
 const SpanBasisQuiz: React.FC = () => {
     return (
-        <Quiz
-            lessonId="span-basis-quiz"
-            questions={spanBasisQuestions}
-            xpReward={10}
-        />
+        <div className="p-4">
+            <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Span and Basis</h2>
+            <Quiz
+                lessonId="span-basis-quiz"
+                questions={spanBasisQuestions}
+                xpReward={10}
+            />
+        </div>
     );
 };
 
