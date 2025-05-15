@@ -1,31 +1,30 @@
 import React from 'react';
+import {lessonIds, quizIds, quizzes} from "../modules";
 
 interface Props {
     completedLessons: Set<string>;
     xp: number;
     getQuizScore: (id: string) => number | null;
-    quizMeta: Record<string, { total: number }>;
 }
 
-const Achievements: React.FC<Props> = ({ completedLessons, xp, getQuizScore, quizMeta }) => {
+const Achievements: React.FC<Props> = ({ completedLessons, xp, getQuizScore}) => {
     const earnedBadges: string[] = [];
 
-    Object.entries(quizMeta).forEach(([id, meta]) => {
-        const score = getQuizScore(id);
-        if (score === meta.total) {
-            const name = id.replace('-quiz', '').replace('-', ' ');
-            earnedBadges.push(`🎯 Perfect Score: ${name}`);
-        }
+    quizzes.forEach(quiz => {
+       const score = getQuizScore(quiz.id);
+       if (score === quiz.meta?.total) {
+           earnedBadges.push(`🎯 Perfect Score: ${quiz.listing}`)
+       }
     });
 
     if (
-        ['vectors', 'dot-product', 'matrix', 'gradient', 'linear-combinations', 'span-basis', 'projections'].every((id) => completedLessons.has(id))
+        lessonIds.every((id) => completedLessons.has(id))
     ) {
         earnedBadges.push('📘 All Lessons Completed');
     }
 
     if (
-        ['vectors-quiz', 'dot-product-quiz', 'gradient-quiz', 'matrix-quiz', 'linear-combinations-quiz', 'projections-quiz'].every((id) =>
+        quizIds.every((id) =>
             completedLessons.has(id)
         )
     ) {

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useProgressSync } from "../../hooks/useProgressSync.ts";
+import { modules } from "../../modules.tsx";
 
 type XpContextType = {
     xp: number;
@@ -34,21 +35,9 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
     const hasCompleted = (lessonId: string) => completedLessons.has(lessonId);
 
     const isUnlocked = (lessonId: string) => {
-        const dependencies: Record<string, string[]> = {
-            'vectors-quiz' : ['vectors'],
-            'dot-product': ['vectors-quiz'],
-            'dot-product-quiz': ['dot-product'],
-            'gradient': ['dot-product-quiz'],
-            'gradient-quiz': ['gradient'],
-            'matrix': ['gradient-quiz'],
-            'matrix-quiz': ['matrix'],
-            'linear-combinations' : ['matrix-quiz'],
-            'linear-combinations-quiz': ['linear-combinations'],
-            'projections': ['linear-combinations-quiz'],
-            'projections-quiz': ['projections'],
-        };
-        const required = dependencies[lessonId] || [];
-        return required.every((dep) => completedLessons.has(dep));
+        const item = modules.flatMap(m => m.items).find(item => item.id === lessonId);
+        if (!item) return false;
+        return item.prerequisites.every(id => completedLessons.has(id));
     };
 
 

@@ -2,39 +2,10 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import { useXp } from '../context/XpContext';
 import Achievements from "../Achievements.tsx";
+import {allItems, quizzes} from "../../modules.tsx";
 
-const lessons = [
-    { id: 'vectors', title: 'Vectors', xp: 25 },
-    { id: 'vectors-quiz', title: 'Vectors Quiz', xp: 15 },
-    { id: 'dot-product', title: 'Dot Product', xp: 25 },
-    { id: 'dot-product-quiz', title: 'Dot Product Quiz', xp: 20 },
-    { id: 'gradient', title: 'Gradient', xp: 25 },
-    { id: 'gradient-quiz', title: 'Gradients Quiz', xp: 20 },
-    { id: 'matrix', title: 'Matrix Multiplication', xp: 25 },
-    { id: 'matrix-quiz', title: 'Quiz: Matrix Multiplication', xp: 20 },
-    { id: 'linear-combinations', title: 'Linear Combinations', xp: 10 },
-    { id: 'linear-combinations-quiz', title: 'Quiz: Linear Combinations', xp: 10 },
-    { id: 'span-basis', title: 'Span and Basis', xp: 10 },
-    { id: 'span-basis-quiz', title: 'Quiz: Span and Basis', xp: 10 },
-    { id: 'projections', title: 'Vector Projections', xp: 10 },
-    { id: 'projections-quiz', title: 'Quiz: Vector Projections', xp: 10 },
-];
+const totalPossibleXp = allItems.reduce((sum, item) => sum + item.xp, 0);
 
-const totalPossibleXp = lessons.reduce((sum, lesson) => sum + lesson.xp, 0);
-
-type QuizMeta = {
-    [key: string]: { total: number }
-};
-
-const quizMeta: QuizMeta = {
-    'vectors-quiz': { total: 2 },
-    'dot-product-quiz': { total: 3 },
-    'gradient-quiz': { total: 3 },
-    'matrix-quiz': { total: 3 },
-    'linear-combinations-quiz': { total: 3 },
-    'span-basis-quiz': { total: 3 },
-    'projections-quiz': { total: 3 },
-};
 const ProgressDashboard: React.FC = () => {
     const { xp, completedLessons, getQuizScore } = useXp();
     const progressPercent = Math.round((xp / totalPossibleXp) * 100);
@@ -57,7 +28,6 @@ const ProgressDashboard: React.FC = () => {
                 completedLessons={completedLessons}
                 xp={xp}
                 getQuizScore={getQuizScore}
-                quizMeta={quizMeta}
             />
             {lastVisited && (
                 <div className="mt-4">
@@ -71,10 +41,10 @@ const ProgressDashboard: React.FC = () => {
             )}
 
             <ul className="mt-4 space-y-3">
-                {lessons.map(({ id, title, xp }) => {
+                {allItems.map(({ id, title, xp }) => {
                     const completed = completedLessons.has(id);
                     const score = id.includes('quiz') ? getQuizScore(id) : null;
-                    const total = quizMeta[id]?.total;
+                    const total = quizzes.find(quiz => quiz.id === id)?.meta?.total;
 
                     return (
                         <li key={id} className="flex justify-between items-center p-3 bg-gray-100 rounded">

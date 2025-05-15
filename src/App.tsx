@@ -1,29 +1,16 @@
 // src/App.tsx
 import React, {useState, useEffect} from "react";
 import {Routes, Route, useLocation, Link} from 'react-router-dom';
+import NavBar from "./components/NavBar.tsx";
 import HomePage from "./components/pages/HomePage.tsx";
-import VectorLesson from './components/lessons/VectorLesson';
-import VectorQuiz from "./components/quizzes/VectorQuiz.tsx";
-import DotProductLesson from './components/lessons/DotProductLesson';
-import DotProductQuiz from "./components/quizzes/DotProductQuiz.tsx";
-import GradientLesson from "./components/lessons/GradientLesson.tsx";
-import GradientQuiz from "./components/quizzes/GradientQuiz.tsx";
-import MatrixLesson from "./components/lessons/MatrixLesson.tsx";
-import MatrixQuiz from "./components/quizzes/MatrixQuiz.tsx";
-import LinearCombinationLesson from "./components/lessons/LinearCombinationLesson.tsx";
-import LinearCombinationQuiz from "./components/quizzes/LinearCombinationQuiz.tsx";
-import SpanBasisLesson from "./components/lessons/SpanBasisLesson.tsx";
-import SpanBasisQuiz from "./components/quizzes/SpanBasisQuiz.tsx";
 import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 import AuthPage from "./components/pages/AuthPage.tsx";
 import RoadmapPage from "./components/pages/RoadmapPage.tsx";
 import SettingsPage from "./components/pages/SettingsPage.tsx";
 import PrivateRoute from "./components/PrivateRoute.tsx";
 import {useXp} from "./components/context/XpContext.tsx";
-import NavBar from "./components/NavBar.tsx";
 import {useAuth} from "./components/context/AuthContext.tsx";
-import ProjectionLesson from "./components/lessons/ProjectionLesson.tsx";
-import ProjectionQuiz from "./components/quizzes/ProjectionQuiz.tsx";
+import {modules} from "./modules";
 
 const App: React.FC = () => {
     const {xp} = useXp();
@@ -63,20 +50,9 @@ const App: React.FC = () => {
             <NavBar/>
             <Routes>
                 <Route path="/" element={<HomePage />} />
-                <Route path="/lesson/vectors" element={<PrivateRoute><VectorLesson/></PrivateRoute>}/>
-                <Route path="/quiz/vectors" element={<PrivateRoute><VectorQuiz/></PrivateRoute>}/>
-                <Route path="/lesson/dot-product" element={<PrivateRoute><DotProductLesson/></PrivateRoute>}/>
-                <Route path="/quiz/dot-product" element={<PrivateRoute><DotProductQuiz/></PrivateRoute>}/>
-                <Route path="/lesson/gradients" element={<PrivateRoute><GradientLesson/></PrivateRoute>}/>
-                <Route path="/quiz/gradient" element={<PrivateRoute><GradientQuiz/></PrivateRoute>}/>
-                <Route path="/lesson/matrix" element={<PrivateRoute><MatrixLesson/></PrivateRoute>}/>
-                <Route path="/quiz/matrix" element={<PrivateRoute><MatrixQuiz/></PrivateRoute>}/>
-                <Route path="/lesson/linear-combinations" element={<PrivateRoute><LinearCombinationLesson/></PrivateRoute>}/>
-                <Route path="/quiz/linear-combinations" element={<PrivateRoute><LinearCombinationQuiz/></PrivateRoute>}/>
-                <Route path="/lesson/span-basis" element={<PrivateRoute><SpanBasisLesson/></PrivateRoute>}/>
-                <Route path="/quiz/span-basis" element={<PrivateRoute><SpanBasisQuiz/></PrivateRoute>}/>
-                <Route path="/lesson/projections" element={<PrivateRoute><ProjectionLesson/></PrivateRoute>}/>
-                <Route path="/quiz/projections" element={<PrivateRoute><ProjectionQuiz/></PrivateRoute>}/>
+                {modules.flatMap(m => m.items).map(item => (
+                    <Route key={item.id} path={item.path} element={<PrivateRoute><item.component/></PrivateRoute>}/>
+                ))}
                 <Route path="/auth" element={<AuthPage/>}/>
                 <Route path="/progress" element={<PrivateRoute><ProgressDashboard/></PrivateRoute>}/>
                 <Route path="/roadmap" element={<PrivateRoute><RoadmapPage/></PrivateRoute>}/>

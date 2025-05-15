@@ -1,58 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useXp } from "../context/XpContext.tsx";
+import {modules} from "../../modules.tsx";
 
-const modules = [
-    {
-        title: 'Vectors',
-        items: [
-            { id: 'vectors', type: 'lesson', title: 'Lesson: Vectors' },
-            { id: 'vectors-quiz', type: 'quiz', title: 'Quiz: Vectors' },
-        ],
-    },
-    {
-        title: 'Dot Product',
-        items: [
-            { id: 'dot-product', type: 'lesson', title: 'Lesson: Dot Product' },
-            { id: 'dot-product-quiz', type: 'quiz', title: 'Quiz: Dot Product' },
-        ],
-    },
-    {
-        title: 'Gradients',
-        items: [
-            { id: 'gradient', type: 'lesson', title: 'Lesson: Gradients' },
-            { id: 'gradient-quiz', type: 'quiz', title: 'Quiz: Gradients' },
-        ],
-    },
-    {
-        title: 'Matrix Multiplication',
-        items: [
-            { id: 'matrix', type: 'lesson', title: 'Lesson: Matrix Multiplication' },
-            { id: 'matrix-quiz', type: 'quiz', title: 'Quiz: Matrix Multiplication' },
-        ],
-    },
-    {
-        title: 'Linear Combinations',
-        items: [
-            { id: 'linear-combinations', type: 'lesson', title: 'Lesson: Linear Combinations' },
-            { id: 'linear-combinations-quiz', type: 'quiz', title: 'Quiz: Linear Combinations' },
-        ]
-    },
-    {
-        title: 'Span and Basis',
-        items: [
-            { id: 'span-basis', type: 'lesson', title: 'Lesson: Span and Basis' },
-            { id: 'span-basis-quiz', type: 'quiz', title: 'Quiz: Span and Basis' },
-        ]
-    },
-    {
-        title: 'Vector Projections',
-        items: [
-            { id: 'projections', type: 'lesson', title: 'Lesson: Vector Projections' },
-            { id: 'projections-quiz', type: 'quiz', title: 'Quiz: Vector Projections' },
-        ]
-    }
-];
 
 const RoadmapPage: React.FC = () => {
     const { hasCompleted, isUnlocked } = useXp();

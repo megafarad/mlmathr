@@ -3,35 +3,26 @@ import NavDropdown from "./NavDropdown.tsx";
 import {useXp} from "./context/XpContext.tsx";
 import {useAuth} from "./context/AuthContext.tsx";
 import {Link} from "react-router-dom";
+import {allItems, lessons, quizzes} from "../modules.tsx";
 
-const lessonItems = [
-    {id: 'vectors', label: 'Vectors', to: '/lesson/vectors'},
-    {id: 'dot-product', label: 'Dot Product', to: '/lesson/dot-product'},
-    {id: 'gradient', label: 'Gradient', to: '/lesson/gradients'},
-    {id: 'matrix', label: 'Matrix Multiplication', to: '/lesson/matrix'},
-    {id: 'linear-combinations', label: 'Linear Combinations', to: '/lesson/linear-combinations'},
-    {id: 'span-basis', label: 'Span and Basis', to: '/lesson/span-basis'},
-    {id: 'projections', label: 'Vector Projections', to: '/lesson/projections'},
-];
+const lessonItems = lessons.map(item => ({
+    id: item.id,
+    to: item.path,
+    label: item.listing
+}));
 
-const quizItems = [
-    {id: 'vectors-quiz', label: 'Vectors Quiz', to: '/quiz/vectors'},
-    {id: 'dot-product-quiz', label: 'Dot Product Quiz', to: '/quiz/dot-product'},
-    {id: 'gradient-quiz', label: 'Gradient Quiz', to: '/quiz/gradient'},
-    {id: 'matrix-quiz', label: 'Matrix Multiplication Quiz', to: '/quiz/matrix'},
-    {id: 'linear-combinations-quiz', label: 'Linear Combo Quiz', to: '/quiz/linear-combinations'},
-    {id: 'span-basis quiz', label: 'Span and Basis Quiz', to: '/quiz/span-basis'},
-    {id: 'projections-quiz', label: 'Vector Projections Quiz', to: '/quiz/projections'},
-];
+const quizItems = quizzes.map(item => ({
+    id: item.id,
+    to: item.path,
+    label: item.listing
+}));
 
 const NavBar: React.FC = () => {
 
     const {isUnlocked} = useXp();
     const {user, logout} = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
-    const allItems = [...lessonItems, ...quizItems];
-    const lockedIds = new Set(allItems.filter(({id}) => !isUnlocked(id)).map(({id}) => id));
-
+    const lockedIds = new Set(allItems.filter(item => !isUnlocked(item.id)).map(item => item.id));
 
     return (
 
