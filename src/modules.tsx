@@ -139,13 +139,13 @@ export const modules: Module[] = [
         ]
     },
     {
-        title: 'Matrix Multiplication',
+        title: 'Matrix Transformations',
         items: [
             {
                 id: 'matrix',
                 type: "lesson",
-                title: "Lesson: Matrix Multiplication",
-                listing: "Matrix Multiplication",
+                title: "Lesson: Matrix Transformations",
+                listing: "Matrix Transformations",
                 prerequisites: ['gradient-quiz'],
                 path: "/lesson/matrix",
                 component: MatrixLesson,
@@ -155,8 +155,8 @@ export const modules: Module[] = [
             {
                 id: 'matrix-quiz',
                 type: "quiz",
-                title: "Quiz: Matrix Multiplication",
-                listing: "Matrix Multiplication Quiz",
+                title: "Quiz: Matrix Transformations",
+                listing: "Matrix Transformations Quiz",
                 prerequisites: ['matrix'],
                 path: "/quiz/matrix",
                 component: MatrixQuiz,
