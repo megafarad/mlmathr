@@ -11,6 +11,8 @@ import SpanBasisLesson from "./components/lessons/SpanBasisLesson.tsx";
 import SpanBasisQuiz from "./components/quizzes/SpanBasisQuiz.tsx";
 import ProjectionLesson from "./components/lessons/ProjectionLesson.tsx";
 import ProjectionQuiz from "./components/quizzes/ProjectionQuiz.tsx";
+import MatrixLesson from "./components/lessons/MatrixLesson.tsx";
+import MatrixQuiz from "./components/quizzes/MatrixQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -143,21 +145,21 @@ export const modules: Module[] = [
                 id: 'matrix',
                 type: "lesson",
                 title: "Lesson: Matrix Multiplication",
-                listing: "Gradient",
+                listing: "Matrix Multiplication",
                 prerequisites: ['gradient-quiz'],
-                path: "/lesson/gradient",
-                component: GradientLesson,
+                path: "/lesson/matrix",
+                component: MatrixLesson,
                 meta: null,
                 xp: 25
             },
             {
-                id: 'gradient-quiz',
+                id: 'matrix-quiz',
                 type: "quiz",
-                title: "Quiz: Gradients",
-                listing: "Gradients Quiz",
+                title: "Quiz: Matrix Multiplication",
+                listing: "Matrix Multiplication Quiz",
                 prerequisites: ['matrix'],
-                path: "/quiz/gradient",
-                component: GradientQuiz,
+                path: "/quiz/matrix",
+                component: MatrixQuiz,
                 meta: {
                     total: 3
                 },
