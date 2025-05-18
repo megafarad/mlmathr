@@ -1,21 +1,9 @@
 import React, {useState} from "react";
-import NavDropdown from "./NavDropdown.tsx";
 import {useXp} from "./context/XpContext.tsx";
 import {useAuth} from "./context/AuthContext.tsx";
 import {Link} from "react-router-dom";
-import {allItems, lessons, quizzes} from "../modules.tsx";
-
-const lessonItems = lessons.map(item => ({
-    id: item.id,
-    to: item.path,
-    label: item.listing
-}));
-
-const quizItems = quizzes.map(item => ({
-    id: item.id,
-    to: item.path,
-    label: item.listing
-}));
+import {allItems} from "../modules.tsx";
+import ModuleAccordionMenu from "./ModuleAccordionMenu.tsx";
 
 const NavBar: React.FC = () => {
 
@@ -57,8 +45,7 @@ const NavBar: React.FC = () => {
                 className={`flex-col md:flex-row md:flex gap-4 px-4 md:px-6 ${menuOpen ? 'flex' : 'hidden'} md:items-center`}>
                 {user ? (
                     <>
-                        <NavDropdown label="📘 Lessons" items={lessonItems} lockedIds={lockedIds}/>
-                        <NavDropdown label="🧪 Quizzes" items={quizItems} lockedIds={lockedIds}/>
+                        <ModuleAccordionMenu lockedIds={lockedIds}/>
                         <Link to="/progress" className="text-purple-600 hover:underline">📊 Dashboard</Link>
                         <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
                         <Link to="/settings" className="text-gray-600 hover:underline">⚙️ Settings</Link>
