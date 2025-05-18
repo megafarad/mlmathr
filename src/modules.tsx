@@ -16,6 +16,7 @@ import MatrixTransformationsQuiz from "./components/quizzes/MatrixTransformation
 import MatrixTransformationOrderLesson from "./components/lessons/MatrixTransformationOrderLesson.tsx";
 import MatrixMultiplicationLesson from "./components/lessons/MatrixMultiplicationLesson.tsx";
 import MatrixMultiplicationQuiz from "./components/quizzes/MatrixMultiplicationQuiz.tsx";
+import MatrixTransformationOrderQuiz from "./components/quizzes/MatrixTransformationOrderQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -267,7 +268,7 @@ export const modules: Module[] = [
                 xp: 25
             },
             {
-              id: 'matrix-multiplication-quiz',
+              id: 'matrix-multiplication-basics-quiz',
               type: 'quiz',
               title: 'Quiz: Multiplying Two Matrices',
               listing: 'Multiplying Two Matrices Quiz',
@@ -297,7 +298,7 @@ export const modules: Module[] = [
                 listing: 'Matrix Transformation Order Quiz',
                 prerequisites: ['matrix-transformation-order'],
                 path: '/quiz/matrix-transformation-order',
-                component: MatrixTransformationsQuiz,
+                component: MatrixTransformationOrderQuiz,
                 meta: {
                     total: 4
                 },

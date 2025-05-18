@@ -45,7 +45,7 @@ const questions = [
     },
 ];
 
-const quizId = 'matrix-multiplication-quiz';
+const quizId = 'matrix-multiplication-basics-quiz';
 
 const MatrixMultiplicationQuiz: React.FC = () => {
     return (
