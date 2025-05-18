@@ -2,6 +2,8 @@ import React from 'react';
 import VectorVisualizer from './VectorVisualizer';
 import CompleteLessonButton from "./CompleteLessonButton.tsx";
 
+import {lookupXp} from "../../lookupXp.tsx";
+
 const lessonId = 'vectors';
 const VectorLesson: React.FC = () => {
     return (
@@ -39,7 +41,7 @@ const VectorLesson: React.FC = () => {
             </div>
             <div className="flex flex-col items-center space-y-4">
                 <VectorVisualizer />
-                <CompleteLessonButton lessonId={lessonId} xpReward={25}/>
+                <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)}/>
             </div>
 
         </div>

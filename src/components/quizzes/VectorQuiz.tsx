@@ -1,5 +1,6 @@
 import React from 'react';
 import Quiz from "../Quiz.tsx";
+import {lookupXp} from "../../lookupXp.tsx";
 
 const quizQuestions = [
     {
@@ -14,12 +15,14 @@ const quizQuestions = [
     },
 ];
 
+const quizId = "vectors-quiz";
+
 const VectorQuiz: React.FC = () => {
 
     return (
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Vectors</h2>
-            <Quiz lessonId="vectors-quiz" questions={quizQuestions} xpReward={15} />
+            <Quiz lessonId={quizId} questions={quizQuestions} xpReward={lookupXp(quizId)} />
         </div>
     );
 };

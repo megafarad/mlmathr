@@ -1,6 +1,7 @@
 import React from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import SpanBasisVisualizer from './SpanBasisVisualizer';
+import {lookupXp} from "../../lookupXp.tsx";
 
 const lessonId = 'span-basis';
 
@@ -49,7 +50,7 @@ const SpanBasisLesson: React.FC = () => {
 
                 <div>
                     <SpanBasisVisualizer />
-                    <CompleteLessonButton lessonId={lessonId} xpReward={10} />
+                    <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
                 </div>
             </div>
 

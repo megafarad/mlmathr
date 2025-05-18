@@ -11,8 +11,11 @@ import SpanBasisLesson from "./components/lessons/SpanBasisLesson.tsx";
 import SpanBasisQuiz from "./components/quizzes/SpanBasisQuiz.tsx";
 import ProjectionLesson from "./components/lessons/ProjectionLesson.tsx";
 import ProjectionQuiz from "./components/quizzes/ProjectionQuiz.tsx";
-import MatrixLesson from "./components/lessons/MatrixLesson.tsx";
-import MatrixQuiz from "./components/quizzes/MatrixQuiz.tsx";
+import MatrixTransformationsLesson from "./components/lessons/MatrixTransformationsLesson.tsx";
+import MatrixTransformationsQuiz from "./components/quizzes/MatrixTransformationsQuiz.tsx";
+import MatrixTransformationOrderLesson from "./components/lessons/MatrixTransformationOrderLesson.tsx";
+import MatrixMultiplicationLesson from "./components/lessons/MatrixMultiplicationLesson.tsx";
+import MatrixMultiplicationQuiz from "./components/quizzes/MatrixMultiplicationQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -98,7 +101,7 @@ export const modules: Module[] = [
                 id: 'dot-product-quiz',
                 type: "quiz",
                 title: "Quiz: Dot Product",
-                listing: "Dot Product",
+                listing: "Dot Product Quiz",
                 prerequisites: ['dot-product'],
                 path: "/quiz/dot-product",
                 component: DotProductQuiz,
@@ -139,35 +142,6 @@ export const modules: Module[] = [
         ]
     },
     {
-        title: 'Matrix Transformations',
-        items: [
-            {
-                id: 'matrix',
-                type: "lesson",
-                title: "Lesson: Matrix Transformations",
-                listing: "Matrix Transformations",
-                prerequisites: ['gradient-quiz'],
-                path: "/lesson/matrix",
-                component: MatrixLesson,
-                meta: null,
-                xp: 25
-            },
-            {
-                id: 'matrix-quiz',
-                type: "quiz",
-                title: "Quiz: Matrix Transformations",
-                listing: "Matrix Transformations Quiz",
-                prerequisites: ['matrix'],
-                path: "/quiz/matrix",
-                component: MatrixQuiz,
-                meta: {
-                    total: 3
-                },
-                xp: 20
-            }
-        ]
-    },
-    {
         title: 'Linear Combinations',
         items: [
             {
@@ -175,7 +149,7 @@ export const modules: Module[] = [
                 type: "lesson",
                 title: "Lesson: Linear Combinations",
                 listing: "Linear Combinations",
-                prerequisites: ['matrix-quiz'],
+                prerequisites: ['gradient-quiz'],
                 path: "/lesson/linear-combinations",
                 component: LinearCombinationLesson,
                 meta: null,
@@ -254,6 +228,84 @@ export const modules: Module[] = [
             }
         ]
     },
+    {
+        title: "Matrices",
+        items: [
+            {
+                id: 'matrix-transformations',
+                type: "lesson",
+                title: "Lesson: Matrix Transformations",
+                listing: "Matrix Transformations",
+                prerequisites: ['projections-quiz'],
+                path: "/lesson/matrix-transformations",
+                component: MatrixTransformationsLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'matrix-transformations-quiz',
+                type: "quiz",
+                title: "Quiz: Matrix Transformations",
+                listing: "Matrix Transformations Quiz",
+                prerequisites: ['matrix-transformations'],
+                path: "/quiz/matrix-transformations",
+                component: MatrixTransformationsQuiz,
+                meta: {
+                    total: 3
+                },
+                xp: 20
+            },
+            {
+                id: 'matrix-multiplication-basics',
+                type: 'lesson',
+                title: 'Lesson: Multiplying Two Matrices',
+                listing: 'Multiplying Two Matrices',
+                prerequisites: ['matrix-transformations-quiz'],
+                path: '/lesson/matrix-multiplication-basics',
+                component: MatrixMultiplicationLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+              id: 'matrix-multiplication-quiz',
+              type: 'quiz',
+              title: 'Quiz: Multiplying Two Matrices',
+              listing: 'Multiplying Two Matrices Quiz',
+              prerequisites: ['matrix-multiplication-basics'],
+              path: '/quiz/matrix-multiplication-basics',
+              component: MatrixMultiplicationQuiz,
+              meta: {
+                  total: 4
+              },
+              xp: 20
+            },
+            {
+                id: 'matrix-transformation-order',
+                type: "lesson",
+                title: "Lesson: Matrix Transformation Order",
+                listing: "Matrix Transformation Order",
+                prerequisites: ['matrix-multiplication-quiz'],
+                path: "/lesson/matrix-transformation-order",
+                component: MatrixTransformationOrderLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'matrix-transformation-order-quiz',
+                type: 'quiz',
+                title: 'Quiz: Matrix Transformation Order',
+                listing: 'Matrix Transformation Order Quiz',
+                prerequisites: ['matrix-transformation-order'],
+                path: '/quiz/matrix-transformation-order',
+                component: MatrixTransformationsQuiz,
+                meta: {
+                    total: 4
+                },
+                xp: 20
+            }
+
+        ]
+    }
 ]
 
 export const allItems = modules.flatMap(m => m.items);

@@ -1,5 +1,6 @@
 import React from 'react';
 import Quiz from "../Quiz.tsx";
+import {lookupXp} from "../../lookupXp.tsx";
 
 const questions = [
     {
@@ -34,11 +35,13 @@ const questions = [
     }
 ];
 
+const quizId = "gradient-quiz";
+
 const GradientQuiz: React.FC = () => {
     return (
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Gradients</h2>
-            <Quiz lessonId="gradient-quiz" questions={questions} xpReward={20} />
+            <Quiz lessonId={quizId} questions={questions} xpReward={lookupXp(quizId)} />
         </div>
     );
 };

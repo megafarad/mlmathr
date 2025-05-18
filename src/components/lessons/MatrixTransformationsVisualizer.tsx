@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MatrixVisualizer: React.FC = () => {
+const MatrixTransformationsVisualizer: React.FC = () => {
     const [matrix, setMatrix] = useState([
         [2, 0],
         [0, 1],
@@ -172,4 +172,4 @@ const MatrixVisualizer: React.FC = () => {
     );
 };
 
-export default MatrixVisualizer;
+export default MatrixTransformationsVisualizer;

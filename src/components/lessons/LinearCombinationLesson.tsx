@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import LinearCombinationVisualizer from './LinearCombinationVisualizer';
 import CompleteLessonButton from './CompleteLessonButton';
+import {lookupXp} from "../../lookupXp.tsx";
 
 const lessonId = 'linear-combinations';
 
@@ -46,7 +47,7 @@ const LinearCombinationLesson: React.FC = () =>  {
             </div>
 
             <div className="mt-8">
-                <CompleteLessonButton lessonId={lessonId} xpReward={10} />
+                <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
             </div>
         </div>
     );

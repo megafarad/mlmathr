@@ -1,14 +1,15 @@
 import React from 'react';
-import MatrixVisualizer from './MatrixVisualizer';
+import MatrixTransformationsVisualizer from './MatrixTransformationsVisualizer.tsx';
 import CompleteLessonButton from "./CompleteLessonButton.tsx";
+import {lookupXp} from "../../lookupXp.tsx";
 
-const MatrixLesson: React.FC = () => {
-    const lessonId = 'matrix';
+const MatrixTransformationsLesson: React.FC = () => {
+    const lessonId = 'matrix-transformations';
     return (
         <div className="flex flex-col lg:flex-row lg:items-start gap-6 p-6">
             {/* Left: Explanation */}
             <div className="lg:w-1/2 space-y-4">
-                <h2 className="text-xl font-semibold">Lesson 4: Matrix Multiplication</h2>
+                <h2 className="text-xl font-semibold">Lesson 4: Matrix Transformations</h2>
 
                 <p>
                     In this lesson, you'll learn how matrices can transform vectors.
@@ -36,11 +37,11 @@ const MatrixLesson: React.FC = () => {
 
             {/* Right: Visualizer + button */}
             <div className="lg:w-1/2 flex flex-col items-center space-y-4">
-                <MatrixVisualizer />
-                <CompleteLessonButton lessonId={lessonId} xpReward={25}/>
+                <MatrixTransformationsVisualizer />
+                <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
             </div>
         </div>
     );
 };
 
-export default MatrixLesson;
+export default MatrixTransformationsLesson;

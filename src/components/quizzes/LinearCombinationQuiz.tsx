@@ -1,5 +1,6 @@
 import React from 'react';
 import Quiz from '../Quiz';
+import {lookupXp} from "../../lookupXp.tsx";
 
 const linearComboQuestions = [
     {
@@ -34,11 +35,13 @@ const linearComboQuestions = [
     },
 ];
 
+const quizId = "linear-combinations-quiz";
+
 const LinearCombinationQuiz: React.FC = () => {
     return (
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Linear Combinations</h2>
-            <Quiz lessonId="linear-combinations-quiz" questions={linearComboQuestions} xpReward={10} />
+            <Quiz lessonId={quizId} questions={linearComboQuestions} xpReward={lookupXp(quizId)} />
         </div>
     );
 };

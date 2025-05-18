@@ -2,6 +2,7 @@ import React from 'react';
 import DotProductVisualizer from './DotProductVisualizer';
 import { useXp } from "../context/XpContext.tsx";
 import CompleteLessonButton from "./CompleteLessonButton.tsx";
+import {lookupXp} from "../../lookupXp.tsx";
 
 const DotProductLesson: React.FC = () => {
     const { isUnlocked } = useXp()
@@ -70,7 +71,7 @@ const DotProductLesson: React.FC = () => {
             <div className="flex flex-col items-center space-y-4">
                 <DotProductVisualizer />
                 <div className="mt-6 flex justify-center">
-                    <CompleteLessonButton lessonId={lessonId} xpReward={25}/>
+                    <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)}/>
                 </div>
             </div>
         </div>
