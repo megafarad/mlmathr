@@ -58,7 +58,7 @@ type Module = {
 
 export const modules: Module[] = [
     {
-        title: 'Vectors',
+        title: 'Vectors & Geometry',
         items: [
             {
                 id: 'vectors',
@@ -83,12 +83,7 @@ export const modules: Module[] = [
                     total: 2
                 },
                 xp: 15
-            }
-        ]
-    },
-    {
-        title: 'Dot Product',
-        items: [
+            },
             {
                 id: 'dot-product',
                 type: "lesson",
@@ -112,18 +107,42 @@ export const modules: Module[] = [
                     total: 3
                 },
                 xp: 20
+            },
+            {
+                id: 'projections',
+                type: "lesson",
+                title: "Lesson: Vector Projections",
+                listing: "Vector Projections",
+                prerequisites: ['dot-product-quiz'],
+                path: "/lesson/projections",
+                component: ProjectionLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'projections-quiz',
+                type: "quiz",
+                title: "Quiz: Vector Projections",
+                listing: "Vector Projections Quiz",
+                prerequisites: ['projections'],
+                path: "/quiz/projections",
+                component: ProjectionQuiz,
+                meta: {
+                    total: 3
+                },
+                xp: 20
             }
         ]
     },
     {
-        title: 'Gradients',
+        title: 'Rates & Direction',
         items: [
             {
                 id: 'gradient',
                 type: "lesson",
                 title: "Lesson: Gradients",
                 listing: "Gradient",
-                prerequisites: ['dot-product-quiz'],
+                prerequisites: ['projections-quiz'],
                 path: "/lesson/gradient",
                 component: GradientLesson,
                 meta: null,
@@ -145,7 +164,7 @@ export const modules: Module[] = [
         ]
     },
     {
-        title: 'Linear Combinations',
+        title: 'Vector Combinations & Spaces',
         items: [
             {
                 id: 'linear-combinations',
@@ -170,12 +189,7 @@ export const modules: Module[] = [
                     total: 3
                 },
                 xp: 20
-            }
-        ]
-    },
-    {
-        title: 'Span and Basis',
-        items: [
+            },
             {
                 id: 'span-basis',
                 type: "lesson",
@@ -203,43 +217,14 @@ export const modules: Module[] = [
         ]
     },
     {
-        title: 'Vector Projections',
-        items: [
-            {
-                id: 'projections',
-                type: "lesson",
-                title: "Lesson: Vector Projections",
-                listing: "Vector Projections",
-                prerequisites: ['span-basis-quiz'],
-                path: "/lesson/projections",
-                component: ProjectionLesson,
-                meta: null,
-                xp: 25
-            },
-            {
-                id: 'projections-quiz',
-                type: "quiz",
-                title: "Quiz: Vector Projections",
-                listing: "Vector Projections Quiz",
-                prerequisites: ['projections'],
-                path: "/quiz/projections",
-                component: ProjectionQuiz,
-                meta: {
-                    total: 3
-                },
-                xp: 20
-            }
-        ]
-    },
-    {
-        title: "Matrices",
+        title: "Matrix Transformations",
         items: [
             {
                 id: 'matrix-transformations',
                 type: "lesson",
                 title: "Lesson: Matrix Transformations",
                 listing: "Matrix Transformations",
-                prerequisites: ['projections-quiz'],
+                prerequisites: ['span-basis-quiz'],
                 path: "/lesson/matrix-transformations",
                 component: MatrixTransformationsLesson,
                 meta: null,
@@ -259,35 +244,11 @@ export const modules: Module[] = [
                 xp: 20
             },
             {
-                id: 'matrix-multiplication-basics',
-                type: 'lesson',
-                title: 'Lesson: Multiplying Two Matrices',
-                listing: 'Multiplying Two Matrices',
-                prerequisites: ['matrix-transformations-quiz'],
-                path: '/lesson/matrix-multiplication-basics',
-                component: MatrixMultiplicationLesson,
-                meta: null,
-                xp: 25
-            },
-            {
-              id: 'matrix-multiplication-basics-quiz',
-              type: 'quiz',
-              title: 'Quiz: Multiplying Two Matrices',
-              listing: 'Multiplying Two Matrices Quiz',
-              prerequisites: ['matrix-multiplication-basics'],
-              path: '/quiz/matrix-multiplication-basics',
-              component: MatrixMultiplicationQuiz,
-              meta: {
-                  total: 4
-              },
-              xp: 20
-            },
-            {
                 id: 'matrix-transformation-order',
                 type: "lesson",
                 title: "Lesson: Matrix Transformation Order",
                 listing: "Matrix Transformation Order",
-                prerequisites: ['matrix-multiplication-quiz'],
+                prerequisites: ['matrix-transformations-quiz'],
                 path: "/lesson/matrix-transformation-order",
                 component: MatrixTransformationOrderLesson,
                 meta: null,
@@ -306,16 +267,45 @@ export const modules: Module[] = [
                 },
                 xp: 20
             },
+        ]
+    },
+    {
+        title: 'Matrix Computation',
+        items: [
             {
-              id: 'determinants',
-              type: 'lesson',
-              title: 'Lesson: Determinants',
-              listing: 'Determinants Lesson',
-              prerequisites: ['matrix-transformation-order-quiz'],
-              path: '/lesson/determinants',
-              component: DeterminantsLesson,
-              meta: null,
-              xp: 25
+                id: 'matrix-multiplication-basics',
+                type: 'lesson',
+                title: 'Lesson: Multiplying Two Matrices',
+                listing: 'Multiplying Two Matrices',
+                prerequisites: ['matrix-transformation-order-quiz'],
+                path: '/lesson/matrix-multiplication-basics',
+                component: MatrixMultiplicationLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'matrix-multiplication-basics-quiz',
+                type: 'quiz',
+                title: 'Quiz: Multiplying Two Matrices',
+                listing: 'Multiplying Two Matrices Quiz',
+                prerequisites: ['matrix-multiplication-basics'],
+                path: '/quiz/matrix-multiplication-basics',
+                component: MatrixMultiplicationQuiz,
+                meta: {
+                    total: 4
+                },
+                xp: 20
+            },
+            {
+                id: 'determinants',
+                type: 'lesson',
+                title: 'Lesson: Determinants',
+                listing: 'Determinants Lesson',
+                prerequisites: ['matrix-transformation-order-quiz'],
+                path: '/lesson/determinants',
+                component: DeterminantsLesson,
+                meta: null,
+                xp: 25
             },
             {
                 id: 'determinants-quiz',
