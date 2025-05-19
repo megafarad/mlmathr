@@ -2,8 +2,16 @@ import React from 'react';
 import {lookupXp} from "../../lookupXp.tsx";
 import CompleteLessonButton from "./CompleteLessonButton.tsx";
 import DeterminantsVisualizer from "./DeterminantsVisualizer.tsx";
+import {MathJaxContext, MathJax} from "better-react-mathjax";
 
 const lessonId = 'determinants';
+
+const config = {
+    loader: { load: ["[tex]/ams"] },
+    tex: {
+        packages: { "[+]": ["ams"] },
+    },
+};
 
 const DeterminantsLesson: React.FC = () => {
     return (
@@ -49,7 +57,16 @@ const DeterminantsLesson: React.FC = () => {
         total += sign * value * determinant(minor)
 
     return total`}
-</pre>
+                    </pre>
+
+                    <p>
+                        ...where if matrix is 2x2:
+                        <MathJaxContext version={3} config={config}>
+                            <MathJax>
+                                {"\\[ matrix =  \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix} \\]"}
+                            </MathJax>
+                        </MathJaxContext>
+                    </p>
 
                     <p>
                         This approach breaks a big matrix into smaller and smaller pieces. It's a bit slow for large matrices, but great for learning!
