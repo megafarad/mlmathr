@@ -39,11 +39,14 @@ const quizId = "determinants-quiz";
 
 const DeterminantsQuiz: React.FC = () => {
     return (
-        <Quiz
-            lessonId={quizId}
-            questions={determinantQuestions}
-            xpReward={lookupXp(quizId)}
-        />
+        <div className="p-4">
+            <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Determinants</h2>
+            <Quiz
+                lessonId={quizId}
+                questions={determinantQuestions}
+                xpReward={lookupXp(quizId)}
+            />
+        </div>
     );
 };
 

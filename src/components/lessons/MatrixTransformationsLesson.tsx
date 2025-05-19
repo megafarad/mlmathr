@@ -9,7 +9,7 @@ const MatrixTransformationsLesson: React.FC = () => {
         <div className="flex flex-col lg:flex-row lg:items-start gap-6 p-6">
             {/* Left: Explanation */}
             <div className="lg:w-1/2 space-y-4">
-                <h2 className="text-xl font-semibold">Lesson 4: Matrix Transformations</h2>
+                <h2 className="text-xl font-semibold">Matrix Transformations</h2>
 
                 <p>
                     In this lesson, you'll learn how matrices can transform vectors.

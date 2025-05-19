@@ -8,7 +8,7 @@ const GradientLesson: React.FC = () => {
     return (
         <div className="flex flex-col lg:flex-row lg:items-start gap-6">
             <div className="lg:w-1/2 space-y-4">
-                <h2 className="text-xl font-semibold">Lesson 3: Gradients</h2>
+                <h2 className="text-xl font-semibold">Gradients</h2>
 
                 <p>
                     In machine learning, <strong>gradients</strong> tell us how to change a model to reduce its error.

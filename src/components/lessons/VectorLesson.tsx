@@ -9,7 +9,7 @@ const VectorLesson: React.FC = () => {
     return (
         <div className="flex flex-col lg:flex-row lg:items-start gap-6">
             <div className="lg:w-1/2">
-                <h2 className="text-xl font-semibold mb-2">Lesson 1: Understanding Vectors</h2>
+                <h2 className="text-xl font-semibold mb-2">Understanding Vectors</h2>
                 <p className="mb-4">
                     In machine learning, data points and model weights are often represented as <strong>vectors</strong>—quantities with both direction and magnitude.
                 </p>

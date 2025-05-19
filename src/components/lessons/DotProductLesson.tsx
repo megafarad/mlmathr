@@ -27,7 +27,7 @@ const DotProductLesson: React.FC = () => {
     return (
         <div className="flex flex-col lg:flex-row lg:items-start gap-6">
             <div className="lg:w-1/2 space-y-4">
-                <h2 className="text-xl font-semibold">Lesson 2: The Dot Product</h2>
+                <h2 className="text-xl font-semibold">The Dot Product</h2>
 
                 <p>
                     The <strong>dot product</strong> is a fundamental operation in linear algebra and machine learning. It’s a way to measure how aligned two vectors are.
