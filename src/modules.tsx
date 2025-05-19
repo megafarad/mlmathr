@@ -17,6 +17,8 @@ import MatrixTransformationOrderLesson from "./components/lessons/MatrixTransfor
 import MatrixMultiplicationLesson from "./components/lessons/MatrixMultiplicationLesson.tsx";
 import MatrixMultiplicationQuiz from "./components/quizzes/MatrixMultiplicationQuiz.tsx";
 import MatrixTransformationOrderQuiz from "./components/quizzes/MatrixTransformationOrderQuiz.tsx";
+import DeterminantsLesson from "./components/lessons/DeterminantsLesson.tsx";
+import DeterminantsQuiz from "./components/quizzes/DeterminantsQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -303,8 +305,31 @@ export const modules: Module[] = [
                     total: 4
                 },
                 xp: 20
-            }
-
+            },
+            {
+              id: 'determinants',
+              type: 'lesson',
+              title: 'Lesson: Determinants',
+              listing: 'Determinants Lesson',
+              prerequisites: ['matrix-transformation-order-quiz'],
+              path: '/lesson/determinants',
+              component: DeterminantsLesson,
+              meta: null,
+              xp: 25
+            },
+            {
+                id: 'determinants-quiz',
+                type: 'quiz',
+                title: 'Quiz: Determinants',
+                listing: 'Determinants Quiz',
+                prerequisites: ['determinants'],
+                path: '/quiz/determinants',
+                component: DeterminantsQuiz,
+                meta: {
+                    total: 3
+                },
+                xp: 20
+            },
         ]
     }
 ]

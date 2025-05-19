@@ -88,6 +88,7 @@ const ModuleAccordionMenu: React.FC<Props> = ({ lockedIds }) => {
                                                                     key={item.id}
                                                                     to={item.path}
                                                                     className="block text-sm text-blue-600 hover:underline"
+                                                                    onClick={() => setModulesOpen(false)}
                                                                 >
                                                                     {item.listing}
                                                                 </Link>
@@ -120,6 +121,7 @@ const ModuleAccordionMenu: React.FC<Props> = ({ lockedIds }) => {
                                                                     key={item.id}
                                                                     to={item.path}
                                                                     className="block text-sm text-blue-600 hover:underline"
+                                                                    onClick={() => setModulesOpen(false)}
                                                                 >
                                                                     {item.listing}
                                                                 </Link>
