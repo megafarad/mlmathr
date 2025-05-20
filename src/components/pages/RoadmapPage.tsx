@@ -5,7 +5,7 @@ import {modules} from "../../modules.tsx";
 
 
 const RoadmapPage: React.FC = () => {
-    const { hasCompleted, isUnlocked } = useXp();
+    const { hasCompleted, isUnlocked, getNeededPrerequisites } = useXp();
 
     return (
         <div className="p-6 space-y-6">
@@ -17,11 +17,11 @@ const RoadmapPage: React.FC = () => {
                         <h3 className="text-lg font-semibold mb-2">📘 {mod.title}</h3>
 
                         <div className="space-y-4">
-                            {mod.items.map(({ id, title, type }, itemIndex) => {
+                            {mod.items.map(({ id, title, path }, itemIndex) => {
                                 const unlocked = isUnlocked(id);
                                 const completed = hasCompleted(id);
-                                const path = type === 'lesson' ? `/lesson/${id}` : `/quiz/${id.replace(/-quiz$/, '')}`;
-                                const lockMessage = `🔒 Complete required lessons to unlock`;
+                                const neededPrerequisites = getNeededPrerequisites(id);
+                                const lockMessage = `🔒 Complete the following to unlock: ${neededPrerequisites.map(item => item.title).join(", ")}`;
                                 return (
                                     <div key={id} className="relative pl-6">
                                         <div className="absolute -left-3.5 top-2 w-5 h-5 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center">

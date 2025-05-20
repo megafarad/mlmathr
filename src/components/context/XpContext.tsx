@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 import { useProgressSync } from "../../hooks/useProgressSync.ts";
-import { modules } from "../../modules.tsx";
+import {type ModuleItem, modules, allItems} from "../../modules.tsx";
 
 type XpContextType = {
     xp: number;
@@ -11,6 +11,7 @@ type XpContextType = {
     addXpForLesson: (lessonId: string, amount: number) => void;
     hasCompleted: (lessonId: string) => boolean;
     isUnlocked: (lessonId: string) => boolean;
+    getNeededPrerequisites: (lessonId: string) => ModuleItem[];
     resetProgress: () => void;
     revision: number;
     setRevision: React.Dispatch<React.SetStateAction<number>>;
@@ -39,6 +40,15 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         if (!item) return false;
         return item.prerequisites.every(id => completedLessons.has(id));
     };
+
+
+    const getNeededPrerequisites = (lessonId: string) => {
+        const item = allItems.find(item => item.id === lessonId);
+        if (!item) return [];
+        return item.prerequisites.filter(p => !completedLessons.has(p))
+            .flatMap(p => allItems.filter(item => item.id === p))
+
+    }
 
 
     const getQuizScore = (id: string) => quizScores[id]?.score ?? null;
@@ -72,6 +82,7 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
             addXpForLesson,
             hasCompleted,
             isUnlocked,
+            getNeededPrerequisites,
             getQuizScore,
             resetProgress,
             revision,

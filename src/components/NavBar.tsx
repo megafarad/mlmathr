@@ -1,16 +1,11 @@
 import React, {useState} from "react";
-import {useXp} from "./context/XpContext.tsx";
 import {useAuth} from "./context/AuthContext.tsx";
 import {Link} from "react-router-dom";
-import {allItems} from "../modules.tsx";
 import ModuleAccordionMenu from "./ModuleAccordionMenu.tsx";
 
 const NavBar: React.FC = () => {
-
-    const {isUnlocked} = useXp();
     const {user, logout} = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
-    const lockedIds = new Set(allItems.filter(item => !isUnlocked(item.id)).map(item => item.id));
 
     return (
 
@@ -45,7 +40,7 @@ const NavBar: React.FC = () => {
                 className={`flex-col md:flex-row md:flex gap-4 px-4 md:px-6 ${menuOpen ? 'flex' : 'hidden'} md:items-center`}>
                 {user ? (
                     <>
-                        <ModuleAccordionMenu lockedIds={lockedIds}/>
+                        <ModuleAccordionMenu/>
                         <Link to="/progress" className="text-purple-600 hover:underline">📊 Dashboard</Link>
                         <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
                         <Link to="/settings" className="text-gray-600 hover:underline">⚙️ Settings</Link>

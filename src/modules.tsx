@@ -49,7 +49,7 @@ type QuizItem = {
 
 }
 
-type ModuleItem = LessonItem | QuizItem;
+export type ModuleItem = LessonItem | QuizItem;
 
 type Module = {
     title: string;

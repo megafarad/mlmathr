@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { modules } from '../modules.tsx';
+import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
+import {modules} from '../modules.tsx';
+import {useXp} from "./context/XpContext.tsx";
 
-interface Props {
-    lockedIds: Set<string>;
-}
-
-const ModuleAccordionMenu: React.FC<Props> = ({ lockedIds }) => {
+const ModuleAccordionMenu: React.FC = () => {
+    const { getNeededPrerequisites } = useXp();
     const [modulesOpen, setModulesOpen] = useState(false);
     const [openModules, setOpenModules] = useState<Set<string>>(new Set());
     const [openSections, setOpenSections] = useState<Record<string, Set<'Lessons' | 'Quizzes'>>>({});
+
+    const getNeededListings = (id: string): string[] => {
+        const neededPrerequisites = getNeededPrerequisites(id);
+        return neededPrerequisites.map(item => item.listing);
+    }
 
     const toggleModule = (title: string) => {
         const next = new Set(openModules);
@@ -78,21 +81,23 @@ const ModuleAccordionMenu: React.FC<Props> = ({ lockedIds }) => {
                                                 <div className="pl-4 pt-1 space-y-1">
                                                     {mod.items
                                                         .filter((item) => item.type === 'lesson')
-                                                        .map((item) =>
-                                                            lockedIds.has(item.id) ? (
-                                                                <div key={item.id} className="text-gray-400 text-sm">
-                                                                    🔒 {item.listing}
-                                                                </div>
-                                                            ) : (
-                                                                <Link
-                                                                    key={item.id}
-                                                                    to={item.path}
-                                                                    className="block text-sm text-blue-600 hover:underline"
-                                                                    onClick={() => setModulesOpen(false)}
-                                                                >
-                                                                    {item.listing}
-                                                                </Link>
-                                                            )
+                                                        .map((item) => {
+                                                                const neededListings = getNeededListings(item.id);
+                                                                return neededListings.length > 0 ? (
+                                                                    <div key={item.id} className="text-gray-400 text-sm" title={"🚫 Complete the following prerequisites to unlock: " + neededListings.join(', ')}>
+                                                                        🔒 {item.listing}
+                                                                    </div>
+                                                                ) : (
+                                                                    <Link
+                                                                        key={item.id}
+                                                                        to={item.path}
+                                                                        className="block text-sm text-blue-600 hover:underline"
+                                                                        onClick={() => setModulesOpen(false)}
+                                                                    >
+                                                                        {item.listing}
+                                                                    </Link>
+                                                                )
+                                                            }
                                                         )}
                                                 </div>
                                             )}
@@ -111,21 +116,23 @@ const ModuleAccordionMenu: React.FC<Props> = ({ lockedIds }) => {
                                                 <div className="pl-4 pt-1 space-y-1">
                                                     {mod.items
                                                         .filter((item) => item.type === 'quiz')
-                                                        .map((item) =>
-                                                            lockedIds.has(item.id) ? (
-                                                                <div key={item.id} className="text-gray-400 text-sm">
-                                                                    🔒 {item.listing}
-                                                                </div>
-                                                            ) : (
-                                                                <Link
-                                                                    key={item.id}
-                                                                    to={item.path}
-                                                                    className="block text-sm text-blue-600 hover:underline"
-                                                                    onClick={() => setModulesOpen(false)}
-                                                                >
-                                                                    {item.listing}
-                                                                </Link>
-                                                            )
+                                                        .map((item) => {
+                                                                const neededListings = getNeededListings(item.id);
+                                                                return neededListings.length > 0 ? (
+                                                                    <div key={item.id} className="text-gray-400 text-sm" title={"🚫 Complete the following prerequisites to unlock: " + neededListings.join(', ')}>
+                                                                        🔒 {item.listing}
+                                                                    </div>
+                                                                ) : (
+                                                                    <Link
+                                                                        key={item.id}
+                                                                        to={item.path}
+                                                                        className="block text-sm text-blue-600 hover:underline"
+                                                                        onClick={() => setModulesOpen(false)}
+                                                                    >
+                                                                        {item.listing}
+                                                                    </Link>
+                                                                )
+                                                            }
                                                         )}
                                                 </div>
                                             )}
