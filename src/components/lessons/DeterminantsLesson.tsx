@@ -6,7 +6,7 @@ import {MathJaxContext, MathJax} from "better-react-mathjax";
 
 const lessonId = 'determinants';
 
-const config = {
+const mathJaxConfig = {
     loader: { load: ["[tex]/ams"] },
     tex: {
         packages: { "[+]": ["ams"] },
@@ -61,7 +61,7 @@ const DeterminantsLesson: React.FC = () => {
 
                     <p>
                         ...where if matrix is 2x2:
-                        <MathJaxContext version={3} config={config}>
+                        <MathJaxContext version={3} config={mathJaxConfig}>
                             <MathJax>
                                 {"\\[ matrix =  \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix} \\]"}
                             </MathJax>

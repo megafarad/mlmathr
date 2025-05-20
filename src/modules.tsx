@@ -19,6 +19,8 @@ import MatrixMultiplicationQuiz from "./components/quizzes/MatrixMultiplicationQ
 import MatrixTransformationOrderQuiz from "./components/quizzes/MatrixTransformationOrderQuiz.tsx";
 import DeterminantsLesson from "./components/lessons/DeterminantsLesson.tsx";
 import DeterminantsQuiz from "./components/quizzes/DeterminantsQuiz.tsx";
+import MatrixInversesLesson from "./components/lessons/MatrixInversesLesson.tsx";
+import MatrixInversesQuiz from "./components/quizzes/MatrixInversesQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -300,7 +302,7 @@ export const modules: Module[] = [
                 id: 'determinants',
                 type: 'lesson',
                 title: 'Lesson: Determinants',
-                listing: 'Determinants Lesson',
+                listing: 'Determinants',
                 prerequisites: ['matrix-transformation-order-quiz'],
                 path: '/lesson/determinants',
                 component: DeterminantsLesson,
@@ -320,6 +322,30 @@ export const modules: Module[] = [
                 },
                 xp: 20
             },
+            {
+                id: 'matrix-inverses',
+                type: 'lesson',
+                title: 'Lesson: Matrix Inverses',
+                listing: 'Matrix Inverses',
+                prerequisites: ['determinants-quiz'],
+                path: '/lesson/matrix-inverses',
+                component: MatrixInversesLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'matrix-inverses-quiz',
+                type: 'quiz',
+                title: 'Quiz: Matrix Inverses',
+                listing: 'Matrix Inverses Quiz',
+                prerequisites: ['matrix-inverses'],
+                path: '/quiz/matrix-inverses',
+                component: MatrixInversesQuiz,
+                meta: {
+                    total: 20
+                },
+                xp: 20
+            }
         ]
     }
 ]
