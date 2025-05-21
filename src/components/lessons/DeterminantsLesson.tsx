@@ -3,6 +3,7 @@ import {lookupXp} from "../../lookupXp.tsx";
 import CompleteLessonButton from "./CompleteLessonButton.tsx";
 import DeterminantsVisualizer from "./DeterminantsVisualizer.tsx";
 import {MathJaxContext, MathJax} from "better-react-mathjax";
+import NextUpButton from "../NextUpButton.tsx";
 
 const lessonId = 'determinants';
 
@@ -76,6 +77,7 @@ const DeterminantsLesson: React.FC = () => {
                 <div className="flex flex-col items-center space-y-4">
                     <DeterminantsVisualizer/>
                     <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
         </div>

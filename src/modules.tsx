@@ -256,7 +256,7 @@ export const modules: Module[] = [
                 type: "lesson",
                 title: "Lesson: Matrix Transformations",
                 listing: "Matrix Transformations",
-                prerequisites: ['span-basis-quiz'],
+                prerequisites: ['change-of-basis-quiz'],
                 path: "/lesson/matrix-transformations",
                 component: MatrixTransformationsLesson,
                 meta: null,

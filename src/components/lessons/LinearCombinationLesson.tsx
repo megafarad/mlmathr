@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import LinearCombinationVisualizer from './LinearCombinationVisualizer';
 import CompleteLessonButton from './CompleteLessonButton';
 import {lookupXp} from "../../lookupXp.tsx";
+import NextUpButton from "../NextUpButton.tsx";
 
 const lessonId = 'linear-combinations';
 
@@ -41,13 +42,11 @@ const LinearCombinationLesson: React.FC = () =>  {
                     </p>
                 </div>
 
-                <div>
+                <div className='lg:w-1/2 flex flex-col items-center space-y-4'>
                     <LinearCombinationVisualizer a={a} b={b} onChange={(a, b) => { setA(a); setB(b); }} />
+                    <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <NextUpButton currentLessonId={lessonId}/>
                 </div>
-            </div>
-
-            <div className="mt-8">
-                <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
             </div>
         </div>
     );

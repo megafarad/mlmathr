@@ -2,6 +2,7 @@ import React from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import {lookupXp} from "../../lookupXp.tsx";
 import ChangeOfBasisVisualizer from "./ChangeOfBasisVisualizer.tsx";
+import NextUpButton from "../NextUpButton.tsx";
 
 const lessonId = 'change-of-basis';
 
@@ -53,6 +54,7 @@ const ChangeOfBasisLesson: React.FC = () => {
                 <div className="flex flex-col items-center space-y-4">
                     <ChangeOfBasisVisualizer/>
                     <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
         </div>

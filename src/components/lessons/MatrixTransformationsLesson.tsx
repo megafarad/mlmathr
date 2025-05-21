@@ -2,6 +2,7 @@ import React from 'react';
 import MatrixTransformationsVisualizer from './MatrixTransformationsVisualizer.tsx';
 import CompleteLessonButton from "./CompleteLessonButton.tsx";
 import {lookupXp} from "../../lookupXp.tsx";
+import NextUpButton from "../NextUpButton.tsx";
 
 const MatrixTransformationsLesson: React.FC = () => {
     const lessonId = 'matrix-transformations';
@@ -39,6 +40,7 @@ const MatrixTransformationsLesson: React.FC = () => {
             <div className="lg:w-1/2 flex flex-col items-center space-y-4">
                 <MatrixTransformationsVisualizer />
                 <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                <NextUpButton currentLessonId={lessonId}/>
             </div>
         </div>
     );

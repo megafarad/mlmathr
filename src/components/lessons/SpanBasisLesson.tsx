@@ -2,6 +2,7 @@ import React from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import SpanBasisVisualizer from './SpanBasisVisualizer';
 import {lookupXp} from "../../lookupXp.tsx";
+import NextUpButton from "../NextUpButton.tsx";
 
 const lessonId = 'span-basis';
 
@@ -48,9 +49,10 @@ const SpanBasisLesson: React.FC = () => {
                     </p>
                 </div>
 
-                <div>
+                <div className='lg:w-1/2 flex flex-col items-center space-y-4'>
                     <SpanBasisVisualizer />
                     <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
 

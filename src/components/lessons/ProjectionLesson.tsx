@@ -2,6 +2,7 @@ import React from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import ProjectionVisualizer from "./ProjectionVisualizer";
 import {lookupXp} from "../../lookupXp.tsx";
+import NextUpButton from "../NextUpButton.tsx";
 
 const lessonId = 'projections';
 
@@ -33,9 +34,10 @@ const ProjectionLesson: React.FC = () => {
                     </p>
                 </div>
 
-                <div>
+                <div className="flex flex-col items-center space-y-4">
                     <ProjectionVisualizer/>
                     <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
 

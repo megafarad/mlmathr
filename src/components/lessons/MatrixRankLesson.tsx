@@ -2,6 +2,7 @@ import React from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import {lookupXp} from "../../lookupXp.tsx";
 import MatrixRankVisualizer from "./MatrixRankVisualizer.tsx";
+import NextUpButton from "../NextUpButton.tsx";
 
 const lessonId = 'matrix-rank';
 
@@ -43,9 +44,10 @@ const MatrixRankLesson: React.FC = () => {
                     </p>
                 </div>
 
-                <div className="space-y-4">
+                <div className="lg:w-1/2 flex flex-col items-center space-y-4">
                     <MatrixRankVisualizer/>
                     <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
 

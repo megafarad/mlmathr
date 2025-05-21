@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useXp } from "./context/XpContext.tsx";
+import NextUpButton from "./NextUpButton.tsx";
 
 type Question = {
     question: string;
@@ -121,7 +122,10 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
             ))}
 
             {isCompleted ? (
-                <div className="text-green-600 font-semibold">✅ Quiz Completed</div>
+                    <div>
+                        <div className="text-green-600 font-semibold">✅ Quiz Completed</div>
+                        <NextUpButton currentLessonId={lessonId} />
+                    </div>
             ) : submitted ? (
                     <div
                         className="transition-all duration-500 ease-in-out transform animate-fade-in space-y-2 text-blue-600 font-semibold"
@@ -131,7 +135,10 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
                                 <p>📝 You got {score} out of {questions.length} correct.</p>
                             )}
                             {score === questions.length ? (
-                                <p>✅ All correct! You earned {xpReward} XP.</p>
+                                <div>
+                                    <p>✅ All correct! You earned {xpReward} XP.</p>
+                                    <NextUpButton currentLessonId={lessonId}/>
+                                </div>
                             ) : (
                                 <>
                                     <p>❌ Some answers were incorrect. Try again.</p>

@@ -2,6 +2,7 @@ import React from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import { lookupXp } from '../../lookupXp';
 import MatrixMultiplicationVisualizer from './MatrixMultiplicationVisualizer';
+import NextUpButton from "../NextUpButton.tsx";
 
 const lessonId = 'matrix-multiplication-basics';
 
@@ -54,9 +55,10 @@ const MatrixMultiplicationLesson: React.FC = () => {
                 </div>
 
 
-                <div>
+                <div className='lg:w-1/2 flex flex-col items-center space-y-4'>
                     <MatrixMultiplicationVisualizer />
                     <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
         </div>

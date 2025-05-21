@@ -2,6 +2,7 @@ import React from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import {lookupXp} from "../../lookupXp.tsx";
 import EigenvectorsVisualizer from "./EigenvectorsVisualizer.tsx";
+import NextUpButton from "../NextUpButton.tsx";
 
 const lessonId = 'eigenvectors';
 
@@ -42,9 +43,10 @@ const EigenvectorsLesson: React.FC = () => {
 
                 </div>
 
-                <div>
+                <div className='lg:w-1/2 flex flex-col items-center space-y-4'>
                     <EigenvectorsVisualizer/>
                     <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
         </div>

@@ -12,6 +12,7 @@ type XpContextType = {
     hasCompleted: (lessonId: string) => boolean;
     isUnlocked: (lessonId: string) => boolean;
     getNeededPrerequisites: (lessonId: string) => ModuleItem[];
+    nextUp: (currentLesson: string) => ModuleItem | undefined;
     resetProgress: () => void;
     revision: number;
     setRevision: React.Dispatch<React.SetStateAction<number>>;
@@ -72,6 +73,7 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
         setQuizScores,
     });
 
+    const nextUp = (lessonId: string) => allItems.find(item => item.id !== lessonId && isUnlocked(item.id) && !hasCompleted(item.id));
 
     return (
         <XpContext.Provider value={{
@@ -83,6 +85,7 @@ export const XpProvider: React.FC<{ children: React.ReactNode }> = ({ children }
             hasCompleted,
             isUnlocked,
             getNeededPrerequisites,
+            nextUp,
             getQuizScore,
             resetProgress,
             revision,
