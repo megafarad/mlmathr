@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+interface DeterminantsVisualizerProps {
+    onGoalAchieved?: () => void;
+}
+
 const width = 400;
 const height = 400;
 const origin = { x: width / 2, y: height / 2 };
@@ -25,13 +29,14 @@ const square = [
     [0, 1],
 ];
 
-const DeterminantsVisualizer: React.FC = () => {
+const DeterminantsVisualizer: React.FC<DeterminantsVisualizerProps> = ({ onGoalAchieved }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [matrix, setMatrix] = useState([
         [1, 0],
         [0, 1],
     ]);
     const [det, setDet] = useState(1);
+    const [goalFired, setGoalFired] = useState(false);
 
     useEffect(() => {
         const ctx = canvasRef.current?.getContext('2d');
@@ -93,6 +98,13 @@ const DeterminantsVisualizer: React.FC = () => {
         const d = determinant(matrix);
         setDet(d);
     }, [matrix]);
+
+    useEffect(() => {
+        if (!goalFired && Math.abs(det) < 0.01) {
+            setGoalFired(true);
+            onGoalAchieved?.();
+        }
+    }, [det, onGoalAchieved, goalFired]);
 
     return (
         <div className="space-y-4">
