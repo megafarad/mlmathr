@@ -333,7 +333,7 @@ export const modules: Module[] = [
                 type: 'lesson',
                 title: 'Lesson: Determinants',
                 listing: 'Determinants',
-                prerequisites: ['matrix-transformation-order-quiz'],
+                prerequisites: ['matrix-multiplication-basics-quiz'],
                 path: '/lesson/determinants',
                 component: DeterminantsLesson,
                 meta: null,
@@ -372,7 +372,7 @@ export const modules: Module[] = [
                 path: '/quiz/matrix-inverses',
                 component: MatrixInversesQuiz,
                 meta: {
-                    total: 20
+                    total: 3
                 },
                 xp: 20
             },

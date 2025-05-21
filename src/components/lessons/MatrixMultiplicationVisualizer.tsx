@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 
+interface Props {
+    onGoalAchieved?: () => void;
+}
+
 const defaultA = [
     [1, 2, 3],
     [4, 5, 6],
@@ -14,7 +18,7 @@ const defaultB = [
 const dotProduct = (row: number[], col: number[]) =>
     row.reduce((sum, val, i) => sum + val * col[i], 0);
 
-const MatrixMultiplicationVisualizer: React.FC = () => {
+const MatrixMultiplicationVisualizer: React.FC<Props> = ({ onGoalAchieved }) => {
     const [matrixA, setMatrixA] = useState(defaultA);
     const [matrixB, setMatrixB] = useState(defaultB);
     const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null);
@@ -84,11 +88,18 @@ const MatrixMultiplicationVisualizer: React.FC = () => {
                             {row.map((val, c) => (
                                 <button
                                     key={`${r}-${c}`}
-                                    onClick={() => setSelectedCell([r, c])}
+                                    onClick={() => {
+                                        setSelectedCell([r, c]);
+                                        const selectedRow = matrixA[r];
+                                        const selectedCol = getColumn(matrixB, c);
+                                        const result = dotProduct(selectedRow, selectedCol);
+                                        if (result === 28) onGoalAchieved?.();
+                                    }}
                                     className="w-12 h-12 border m-0.5 rounded bg-gray-100 hover:bg-gray-200"
                                 >
                                     {val}
                                 </button>
+
                             ))}
                         </div>
                     ))}

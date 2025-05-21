@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import MatrixMultiplicationVisualizer from './MatrixMultiplicationVisualizer';
 import NextUpButton from "../NextUpButton.tsx";
@@ -6,8 +6,10 @@ import NextUpButton from "../NextUpButton.tsx";
 const lessonId = 'matrix-multiplication-basics';
 
 const MatrixMultiplicationLesson: React.FC = () => {
+    const [goalAchieved, setGoalAchieved] = useState(false);
+
     return (
-        <div className="max-w-4xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto p-6 relative">
             <h1 className="text-2xl font-bold mb-4">🔢 Multiplying Two Matrices</h1>
 
             <div className="grid md:grid-cols-2 gap-6 items-start">
@@ -49,14 +51,21 @@ const MatrixMultiplicationLesson: React.FC = () => {
 
                     <p>
                         In the visual below, try clicking a result cell to see the row and column that produced it — and how the
-                        dot product math works. You can also change the values in A and B to explore how it affects the result.
+                        dot product math works.
+                    </p>
+                    <p>
+                        🎯 Try clicking a cell where the dot product equals <strong>32</strong>
                     </p>
                 </div>
 
-
-                <div className='lg:w-1/2 flex flex-col items-center space-y-4'>
-                    <MatrixMultiplicationVisualizer />
-                    <CompleteLessonButton lessonId={lessonId} />
+                <div className='flex flex-col items-center space-y-4'>
+                    <MatrixMultiplicationVisualizer onGoalAchieved={() => setGoalAchieved(true)} />
+                    {!goalAchieved && (
+                        <p className="text-sm text-gray-600">
+                            🎯 Adjust the matrix values so that <strong>one of the result cells equals 28</strong>, then click that cell.
+                        </p>
+                    )}
+                    {goalAchieved && <CompleteLessonButton lessonId={lessonId} />}
                     <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
