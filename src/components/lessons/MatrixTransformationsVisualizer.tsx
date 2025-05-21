@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
-const MatrixTransformationsVisualizer: React.FC = () => {
+interface Props {
+    onGoalAchieved?: () => void;
+}
+
+const MatrixTransformationsVisualizer: React.FC<Props> = ({ onGoalAchieved }) => {
     const [matrix, setMatrix] = useState([
         [2, 0],
         [0, 1],
     ]);
     const [vector, setVector] = useState({ x: 1, y: 1 });
+    const [goalFired, setGoalFired] = useState(false);
 
     const width = 500;
     const height = 500;
@@ -17,13 +22,28 @@ const MatrixTransformationsVisualizer: React.FC = () => {
         y: origin.y - y * scale,
     });
 
-    const transformed = {
+    const transformed = useMemo(() => ({
         x: matrix[0][0] * vector.x + matrix[0][1] * vector.y,
         y: matrix[1][0] * vector.x + matrix[1][1] * vector.y,
-    };
+    }), [matrix, vector]);
 
     const vectorCanvas = toCanvas(vector.x, vector.y);
     const transformedCanvas = toCanvas(transformed.x, transformed.y);
+
+    useEffect(() => {
+        const isClose = (a: number, b: number, tol = 0.1) => Math.abs(a - b) < tol;
+
+        if (
+            !goalFired &&
+            vector.x === 1 &&
+            vector.y === 1 &&
+            isClose(transformed.x, 3) &&
+            isClose(transformed.y, 2)
+        ) {
+            setGoalFired(true);
+            onGoalAchieved?.();
+        }
+    }, [vector, transformed, goalFired, onGoalAchieved]);
 
     const handleDrag = (e: React.MouseEvent<SVGCircleElement>) => {
         const svg = e.currentTarget.ownerSVGElement!;
@@ -108,7 +128,6 @@ const MatrixTransformationsVisualizer: React.FC = () => {
                         <path d="M0,0 L0,6 L9,3 z" fill="green" />
                     </marker>
                 </defs>
-
 
                 {/* Original vector (blue) */}
                 <line
