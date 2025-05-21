@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useXp } from "./context/XpContext.tsx";
 import NextUpButton from "./NextUpButton.tsx";
+import Confetti from "react-confetti";
 
 type Question = {
     question: string;
@@ -22,6 +23,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
     const [submitted, setSubmitted] = useState(false);
     const [score, setScore] = useState<number | null>(null);
     const [justFailed, setJustFailed] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
 
     const handleRetry = () => {
         setSelected(initialSelected);
@@ -76,12 +78,21 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
         }));
 
 
-        if (passed) addXpForLesson(lessonId, xpReward);
+        if (passed) {
+            setShowConfetti(true);
+
+            setTimeout(() => {
+                setShowConfetti(false); // hide confetti after 5s
+            }, 5000);
+
+            addXpForLesson(lessonId, xpReward);
+        }
     };
 
 
     return (
         <div className="space-y-6">
+            {showConfetti && <Confetti numberOfPieces={200} recycle={false} />}
             {questions.map((q, i) => (
                 <div key={i} className="space-y-2">
                     <p className="font-medium">{q.question}</p>
