@@ -21,6 +21,8 @@ import DeterminantsLesson from "./components/lessons/DeterminantsLesson.tsx";
 import DeterminantsQuiz from "./components/quizzes/DeterminantsQuiz.tsx";
 import MatrixInversesLesson from "./components/lessons/MatrixInversesLesson.tsx";
 import MatrixInversesQuiz from "./components/quizzes/MatrixInversesQuiz.tsx";
+import MatrixRankLesson from "./components/lessons/MatrixRankLesson.tsx";
+import MatrixRankQuiz from "./components/quizzes/MatrixRankQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -343,6 +345,30 @@ export const modules: Module[] = [
                 component: MatrixInversesQuiz,
                 meta: {
                     total: 20
+                },
+                xp: 20
+            },
+            {
+                id: 'matrix-rank',
+                type: 'lesson',
+                title: 'Lesson: Matrix Rank',
+                listing: 'Matrix Rank',
+                prerequisites: ['matrix-inverses-quiz'],
+                path: '/lesson/matrix-rank',
+                component: MatrixRankLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'matrix-rank-quiz',
+                type: 'quiz',
+                title: 'Quiz: Matrix Rank',
+                listing: 'Matrix Rank Quiz',
+                prerequisites: ['matrix-rank'],
+                path: '/quiz/matrix-rank',
+                component: MatrixRankQuiz,
+                meta: {
+                    total: 3
                 },
                 xp: 20
             }
