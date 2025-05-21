@@ -22,13 +22,24 @@ const proj = (a: number[], b: number[]) => {
     return scaleVec(a, factor);
 };
 
-const formatVec = (v: number[]) => `[${v[0]}, ${v[1]}]`;
+const formatVec = (v: number[]) => `[${v[0].toFixed(1)}, ${v[1].toFixed(1)}]`;
 
-const ProjectionVisualizer: React.FC = () => {
+interface ProjectionVisualizerProps {
+    onGoalAchieved?: () => void;
+}
+
+const ProjectionVisualizer: React.FC<ProjectionVisualizerProps> = ({ onGoalAchieved }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [a, setA] = useState([2, 1]);
     const [b, setB] = useState([1, 2]);
     const [dragging, setDragging] = useState<'a' | 'b' | null>(null);
+    const [goalFired, setGoalFired] = useState(false);
+
+    const projVec = proj(a, b);
+
+    const isClose = (v1: number[], v2: number[], tolerance = 0.3) => {
+        return Math.abs(v1[0] - v2[0]) < tolerance && Math.abs(v1[1] - v2[1]) < tolerance;
+    };
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -80,14 +91,12 @@ const ProjectionVisualizer: React.FC = () => {
             }
         };
 
-        const p = proj(a, b);
         drawArrow(a, 'blue');
         drawArrow(b, 'green');
-        drawArrow(p, 'red', false);
+        drawArrow(projVec, 'red', false);
 
-        // Dashed line from b to proj
         const bCanvas = toCanvas(b[0], b[1]);
-        const pCanvas = toCanvas(p[0], p[1]);
+        const pCanvas = toCanvas(projVec[0], projVec[1]);
         ctx.setLineDash([4, 4]);
         ctx.beginPath();
         ctx.moveTo(bCanvas.x, bCanvas.y);
@@ -95,7 +104,16 @@ const ProjectionVisualizer: React.FC = () => {
         ctx.strokeStyle = 'gray';
         ctx.stroke();
         ctx.setLineDash([]);
-    }, [a, b]);
+    }, [a, b, projVec]);
+
+    useEffect(() => {
+        const target = [2, 0];
+        if (!goalFired && isClose(projVec, target)) {
+            setB(target.map((v) => v * dot(a, a) / dot(a, b))); // snap to make projection exact
+            setGoalFired(true);
+            onGoalAchieved?.();
+        }
+    }, [projVec, a, b, goalFired, onGoalAchieved]);
 
     const handleMouseDown = (e: React.MouseEvent) => {
         const rect = canvasRef.current!.getBoundingClientRect();
@@ -125,7 +143,6 @@ const ProjectionVisualizer: React.FC = () => {
     const dotAB = dot(a, b);
     const dotAA = dot(a, a);
     const factor = dotAA === 0 ? 0 : dotAB / dotAA;
-    const projVec = proj(a, b);
 
     return (
         <div className="space-y-2">
