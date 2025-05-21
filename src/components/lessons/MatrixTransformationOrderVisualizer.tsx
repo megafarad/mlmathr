@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+interface Props {
+    onGoalAchieved?: () => void;
+}
+
+
 const width = 400;
 const height = 400;
 const origin = { x: width / 2, y: height / 2 };
@@ -30,7 +35,7 @@ const scaleDown = (v: number[], maxLength: number) => {
     return v;
 };
 
-const MatrixTransformationOrderVisualizer: React.FC = () => {
+const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [matrixA, setMatrixA] = useState([
         [1, 1],
@@ -57,6 +62,19 @@ const MatrixTransformationOrderVisualizer: React.FC = () => {
 
     const ab = multiplyMatrices(matrixA, matrixB);
     const ba = multiplyMatrices(matrixB, matrixA);
+
+    useEffect(() => {
+        const matricesAreEqual = (m1: number[][], m2: number[][], tol = 0.01) => {
+            return m1.every((row, r) =>
+                row.every((val, c) => Math.abs(val - m2[r][c]) < tol)
+            );
+        };
+
+        if (matricesAreEqual(ab, ba)) {
+            onGoalAchieved?.();
+        }
+    }, [ab, ba, onGoalAchieved]);
+
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -114,7 +132,7 @@ const MatrixTransformationOrderVisualizer: React.FC = () => {
 
             // Arrowhead
             const angle = Math.atan2(origin.y - y, x - origin.x);
-            const size = 8;
+            const size = 20;
             ctx.beginPath();
             ctx.moveTo(x, y);
             ctx.lineTo(x - size * Math.cos(angle - 0.3), y + size * Math.sin(angle - 0.3));

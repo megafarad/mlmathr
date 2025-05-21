@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import MatrixTransformationOrderVisualizer from "./MatrixTransformationOrderVisualizer.tsx";
 import NextUpButton from "../NextUpButton.tsx";
+import Confetti from 'react-confetti';
 
 const lessonId = 'matrix-transformation-order';
 
 const MatrixTransformationOrderLesson: React.FC = () => {
+    const [goalAchieved, setGoalAchieved] = useState(false);
+
     return (
-        <div className="max-w-4xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto p-6 relative">
+            {goalAchieved && <Confetti numberOfPieces={200} recycle={false} />}
             <h1 className="text-2xl font-bold mb-4">🔁 Matrix Transformation Order (A · B means “apply B, then A”)</h1>
 
             <div className="grid md:grid-cols-2 gap-6 items-start">
@@ -27,11 +31,19 @@ const MatrixTransformationOrderLesson: React.FC = () => {
                         <br />
                         <code>A · B ≠ B · A</code> in most cases.
                     </p>
+                    <p>
+                        🎯 Try to find a case where <code>A · B = B · A</code> — this only happens under special conditions!
+                    </p>
                 </div>
 
-                <div className='lg:w-1/2 flex flex-col items-center space-y-4'>
-                    <MatrixTransformationOrderVisualizer />
-                    <CompleteLessonButton lessonId={lessonId} />
+                <div className='flex flex-col items-center space-y-4'>
+                    <MatrixTransformationOrderVisualizer onGoalAchieved={() => setGoalAchieved(true)} />
+                    {!goalAchieved && (
+                        <p className="text-sm text-gray-600">
+                            🎯 Make <strong>A · B</strong> equal <strong>B · A</strong>
+                        </p>
+                    )}
+                    {goalAchieved && <CompleteLessonButton lessonId={lessonId} />}
                     <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>
