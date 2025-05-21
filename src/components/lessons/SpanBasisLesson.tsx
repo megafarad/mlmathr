@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
 import SpanBasisVisualizer from './SpanBasisVisualizer';
 import NextUpButton from "../NextUpButton.tsx";
+import Confetti from 'react-confetti';
 
 const lessonId = 'span-basis';
 
 const SpanBasisLesson: React.FC = () => {
+    const [goalAchieved, setGoalAchieved] = useState(false);
+
     return (
-        <div className="max-w-4xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto p-6 relative">
+            {goalAchieved && <Confetti numberOfPieces={200} recycle={false} />}
             <h1 className="text-2xl font-bold mb-4">📚 Span and Basis</h1>
 
             <div className="grid md:grid-cols-2 gap-6 items-start">
@@ -48,13 +52,17 @@ const SpanBasisLesson: React.FC = () => {
                     </p>
                 </div>
 
-                <div className='lg:w-1/2 flex flex-col items-center space-y-4'>
-                    <SpanBasisVisualizer />
-                    <CompleteLessonButton lessonId={lessonId} />
-                    <NextUpButton currentLessonId={lessonId}/>
+                <div className='flex flex-col items-center space-y-4'>
+                    <SpanBasisVisualizer onGoalAchieved={() => setGoalAchieved(true)} />
+                    {!goalAchieved && (
+                        <p className="text-sm text-gray-600">
+                            🎯 Try to make the vectors linearly <strong>independent</strong>
+                        </p>
+                    )}
+                    {goalAchieved && <CompleteLessonButton lessonId={lessonId} />}
+                    <NextUpButton currentLessonId={lessonId} />
                 </div>
             </div>
-
         </div>
     );
 };

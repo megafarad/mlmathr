@@ -20,11 +20,16 @@ const toVectorCoords = (x: number, y: number) => ({
 const areCollinear = (v1: number[], v2: number[]) =>
     v1[0] * v2[1] === v1[1] * v2[0];
 
-const SpanBasisVisualizer: React.FC = () => {
+interface SpanBasisVisualizerProps {
+    onGoalAchieved?: () => void;
+}
+
+const SpanBasisVisualizer: React.FC<SpanBasisVisualizerProps> = ({ onGoalAchieved }) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const [v1, setV1] = useState([1, 0]);
-    const [v2, setV2] = useState([0, 1]);
+    const [v1, setV1] = useState([1, 1]);
+    const [v2, setV2] = useState([2, 2]);
     const [dragging, setDragging] = useState<'v1' | 'v2' | null>(null);
+    const [goalFired, setGoalFired] = useState(false);
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -70,7 +75,6 @@ const SpanBasisVisualizer: React.FC = () => {
 
         const drawSpan = (v1: number[], v2: number[]) => {
             if (areCollinear(v1, v2)) {
-                // Draw span as a line
                 ctx.beginPath();
                 ctx.moveTo(origin.x - v1[0] * scale * 10, origin.y + v1[1] * scale * 10);
                 ctx.lineTo(origin.x + v1[0] * scale * 10, origin.y - v1[1] * scale * 10);
@@ -78,7 +82,6 @@ const SpanBasisVisualizer: React.FC = () => {
                 ctx.lineWidth = 4;
                 ctx.stroke();
             } else {
-                // Draw parallelogram
                 const a = toCanvasCoords(v1[0], v1[1]);
                 const b = toCanvasCoords(v2[0], v2[1]);
                 const c = toCanvasCoords(v1[0] + v2[0], v1[1] + v2[1]);
@@ -93,25 +96,31 @@ const SpanBasisVisualizer: React.FC = () => {
                 ctx.fill();
             }
         };
-        // Draw x-axis
+
+        // Draw axes
         ctx.beginPath();
         ctx.moveTo(0, origin.y);
         ctx.lineTo(width, origin.y);
         ctx.strokeStyle = '#aaa';
         ctx.stroke();
 
-        // Draw y-axis
         ctx.beginPath();
         ctx.moveTo(origin.x, 0);
         ctx.lineTo(origin.x, height);
-        ctx.strokeStyle = '#aaa';
         ctx.stroke();
-
 
         drawSpan(v1, v2);
         drawArrow(v1, 'blue');
         drawArrow(v2, 'green');
     }, [v1, v2]);
+
+    useEffect(() => {
+        const dependent = areCollinear(v1, v2);
+        if (!dependent && !goalFired) {
+            setGoalFired(true);
+            onGoalAchieved?.();
+        }
+    }, [v1, v2, goalFired, onGoalAchieved]);
 
     const handleMouseDown = (e: React.MouseEvent) => {
         const rect = canvasRef.current?.getBoundingClientRect();
