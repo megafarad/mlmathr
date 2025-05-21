@@ -25,6 +25,8 @@ import MatrixRankLesson from "./components/lessons/MatrixRankLesson.tsx";
 import MatrixRankQuiz from "./components/quizzes/MatrixRankQuiz.tsx";
 import EigenvectorsLesson from "./components/lessons/EigenvectorsLesson.tsx";
 import EigenvectorsQuiz from "./components/quizzes/EigenvectorsQuiz.tsx";
+import ChangeOfBasisLesson from "./components/lessons/ChangeOfBasisLesson.tsx";
+import ChangeOfBasisQuiz from "./components/quizzes/ChangeOfBasisQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -215,6 +217,30 @@ export const modules: Module[] = [
                 prerequisites: ['span-basis'],
                 path: "/quiz/span-basis",
                 component: SpanBasisQuiz,
+                meta: {
+                    total: 3
+                },
+                xp: 20
+            },
+            {
+                id: 'change-of-basis',
+                type: 'lesson',
+                title: 'Lesson: Change of Basis',
+                listing: 'Change of Basis',
+                prerequisites: ['span-basis-quiz'],
+                path: '/lesson/change-of-basis',
+                component: ChangeOfBasisLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'change-of-basis-quiz',
+                type: 'quiz',
+                title: 'Quiz: Change of Basis',
+                listing: 'Change of Basis Quiz',
+                prerequisites: ['change-of-basis'],
+                path: '/quiz/change-of-basis',
+                component: ChangeOfBasisQuiz,
                 meta: {
                     total: 3
                 },
