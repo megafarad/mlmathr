@@ -3,11 +3,16 @@ import React, { useState } from 'react';
 const width = 300;
 const height = 300;
 const origin = { x: width / 2, y: height / 2 };
-const scale = 15; // pixels per unit
+const scale = 15;
 
-const DotProductVisualizer: React.FC = () => {
+interface DotProductVisualizerProps {
+    onGoalAchieved?: () => void;
+}
+
+const DotProductVisualizer: React.FC<DotProductVisualizerProps> = ({ onGoalAchieved }) => {
     const [vecA, setVecA] = useState({ x: 2, y: 3 });
     const [vecB, setVecB] = useState({ x: -1, y: 2 });
+    const [goalFired, setGoalFired] = useState(false);
 
     const dotProduct = (a: typeof vecA, b: typeof vecB) => a.x * b.x + a.y * b.y;
     const magnitude = (v: typeof vecA) => Math.sqrt(v.x ** 2 + v.y ** 2);
@@ -29,7 +34,16 @@ const DotProductVisualizer: React.FC = () => {
     const maxX = Math.floor(width / (2 * scale));
     const maxY = Math.floor(height / (2 * scale));
 
-    const handleDrag = (setVec: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>) =>
+    const snapToPerpendicular = (fixed: typeof vecA, movable: typeof vecA) => {
+        const dot = dotProduct(fixed, movable);
+        const projLength = dot / magnitude(fixed);
+        return {
+            x: movable.x - projLength * (fixed.x / magnitude(fixed)),
+            y: movable.y - projLength * (fixed.y / magnitude(fixed)),
+        };
+    };
+
+    const handleDrag = (setVec: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>, isB: boolean) =>
         (e: React.MouseEvent<SVGCircleElement, MouseEvent>) => {
             const bounds = (e.target as SVGElement).ownerSVGElement!.getBoundingClientRect();
 
@@ -37,12 +51,31 @@ const DotProductVisualizer: React.FC = () => {
                 const x = moveEvent.clientX - bounds.left;
                 const y = moveEvent.clientY - bounds.top;
 
-                const snapped = {
+                const newVec = {
                     x: Math.max(-maxX, Math.min(maxX, Math.round((x - origin.x) / scale))),
-                    y: Math.max(-maxY, Math.min(maxY, Math.round((origin.y - y) / scale))) // flip y
+                    y: Math.max(-maxY, Math.min(maxY, Math.round((origin.y - y) / scale))),
                 };
 
-                setVec(snapped);
+                const newDot = isB ? dotProduct(vecA, newVec) : dotProduct(newVec, vecB);
+
+                // Snap if very close to perpendicular
+                if (Math.abs(newDot) < 0.2) {
+                    const snapped = isB
+                        ? snapToPerpendicular(vecA, newVec)
+                        : snapToPerpendicular(vecB, newVec);
+                    const rounded = {
+                        x: Math.round(snapped.x),
+                        y: Math.round(snapped.y),
+                    };
+                    setVec(rounded);
+
+                    if (!goalFired) {
+                        setGoalFired(true);
+                        onGoalAchieved?.();
+                    }
+                } else {
+                    setVec(newVec);
+                }
             };
 
             const onMouseUp = () => {
@@ -54,7 +87,11 @@ const DotProductVisualizer: React.FC = () => {
             document.addEventListener('mouseup', onMouseUp);
         };
 
-    const drawVector = (vec: { x: number; y: number }, color: string, onDrag: (e: React.MouseEvent<SVGCircleElement, MouseEvent>) => void) => {
+    const drawVector = (
+        vec: { x: number; y: number },
+        color: string,
+        onDrag: (e: React.MouseEvent<SVGCircleElement, MouseEvent>) => void
+    ) => {
         const x = origin.x + vec.x * scale;
         const y = origin.y - vec.y * scale;
 
@@ -99,8 +136,8 @@ const DotProductVisualizer: React.FC = () => {
                 <line x1={origin.x} y1={0} x2={origin.x} y2={height} stroke="#ccc" />
 
                 {/* Vectors */}
-                {drawVector(vecA, 'blue', handleDrag(setVecA))}
-                {drawVector(vecB, 'green', handleDrag(setVecB))}
+                {drawVector(vecA, 'blue', handleDrag(setVecA, false))}
+                {drawVector(vecB, 'green', handleDrag(setVecB, true))}
 
                 <defs>
                     <marker
