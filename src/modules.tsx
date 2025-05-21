@@ -23,6 +23,8 @@ import MatrixInversesLesson from "./components/lessons/MatrixInversesLesson.tsx"
 import MatrixInversesQuiz from "./components/quizzes/MatrixInversesQuiz.tsx";
 import MatrixRankLesson from "./components/lessons/MatrixRankLesson.tsx";
 import MatrixRankQuiz from "./components/quizzes/MatrixRankQuiz.tsx";
+import EigenvectorsLesson from "./components/lessons/EigenvectorsLesson.tsx";
+import EigenvectorsQuiz from "./components/quizzes/EigenvectorsQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -367,6 +369,30 @@ export const modules: Module[] = [
                 prerequisites: ['matrix-rank'],
                 path: '/quiz/matrix-rank',
                 component: MatrixRankQuiz,
+                meta: {
+                    total: 3
+                },
+                xp: 20
+            },
+            {
+                id: 'eigenvectors',
+                type: 'lesson',
+                title: 'Lesson: Eigenvectors & Eigenvalues',
+                listing: 'Eigenvectors & Eigenvalues',
+                prerequisites: ['matrix-rank-quiz'],
+                path: '/lesson/eigenvectors',
+                component: EigenvectorsLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'eigenvectors-quiz',
+                type: 'quiz',
+                title: 'Quiz: Eigenvectors & Eigenvalues',
+                listing: 'Eigenvectors & Eigenvalues Quiz',
+                prerequisites: ['eigenvectors'],
+                path: '/quiz/eigenvectors',
+                component: EigenvectorsQuiz,
                 meta: {
                     total: 3
                 },

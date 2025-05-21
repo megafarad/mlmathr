@@ -1,5 +1,6 @@
 import React from 'react';
 import Quiz from '../Quiz';
+import {lookupXp} from "../../lookupXp.tsx";
 
 const rankQuestions = [
     {
@@ -34,14 +35,16 @@ const rankQuestions = [
     },
 ];
 
+const quizId = "matrix-rank-quiz"
+
 const MatrixRankQuiz: React.FC = () => {
     return (
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Matrix Rank</h2>
             <Quiz
-                lessonId="matrix-rank-quiz"
+                lessonId={quizId}
                 questions={rankQuestions}
-                xpReward={10}
+                xpReward={lookupXp(quizId)}
             />
         </div>
     );
