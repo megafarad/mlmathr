@@ -1,6 +1,5 @@
 import GradientVisualizer from './GradientVisualizer';
 import CompleteLessonButton from "./CompleteLessonButton.tsx";
-import {lookupXp} from "../../lookupXp.tsx";
 import NextUpButton from "../NextUpButton.tsx";
 
 const GradientLesson: React.FC = () => {
@@ -34,7 +33,7 @@ const GradientLesson: React.FC = () => {
 
             <div className="lg:w-1/2 flex flex-col items-center space-y-4">
                 <GradientVisualizer />
-                <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)}/>
+                <CompleteLessonButton lessonId={lessonId} />
                 <NextUpButton currentLessonId={lessonId}/>
             </div>
         </div>

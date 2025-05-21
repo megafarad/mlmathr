@@ -1,6 +1,5 @@
 import React from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
-import {lookupXp} from "../../lookupXp.tsx";
 import MatrixInversesVisualizer from "./MatrixInversesVisualizer.tsx";
 import {MathJax, MathJaxContext} from "better-react-mathjax";
 import NextUpButton from "../NextUpButton.tsx";
@@ -57,7 +56,7 @@ const MatrixInversesLesson: React.FC = () => {
 
                 <div className="lg:w-1/2 flex flex-col items-center space-y-4">
                     <MatrixInversesVisualizer />
-                    <CompleteLessonButton lessonId={lessonId} xpReward={lookupXp(lessonId)} />
+                    <CompleteLessonButton lessonId={lessonId} />
                     <NextUpButton currentLessonId={lessonId}/>
                 </div>
             </div>

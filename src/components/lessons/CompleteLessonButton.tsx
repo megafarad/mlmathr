@@ -1,15 +1,16 @@
 import React from 'react';
 import { useXp } from '../context/XpContext';
+import {lookupXp} from "../../lookupXp.tsx";
 
 interface Props {
     lessonId: string;
-    xpReward: number;
 }
 
-const CompleteLessonButton: React.FC<Props> = ({ lessonId, xpReward }) => {
+const CompleteLessonButton: React.FC<Props> = ({ lessonId }) => {
     const { hasCompleted, addXpForLesson } = useXp();
     
     const isCompleted = hasCompleted(lessonId)
+    const xpReward = lookupXp(lessonId);
 
     return (
         <div className="mt-6 flex justify-center">
