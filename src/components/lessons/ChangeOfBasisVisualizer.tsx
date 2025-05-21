@@ -56,7 +56,11 @@ const applyMatrix = (matrix: number[][], v: number[]): number[] => [
     matrix[1][0] * v[0] + matrix[1][1] * v[1],
 ];
 
-const ChangeOfBasisVisualizer: React.FC = () => {
+interface Props {
+    onGoalAchieved?: () => void;
+}
+
+const ChangeOfBasisVisualizer: React.FC<Props> = ({ onGoalAchieved }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const [basis, setBasis] = useState([
@@ -64,7 +68,8 @@ const ChangeOfBasisVisualizer: React.FC = () => {
         [0, 1],
     ]);
 
-    const [vector, setVector] = useState([2, 1]);
+    const [vector] = useState([2, 1]); // Fixed target vector
+    const [goalFired, setGoalFired] = useState(false);
 
     const invBasis = invert2x2(basis);
     const coordsInNewBasis = invBasis ? applyMatrix(invBasis, vector) : null;
@@ -102,11 +107,20 @@ const ChangeOfBasisVisualizer: React.FC = () => {
         ctx.lineTo(origin.x, height);
         ctx.stroke();
 
-        // Draw vectors
         drawArrow(ctx, basis[0][0], basis[1][0], 'green');   // Basis 1
         drawArrow(ctx, basis[0][1], basis[1][1], 'purple');  // Basis 2
         drawArrow(ctx, vector[0], vector[1], 'blue');        // Vector
     }, [basis, vector]);
+
+    useEffect(() => {
+        const isClose = (v1: number[], v2: number[], tol = 0.1) =>
+            Math.abs(v1[0] - v2[0]) < tol && Math.abs(v1[1] - v2[1]) < tol;
+
+        if (!goalFired && coordsInNewBasis && isClose(coordsInNewBasis, [1, 0])) {
+            setGoalFired(true);
+            onGoalAchieved?.();
+        }
+    }, [coordsInNewBasis, onGoalAchieved, goalFired]);
 
     return (
         <div className="space-y-4">
@@ -145,27 +159,6 @@ const ChangeOfBasisVisualizer: React.FC = () => {
                                 />
                             ))
                         )}
-                    </div>
-                </div>
-
-                <div>
-                    <h3 className="font-semibold mb-1">Vector</h3>
-                    <div className="grid grid-cols-2 gap-2">
-                        {vector.map((val, i) => (
-                            <input
-                                key={i}
-                                type="number"
-                                value={val}
-                                onChange={(e) => {
-                                    let value = parseFloat(e.target.value);
-                                    if (isNaN(value)) value = 0;
-                                    const newVec = [...vector];
-                                    newVec[i] = value;
-                                    setVector(newVec);
-                                }}
-                                className="border px-2 py-1 w-16 text-center rounded"
-                            />
-                        ))}
                     </div>
                 </div>
             </div>
