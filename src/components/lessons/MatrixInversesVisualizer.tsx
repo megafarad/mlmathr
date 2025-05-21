@@ -1,5 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+interface MatrixInversesVisualizerProps {
+    onGoalAchieved?: () => void;
+}
+
 const width = 400;
 const height = 400;
 const origin = { x: width / 2, y: height / 2 };
@@ -32,14 +36,14 @@ const square = [
     [0, 1],
 ];
 
-const MatrixInversesVisualizer: React.FC = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onGoalAchieved }) => {    const canvasRef = useRef<HTMLCanvasElement>(null);
     const [matrix, setMatrix] = useState([
-        [1, 0],
-        [0, 1],
+        [1, 1],
+        [2, 3],
     ]);
     const [inverse, setInverse] = useState(invertMatrix([[1, 0], [0, 1]]));
     const [step, setStep] = useState<'original' | 'afterA' | 'afterInverse'>('original');
+    const [goalFired, setGoalFired] = useState(false);
 
     useEffect(() => {
         setInverse(invertMatrix(matrix));
@@ -101,6 +105,30 @@ const MatrixInversesVisualizer: React.FC = () => {
         ctx.fill();
     }, [matrix, inverse, step]);
 
+    useEffect(() => {
+        if (goalFired || step !== 'afterInverse' || !inverse) return;
+
+        // Target matrix A
+        const target = [
+            [2, 1],
+            [1, 1],
+        ];
+
+        const isClose = (a: number[][], b: number[][], tol = 0.01) =>
+            a.every((row, i) => row.every((val, j) => Math.abs(val - b[i][j]) < tol));
+
+        const round = (v: number[]) => v.map(x => Math.round(x * 1000) / 1000);
+        const original = square.map(round);
+        const recovered = square.map(p => round(applyMatrix(inverse, applyMatrix(matrix, p))));
+        const matchesShape = original.every((pt, i) =>
+            pt.every((val, j) => Math.abs(val - recovered[i][j]) < 0.01)
+        );
+
+        if (isClose(matrix, target) && matchesShape) {
+            setGoalFired(true);
+            onGoalAchieved?.();
+        }
+    }, [step, matrix, inverse, goalFired, onGoalAchieved]);
     return (
         <div className="space-y-4">
             <canvas ref={canvasRef} width={width} height={height} className="border" />
