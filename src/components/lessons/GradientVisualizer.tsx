@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const GradientVisualizer: React.FC = () => {
+interface GradientVisualizerProps {
+    onGoalAchieved?: () => void;
+}
+
+const GradientVisualizer: React.FC<GradientVisualizerProps> = ({ onGoalAchieved }) => {
     const [point, setPoint] = useState({ x: 1, y: 1 });
+    const [goalFired, setGoalFired] = useState(false);
 
     const width = 400;
     const height = 400;
-    const scale = 40;
+    const scale = 30;
     const origin = { x: width / 2, y: height / 2 };
 
     const toCanvasCoords = (x: number, y: number) => ({
@@ -53,10 +58,21 @@ const GradientVisualizer: React.FC = () => {
     const gradientEnd = toCanvasCoords(point.x + gradient.x * 0.2, point.y + gradient.y * 0.2);
     const magnitude = Math.hypot(gradient.x, gradient.y);
 
+    useEffect(() => {
+        const target = { x: 3, y: 4 };
+        const isClose = Math.abs(point.x - target.x) < 0.3 && Math.abs(point.y - target.y) < 0.3;
+
+        if (isClose && !goalFired) {
+            setPoint(target); // Snap to (3, 4)
+            setGoalFired(true);
+            onGoalAchieved?.();
+        }
+    }, [point, goalFired, onGoalAchieved]);
+
     return (
         <svg width={width} height={height} className="border border-gray-300 select-none">
             {/* Contour rings (level curves) */}
-            {[1, 2, 3, 4, 5].map((r) => (
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((r) => (
                 <circle
                     key={r}
                     cx={origin.x}
