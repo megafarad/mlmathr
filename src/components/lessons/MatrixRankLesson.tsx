@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
-import MatrixRankVisualizer from "./MatrixRankVisualizer.tsx";
-import NextUpButton from "../NextUpButton.tsx";
+import MatrixRankVisualizer from './MatrixRankVisualizer';
+import NextUpButton from '../NextUpButton.tsx';
+import Confetti from 'react-confetti';
 
 const lessonId = 'matrix-rank';
 
 const MatrixRankLesson: React.FC = () => {
+    const [goalAchieved, setGoalAchieved] = useState(false);
+
     return (
-        <div className="max-w-4xl mx-auto p-6">
+        <div className="max-w-4xl mx-auto p-6 relative">
+            {goalAchieved && <Confetti numberOfPieces={200} recycle={false} />}
             <h1 className="text-2xl font-bold mb-4">📐 Matrix Rank</h1>
 
             <div className="grid md:grid-cols-2 gap-6 items-start">
@@ -37,20 +41,25 @@ const MatrixRankLesson: React.FC = () => {
                     <p>
                         The rank tells you the dimension of the space the matrix can reach. This is essential for understanding solutions to systems like <code>Ax = b</code>, or whether a transformation collapses space.
                     </p>
-
-                    <p>
-                        In the visualizer, try adjusting the matrix to make the two columns either align or spread apart. See how the rank changes!
+                    <p className="font-medium">
+                        🎯 Challenge: change the matrix so its rank drops to <strong>1</strong>
+                        (make one column a scalar multiple of the other), then watch the gate unlock.
                     </p>
                 </div>
 
-                <div className="lg:w-1/2 flex flex-col items-center space-y-4">
-                    <MatrixRankVisualizer/>
-                    <CompleteLessonButton lessonId={lessonId} />
-                    <NextUpButton currentLessonId={lessonId}/>
+                <div className="flex flex-col items-center space-y-4">
+                    <MatrixRankVisualizer onGoalAchieved={() => setGoalAchieved(true)} />
+
+                    {!goalAchieved && (
+                        <p className="text-sm text-gray-600">
+                            🎯 Current task: get the rank to <strong>1</strong>
+                        </p>
+                    )}
+                    {goalAchieved && <CompleteLessonButton lessonId={lessonId} />}
+
+                    <NextUpButton currentLessonId={lessonId} />
                 </div>
             </div>
-
-
         </div>
     );
 };
