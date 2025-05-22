@@ -3,12 +3,16 @@ import {Link} from "react-router-dom";
 import { useXp } from '../context/XpContext';
 import Achievements from "../Achievements.tsx";
 import {allItems, quizzes} from "../../modules.tsx";
+import {useAuth} from "../context/AuthContext.tsx";
+import ProgressBadge from "../ProgressBadge.tsx";
 
 const totalPossibleXp = allItems.reduce((sum, item) => sum + item.xp, 0);
 
 const ProgressDashboard: React.FC = () => {
     const { xp, completedLessons, getQuizScore } = useXp();
+    const { user } = useAuth();
     const progressPercent = Math.round((xp / totalPossibleXp) * 100);
+    const allComplete = allItems.every((item) => completedLessons.has(item.id));
     const lastVisited = localStorage.getItem('lastVisited');
 
     return (
@@ -39,6 +43,14 @@ const ProgressDashboard: React.FC = () => {
                     </Link>
                 </div>
             )}
+
+            {
+                allComplete && (
+                    <div className="flex justify-center mt-6">
+                        <ProgressBadge xp={xp} userName={user?.email} />
+                    </div>
+                )
+            }
 
             <ul className="mt-4 space-y-3">
                 {allItems.map(({ id, title, xp }) => {

@@ -13,6 +13,7 @@
     "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/vite": "^4.1.6",
     "better-react-mathjax": "^2.3.0",
+    "html-to-image": "^1.11.13",
     "react": "^19.1.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.1.0",
