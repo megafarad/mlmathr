@@ -27,6 +27,8 @@ import EigenvectorsLesson from "./components/lessons/EigenvectorsLesson.tsx";
 import EigenvectorsQuiz from "./components/quizzes/EigenvectorsQuiz.tsx";
 import ChangeOfBasisLesson from "./components/lessons/ChangeOfBasisLesson.tsx";
 import ChangeOfBasisQuiz from "./components/quizzes/ChangeOfBasisQuiz.tsx";
+import NullColumnSpaceLesson from "./components/lessons/NullColumnSpaceLesson.tsx";
+import NullColumnSpaceQuiz from "./components/quizzes/NullColumnSpaceQuiz.tsx";
 
 type QuizMeta = {
     total: number;
@@ -276,26 +278,26 @@ export const modules: Module[] = [
                 xp: 20
             },
             {
-                id: 'matrix-transformation-order',
-                type: "lesson",
-                title: "Lesson: Matrix Transformation Order",
-                listing: "Matrix Transformation Order",
+                id: 'null-column-space',
+                type: 'lesson',
+                title: 'Lesson: Null Space & Column Space',
+                listing: 'Null Space & Column Space',
                 prerequisites: ['matrix-transformations-quiz'],
-                path: "/lesson/matrix-transformation-order",
-                component: MatrixTransformationOrderLesson,
+                path: '/lesson/null-column-space',
+                component: NullColumnSpaceLesson,
                 meta: null,
                 xp: 25
             },
             {
-                id: 'matrix-transformation-order-quiz',
+                id: 'null-column-space-quiz',
                 type: 'quiz',
-                title: 'Quiz: Matrix Transformation Order',
-                listing: 'Matrix Transformation Order Quiz',
-                prerequisites: ['matrix-transformation-order'],
-                path: '/quiz/matrix-transformation-order',
-                component: MatrixTransformationOrderQuiz,
+                title: 'Quiz: Null Space & Column Space',
+                listing: 'Null Space & Column Space Quiz',
+                prerequisites: ['null-column-space'],
+                path: '/quiz/null-column-space',
+                component: NullColumnSpaceQuiz,
                 meta: {
-                    total: 4
+                    total: 3
                 },
                 xp: 20
             },
@@ -309,7 +311,7 @@ export const modules: Module[] = [
                 type: 'lesson',
                 title: 'Lesson: Multiplying Two Matrices',
                 listing: 'Multiplying Two Matrices',
-                prerequisites: ['matrix-transformation-order-quiz'],
+                prerequisites: ['null-column-space-quiz'],
                 path: '/lesson/matrix-multiplication-basics',
                 component: MatrixMultiplicationLesson,
                 meta: null,
@@ -329,11 +331,35 @@ export const modules: Module[] = [
                 xp: 20
             },
             {
+                id: 'matrix-transformation-order',
+                type: "lesson",
+                title: "Lesson: Matrix Transformation Order",
+                listing: "Matrix Transformation Order",
+                prerequisites: ['matrix-multiplication-basics-quiz'],
+                path: "/lesson/matrix-transformation-order",
+                component: MatrixTransformationOrderLesson,
+                meta: null,
+                xp: 25
+            },
+            {
+                id: 'matrix-transformation-order-quiz',
+                type: 'quiz',
+                title: 'Quiz: Matrix Transformation Order',
+                listing: 'Matrix Transformation Order Quiz',
+                prerequisites: ['matrix-transformation-order'],
+                path: '/quiz/matrix-transformation-order',
+                component: MatrixTransformationOrderQuiz,
+                meta: {
+                    total: 4
+                },
+                xp: 20
+            },
+            {
                 id: 'determinants',
                 type: 'lesson',
                 title: 'Lesson: Determinants',
                 listing: 'Determinants',
-                prerequisites: ['matrix-multiplication-basics-quiz'],
+                prerequisites: ['matrix-transformation-order-quiz'],
                 path: '/lesson/determinants',
                 component: DeterminantsLesson,
                 meta: null,
