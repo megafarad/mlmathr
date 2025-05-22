@@ -1,6 +1,5 @@
 import React from 'react';
 import Quiz from '../Quiz';
-import {lookupXp} from "../../lookupXp.tsx";
 
 const inverseQuestions = [
     {
@@ -42,9 +41,8 @@ const MatrixInversesQuiz: React.FC = () => {
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Matrix Inverses</h2>
             <Quiz
-                lessonId={quizId}
+                quizId={quizId}
                 questions={inverseQuestions}
-                xpReward={lookupXp(quizId)}
             />
         </div>
     );

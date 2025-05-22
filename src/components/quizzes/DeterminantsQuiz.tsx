@@ -1,6 +1,5 @@
 import React from 'react';
 import Quiz from '../Quiz';
-import {lookupXp} from "../../lookupXp.tsx";
 
 const determinantQuestions = [
     {
@@ -42,9 +41,8 @@ const DeterminantsQuiz: React.FC = () => {
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Determinants</h2>
             <Quiz
-                lessonId={quizId}
+                quizId={quizId}
                 questions={determinantQuestions}
-                xpReward={lookupXp(quizId)}
             />
         </div>
     );

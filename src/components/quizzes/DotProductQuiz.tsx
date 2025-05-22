@@ -1,6 +1,5 @@
 import React from 'react';
 import Quiz from "../Quiz.tsx";
-import {lookupXp} from "../../lookupXp.tsx";
 
 const questions = [
     {
@@ -38,7 +37,7 @@ const DotProductQuiz: React.FC = () => {
     return (
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Dot Product</h2>
-            <Quiz lessonId={quizId} questions={questions} xpReward={lookupXp(quizId)} />
+            <Quiz quizId={quizId} questions={questions}/>
         </div>
     );
 };

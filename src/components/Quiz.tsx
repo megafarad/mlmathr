@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useXp } from "./context/XpContext.tsx";
 import NextUpButton from "./NextUpButton.tsx";
 import Confetti from "react-confetti";
+import {lookupXp} from "../lookupXp.tsx";
 
 type Question = {
     question: string;
@@ -10,14 +11,14 @@ type Question = {
 };
 
 type Props = {
-    lessonId: string;
+    quizId: string;
     questions: Question[];
-    xpReward: number;
 };
 
-const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
+const Quiz: React.FC<Props> = ({ quizId, questions }) => {
     const { addXpForLesson, hasCompleted, quizScores, setQuizScores, revision, setRevision } = useXp();
-    const [isCompleted] = useState(() => hasCompleted(lessonId));
+    const xpReward = lookupXp(quizId);
+    const [isCompleted] = useState(() => hasCompleted(quizId));
     const initialSelected = useMemo(() => Array(questions.length).fill(null), [questions.length]);
     const [selected, setSelected] = useState<(number | null)[]>(initialSelected);
     const [submitted, setSubmitted] = useState(false);
@@ -34,7 +35,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
         // Remove quiz score from cloud progress state
         setQuizScores((prev) => {
             const copy = { ...prev };
-            delete copy[lessonId];
+            delete copy[quizId];
             return copy;
         });
 
@@ -44,7 +45,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
 
 
     useEffect(() => {
-        const saved = quizScores[lessonId];
+        const saved = quizScores[quizId];
         setSubmitted(!!saved);
         setScore(saved?.score ?? null);
 
@@ -53,7 +54,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
         } else {
             setSelected(initialSelected);
         }
-    }, [lessonId, revision, quizScores, initialSelected]);
+    }, [quizId, revision, quizScores, initialSelected]);
 
 
     const handleSubmit = () => {
@@ -71,7 +72,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
 
         setQuizScores((prev) => ({
             ...prev,
-            [lessonId]: {
+            [quizId]: {
                 score: correctCount,
                 answers: selected,
             },
@@ -85,7 +86,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
                 setShowConfetti(false); // hide confetti after 5s
             }, 5000);
 
-            addXpForLesson(lessonId, xpReward);
+            addXpForLesson(quizId, xpReward);
         }
     };
 
@@ -135,7 +136,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
             {isCompleted ? (
                     <div>
                         <div className="text-green-600 font-semibold">✅ Quiz Completed</div>
-                        <NextUpButton currentLessonId={lessonId} />
+                        <NextUpButton currentLessonId={quizId} />
                     </div>
             ) : submitted ? (
                     <div
@@ -148,7 +149,7 @@ const Quiz: React.FC<Props> = ({ lessonId, questions, xpReward }) => {
                             {score === questions.length ? (
                                 <div>
                                     <p>✅ All correct! You earned {xpReward} XP.</p>
-                                    <NextUpButton currentLessonId={lessonId}/>
+                                    <NextUpButton currentLessonId={quizId}/>
                                 </div>
                             ) : (
                                 <>

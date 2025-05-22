@@ -1,6 +1,5 @@
 import React from 'react';
 import Quiz from '../Quiz';
-import {lookupXp} from "../../lookupXp.tsx";
 
 const eigenQuestions = [
     {
@@ -42,9 +41,8 @@ const EigenvectorsQuiz: React.FC = () => {
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Eigenvectors and Eigenvalues</h2>
             <Quiz
-                lessonId={quizId}
+                quizId={quizId}
                 questions={eigenQuestions}
-                xpReward={lookupXp(quizId)}
             />
         </div>
     );

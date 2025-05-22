@@ -1,6 +1,5 @@
 import React from 'react';
 import Quiz from '../Quiz';
-import {lookupXp} from "../../lookupXp.tsx";
 
 const spanBasisQuestions = [
     {
@@ -42,9 +41,8 @@ const SpanBasisQuiz: React.FC = () => {
         <div className="p-4">
             <h2 className="text-xl font-semibold mb-4">🧠 Quiz: Span and Basis</h2>
             <Quiz
-                lessonId="span-basis-quiz"
+                quizId={quizId}
                 questions={spanBasisQuestions}
-                xpReward={lookupXp(quizId)}
             />
         </div>
     );
