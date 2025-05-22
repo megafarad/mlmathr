@@ -44,7 +44,7 @@ const ProgressDashboard: React.FC = () => {
                 {allItems.map(({ id, title, xp }) => {
                     const completed = completedLessons.has(id);
                     const score = id.includes('quiz') ? getQuizScore(id) : null;
-                    const total = quizzes.find(quiz => quiz.id === id)?.meta?.total;
+                    const total = quizzes.find(quiz => quiz.id === id)?.numberOfQuestions;
 
                     return (
                         <li key={id} className="flex justify-between items-center p-3 bg-gray-100 rounded">

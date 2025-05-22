@@ -1,4 +1,4 @@
-import type {FC} from "react";
+import type {ReactElement} from "react";
 import VectorLesson from "./components/lessons/VectorLesson.tsx";
 import VectorQuiz from "./components/quizzes/VectorQuiz.tsx";
 import DotProductLesson from "./components/lessons/DotProductLesson.tsx";
@@ -30,19 +30,16 @@ import ChangeOfBasisQuiz from "./components/quizzes/ChangeOfBasisQuiz.tsx";
 import NullColumnSpaceLesson from "./components/lessons/NullColumnSpaceLesson.tsx";
 import NullColumnSpaceQuiz from "./components/quizzes/NullColumnSpaceQuiz.tsx";
 
-type QuizMeta = {
-    total: number;
-}
 
 type LessonItem = {
     id: string;
     type: 'lesson';
     title: string;
+    description: string;
     listing: string;
     prerequisites: string[];
     path: string;
-    component: FC
-    meta?: null;
+    element: ReactElement;
     xp: number;
 }
 
@@ -50,13 +47,13 @@ type QuizItem = {
     id: string;
     type: 'quiz';
     title: string;
+    description: string;
     listing: string;
     prerequisites: string[];
     path: string;
-    component: FC
-    meta: QuizMeta
+    element: ReactElement;
+    numberOfQuestions: number;
     xp: number;
-
 }
 
 export type ModuleItem = LessonItem | QuizItem;
@@ -77,69 +74,66 @@ export const modules: Module[] = [
                 listing: "Vectors",
                 prerequisites: [],
                 path: "/lesson/vectors",
-                component: VectorLesson,
-                meta: null,
+                element: <VectorLesson/>,
+                description: "Explore the basics of vectors in 2D space and learn how to manipulate them visually.",
                 xp: 25
             },
             {
                 id: "vectors-quiz",
                 type: "quiz",
                 title: "Quiz: Vectors",
-                listing: "Vectors Quiz",
+                description: "Test your understanding of vector direction and magnitude.",
+                listing: "Vectors",
                 prerequisites: ['vectors'],
                 path: "/quiz/vectors",
-                component: VectorQuiz,
-                meta: {
-                    total: 2
-                },
+                element: <VectorQuiz/>,
+                numberOfQuestions: 2,
                 xp: 15
             },
             {
                 id: 'dot-product',
                 type: "lesson",
                 title: "Lesson: Dot Product",
+                description: "Visualize how the dot product relates to angle and projection between two vectors.",
                 listing: "Dot Product",
                 prerequisites: ['vectors-quiz'],
                 path: "/lesson/dot-product",
-                component: DotProductLesson,
-                meta: null,
+                element: <DotProductLesson/>,
                 xp: 25
             },
             {
                 id: 'dot-product-quiz',
                 type: "quiz",
                 title: "Quiz: Dot Product",
-                listing: "Dot Product Quiz",
+                description: "Reinforce your grasp of the dot product with interactive questions.",
+                listing: "Dot Product",
                 prerequisites: ['dot-product'],
                 path: "/quiz/dot-product",
-                component: DotProductQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <DotProductQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             },
             {
                 id: 'projections',
                 type: "lesson",
                 title: "Lesson: Vector Projections",
+                description: "Learn how to project one vector onto another and understand the math behind it.",
                 listing: "Vector Projections",
                 prerequisites: ['dot-product-quiz'],
                 path: "/lesson/projections",
-                component: ProjectionLesson,
-                meta: null,
+                element: <ProjectionLesson/>,
                 xp: 25
             },
             {
                 id: 'projections-quiz',
                 type: "quiz",
                 title: "Quiz: Vector Projections",
-                listing: "Vector Projections Quiz",
+                description: "Practice identifying and calculating vector projections.",
+                listing: "Vector Projections",
                 prerequisites: ['projections'],
                 path: "/quiz/projections",
-                component: ProjectionQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <ProjectionQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             }
         ]
@@ -151,24 +145,23 @@ export const modules: Module[] = [
                 id: 'gradient',
                 type: "lesson",
                 title: "Lesson: Gradients",
-                listing: "Gradient",
+                description: "Understand gradients as direction and rate of change in 2D functions.",
+                listing: "Gradients",
                 prerequisites: ['projections-quiz'],
                 path: "/lesson/gradient",
-                component: GradientLesson,
-                meta: null,
+                element: <GradientLesson/>,
                 xp: 25
             },
             {
                 id: 'gradient-quiz',
                 type: "quiz",
                 title: "Quiz: Gradients",
-                listing: "Gradients Quiz",
+                description: "Assess your knowledge of gradient direction and how it's used in optimization.",
+                listing: "Gradients",
                 prerequisites: ['gradient'],
                 path: "/quiz/gradient",
-                component: GradientQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <GradientQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             }
         ]
@@ -180,72 +173,69 @@ export const modules: Module[] = [
                 id: 'linear-combinations',
                 type: "lesson",
                 title: "Lesson: Linear Combinations",
+                description: "See how vectors combine through scaling and addition to form new directions.",
                 listing: "Linear Combinations",
                 prerequisites: ['gradient-quiz'],
                 path: "/lesson/linear-combinations",
-                component: LinearCombinationLesson,
-                meta: null,
+                element: <LinearCombinationLesson/>,
                 xp: 25
             },
             {
                 id: 'linear-combinations-quiz',
                 type: "quiz",
                 title: "Quiz: Linear Combinations",
-                listing: "Linear Combinations Quiz",
+                description: "Test your ability to recognize linear combinations visually and numerically.",
+                listing: "Linear Combinations",
                 prerequisites: ['linear-combinations'],
                 path: "/quiz/linear-combinations",
-                component: LinearCombinationQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <LinearCombinationQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             },
             {
                 id: 'span-basis',
                 type: "lesson",
                 title: "Lesson: Span, Basis, & Dimension",
+                description: "Explore how vectors span a space, define a basis, and determine dimensionality.",
                 listing: "Span, Basis, & Dimension",
                 prerequisites: ['linear-combinations-quiz'],
                 path: "/lesson/span-basis",
-                component: SpanBasisDimensionLesson,
-                meta: null,
+                element: <SpanBasisDimensionLesson/>,
                 xp: 25
             },
             {
                 id: 'span-basis-quiz',
                 type: "quiz",
-                title: "Quiz: Span and Basis",
-                listing: "Span and Basis Quiz",
+                title: "Quiz: Span, Basis & Dimension",
+                description: "Challenge your understanding of independence, span, and basis vectors.",
+                listing: "Span and Basis",
                 prerequisites: ['span-basis'],
                 path: "/quiz/span-basis",
-                component: SpanBasisQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <SpanBasisQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             },
             {
                 id: 'change-of-basis',
                 type: 'lesson',
                 title: 'Lesson: Change of Basis',
+                description: "Learn how to express vectors in new bases and translate between coordinate systems.",
                 listing: 'Change of Basis',
                 prerequisites: ['span-basis-quiz'],
                 path: '/lesson/change-of-basis',
-                component: ChangeOfBasisLesson,
-                meta: null,
+                element: <ChangeOfBasisLesson/>,
                 xp: 25
             },
             {
                 id: 'change-of-basis-quiz',
                 type: 'quiz',
                 title: 'Quiz: Change of Basis',
-                listing: 'Change of Basis Quiz',
+                description: "Practice interpreting and converting coordinates across different bases.",
+                listing: 'Change of Basis',
                 prerequisites: ['change-of-basis'],
                 path: '/quiz/change-of-basis',
-                component: ChangeOfBasisQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <ChangeOfBasisQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             }
         ]
@@ -257,48 +247,46 @@ export const modules: Module[] = [
                 id: 'matrix-transformations',
                 type: "lesson",
                 title: "Lesson: Matrix Transformations",
+                description: "Discover how matrices stretch, rotate, and reflect vectors in space.",
                 listing: "Matrix Transformations",
                 prerequisites: ['change-of-basis-quiz'],
                 path: "/lesson/matrix-transformations",
-                component: MatrixTransformationsLesson,
-                meta: null,
+                element: <MatrixTransformationsLesson/>,
                 xp: 25
             },
             {
                 id: 'matrix-transformations-quiz',
                 type: "quiz",
                 title: "Quiz: Matrix Transformations",
-                listing: "Matrix Transformations Quiz",
+                description: "Quiz your intuition about the effects of different matrices.",
+                listing: "Matrix Transformations",
                 prerequisites: ['matrix-transformations'],
                 path: "/quiz/matrix-transformations",
-                component: MatrixTransformationsQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <MatrixTransformationsQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             },
             {
                 id: 'null-column-space',
                 type: 'lesson',
                 title: 'Lesson: Null Space & Column Space',
+                description: "Explore the vectors a matrix sends to zero and the ones it can produce.",
                 listing: 'Null Space & Column Space',
                 prerequisites: ['matrix-transformations-quiz'],
                 path: '/lesson/null-column-space',
-                component: NullColumnSpaceLesson,
-                meta: null,
+                element: <NullColumnSpaceLesson/>,
                 xp: 25
             },
             {
                 id: 'null-column-space-quiz',
                 type: 'quiz',
                 title: 'Quiz: Null Space & Column Space',
-                listing: 'Null Space & Column Space Quiz',
+                description: "Test your grasp of null space and column space concepts.",
+                listing: 'Null Space & Column Space',
                 prerequisites: ['null-column-space'],
                 path: '/quiz/null-column-space',
-                component: NullColumnSpaceQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <NullColumnSpaceQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             },
         ]
@@ -310,144 +298,137 @@ export const modules: Module[] = [
                 id: 'matrix-multiplication-basics',
                 type: 'lesson',
                 title: 'Lesson: Multiplying Two Matrices',
+                description: "Understand the core rules of matrix multiplication and how dimensions interact.",
                 listing: 'Multiplying Two Matrices',
                 prerequisites: ['null-column-space-quiz'],
                 path: '/lesson/matrix-multiplication-basics',
-                component: MatrixMultiplicationLesson,
-                meta: null,
+                element: <MatrixMultiplicationLesson/>,
                 xp: 25
             },
             {
                 id: 'matrix-multiplication-basics-quiz',
                 type: 'quiz',
+                description: "Practice identifying valid matrix multiplications and predicting results.",
                 title: 'Quiz: Multiplying Two Matrices',
-                listing: 'Multiplying Two Matrices Quiz',
+                listing: 'Multiplying Two Matrices',
                 prerequisites: ['matrix-multiplication-basics'],
                 path: '/quiz/matrix-multiplication-basics',
-                component: MatrixMultiplicationQuiz,
-                meta: {
-                    total: 4
-                },
+                element: <MatrixMultiplicationQuiz/>,
+                numberOfQuestions: 4,
                 xp: 20
             },
             {
                 id: 'matrix-transformation-order',
                 type: "lesson",
                 title: "Lesson: Matrix Transformation Order",
+                description: "Learn how the order of matrix multiplication affects outcomes.",
                 listing: "Matrix Transformation Order",
                 prerequisites: ['matrix-multiplication-basics-quiz'],
                 path: "/lesson/matrix-transformation-order",
-                component: MatrixTransformationOrderLesson,
-                meta: null,
+                element: <MatrixTransformationOrderLesson/>,
                 xp: 25
             },
             {
                 id: 'matrix-transformation-order-quiz',
                 type: 'quiz',
                 title: 'Quiz: Matrix Transformation Order',
-                listing: 'Matrix Transformation Order Quiz',
+                description: "Test your ability to reason through multiple matrix applications.",
+                listing: 'Matrix Transformation Order',
                 prerequisites: ['matrix-transformation-order'],
                 path: '/quiz/matrix-transformation-order',
-                component: MatrixTransformationOrderQuiz,
-                meta: {
-                    total: 4
-                },
+                element: <MatrixTransformationOrderQuiz/>,
+                numberOfQuestions: 4,
                 xp: 20
             },
             {
                 id: 'determinants',
                 type: 'lesson',
                 title: 'Lesson: Determinants',
+                description: "Visualize how determinants represent area scaling and orientation.",
                 listing: 'Determinants',
                 prerequisites: ['matrix-transformation-order-quiz'],
                 path: '/lesson/determinants',
-                component: DeterminantsLesson,
-                meta: null,
+                element: <DeterminantsLesson/>,
                 xp: 25
             },
             {
                 id: 'determinants-quiz',
                 type: 'quiz',
                 title: 'Quiz: Determinants',
-                listing: 'Determinants Quiz',
+                description: "Check your knowledge of determinant calculation and geometric meaning.",
+                listing: 'Determinants',
                 prerequisites: ['determinants'],
                 path: '/quiz/determinants',
-                component: DeterminantsQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <DeterminantsQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             },
             {
                 id: 'matrix-inverses',
                 type: 'lesson',
                 title: 'Lesson: Matrix Inverses',
+                description: "Explore when and how a matrix can reverse its transformations.",
                 listing: 'Matrix Inverses',
                 prerequisites: ['determinants-quiz'],
                 path: '/lesson/matrix-inverses',
-                component: MatrixInversesLesson,
-                meta: null,
+                element: <MatrixInversesLesson/>,
                 xp: 25
             },
             {
                 id: 'matrix-inverses-quiz',
                 type: 'quiz',
                 title: 'Quiz: Matrix Inverses',
-                listing: 'Matrix Inverses Quiz',
+                description: "Evaluate your ability to reason about invertibility and matrix reversal.",
+                listing: 'Matrix Inverses',
                 prerequisites: ['matrix-inverses'],
                 path: '/quiz/matrix-inverses',
-                component: MatrixInversesQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <MatrixInversesQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             },
             {
                 id: 'matrix-rank',
                 type: 'lesson',
                 title: 'Lesson: Matrix Rank',
+                description: "Learn how rank reflects the number of independent directions in a matrix.",
                 listing: 'Matrix Rank',
                 prerequisites: ['matrix-inverses-quiz'],
                 path: '/lesson/matrix-rank',
-                component: MatrixRankLesson,
-                meta: null,
+                element: <MatrixRankLesson/>,
                 xp: 25
             },
             {
                 id: 'matrix-rank-quiz',
                 type: 'quiz',
                 title: 'Quiz: Matrix Rank',
-                listing: 'Matrix Rank Quiz',
+                description: "Test your skills in identifying full rank, reduced rank, and implications.",
+                listing: 'Matrix Rank',
                 prerequisites: ['matrix-rank'],
                 path: '/quiz/matrix-rank',
-                component: MatrixRankQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <MatrixRankQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             },
             {
                 id: 'eigenvectors',
                 type: 'lesson',
                 title: 'Lesson: Eigenvectors & Eigenvalues',
+                description: "Explore special vectors that stay on their span under transformation.",
                 listing: 'Eigenvectors & Eigenvalues',
                 prerequisites: ['matrix-rank-quiz'],
                 path: '/lesson/eigenvectors',
-                component: EigenvectorsLesson,
-                meta: null,
+                element: <EigenvectorsLesson/>,
                 xp: 25
             },
             {
                 id: 'eigenvectors-quiz',
                 type: 'quiz',
                 title: 'Quiz: Eigenvectors & Eigenvalues',
-                listing: 'Eigenvectors & Eigenvalues Quiz',
+                description: "Practice identifying eigenvectors and calculating eigenvalues.",                listing: 'Eigenvectors & Eigenvalues',
                 prerequisites: ['eigenvectors'],
                 path: '/quiz/eigenvectors',
-                component: EigenvectorsQuiz,
-                meta: {
-                    total: 3
-                },
+                element: <EigenvectorsQuiz/>,
+                numberOfQuestions: 3,
                 xp: 20
             }
         ]

@@ -12,7 +12,7 @@ const Achievements: React.FC<Props> = ({ completedLessons, xp, getQuizScore}) =>
 
     quizzes.forEach(quiz => {
        const score = getQuizScore(quiz.id);
-       if (score === quiz.meta?.total) {
+       if (score === quiz.numberOfQuestions) {
            earnedBadges.push(`🎯 Perfect Score: ${quiz.listing}`)
        }
     });

@@ -2,13 +2,17 @@ import { Link } from 'react-router-dom';
 import {useAuth} from "../context/AuthContext.tsx";
 import React from "react";
 import Meta from "../Meta.tsx";
+import {constructUrl} from "../../constructUrl.ts";
 
 const HomePage: React.FC = () => {
     const { user } = useAuth();
 
     return (
         <>
-            <Meta title="Learn Math for ML – MLMathr" description="Gamified visual lessons for vectors, dot product, and more." image="/public/logo.png" />
+            <Meta title="Learn Math for ML | MLMathr"
+                  description="Gamified visual lessons for vectors, dot product, and more."
+                  image="/public/logo.png"
+                  url={constructUrl('/')} />
             <div className="p-6 max-w-4xl mx-auto text-center">
                 <h1 className="text-4xl font-bold mb-4">
                     🚀 Master Math for Machine Learning
