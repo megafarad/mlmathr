@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+interface EigenvectorVisualizerProps {
+    onGoalAchieved?: () => void;
+}
+
+
 const width = 400;
 const height = 400;
 const origin = { x: width / 2, y: height / 2 };
@@ -30,7 +35,7 @@ const isEigenvector = (v: number[], Av: number[], epsilon = 0.005): boolean => {
     return Math.abs(Math.abs(dot) - 1) < epsilon;
 };
 
-const EigenvectorVisualizer: React.FC = () => {
+const EigenvectorVisualizer: React.FC<EigenvectorVisualizerProps> = ({ onGoalAchieved }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [matrix, setMatrix] = useState([
         [2, 1],
@@ -52,6 +57,13 @@ const EigenvectorVisualizer: React.FC = () => {
             const mag = Math.hypot(Av[0], Av[1]);
             maxMag = Math.max(maxMag, mag);
             vectors.push({ v, Av, isEig: isEigenvector(v, Av) });
+        }
+
+        const redCount = vectors.filter(v => v.isEig).length;
+
+        if (onGoalAchieved && redCount >= 2 && redCount <= 4) {
+            // We allow a small range (2–4) because directions ±v count as two
+            onGoalAchieved();
         }
 
         const scale = Math.min(80, 160 / maxMag); // Dynamic scaling
@@ -105,7 +117,7 @@ const EigenvectorVisualizer: React.FC = () => {
             ctx.lineTo(AvEnd.x, AvEnd.y);
             ctx.stroke();
         });
-    }, [matrix]);
+    }, [matrix, onGoalAchieved]);
 
     return (
         <div className="space-y-4">
