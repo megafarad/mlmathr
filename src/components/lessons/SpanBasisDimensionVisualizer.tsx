@@ -24,7 +24,7 @@ interface SpanBasisVisualizerProps {
     onGoalAchieved?: () => void;
 }
 
-const SpanBasisVisualizer: React.FC<SpanBasisVisualizerProps> = ({ onGoalAchieved }) => {
+const SpanBasisDimensionVisualizer: React.FC<SpanBasisVisualizerProps> = ({ onGoalAchieved }) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [v1, setV1] = useState([1, 1]);
     const [v2, setV2] = useState([2, 2]);
@@ -175,4 +175,4 @@ const SpanBasisVisualizer: React.FC<SpanBasisVisualizerProps> = ({ onGoalAchieve
     );
 };
 
-export default SpanBasisVisualizer;
+export default SpanBasisDimensionVisualizer;

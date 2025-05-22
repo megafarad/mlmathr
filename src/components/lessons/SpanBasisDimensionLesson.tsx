@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 import CompleteLessonButton from './CompleteLessonButton';
-import SpanBasisVisualizer from './SpanBasisVisualizer';
+import SpanBasisDimensionVisualizer from './SpanBasisDimensionVisualizer.tsx';
 import NextUpButton from "../NextUpButton.tsx";
 import Confetti from 'react-confetti';
 
 const lessonId = 'span-basis';
 
-const SpanBasisLesson: React.FC = () => {
+const SpanBasisDimensionLesson: React.FC = () => {
     const [goalAchieved, setGoalAchieved] = useState(false);
 
     return (
         <div className="max-w-4xl mx-auto p-6 relative">
             {goalAchieved && <Confetti numberOfPieces={200} recycle={false} />}
-            <h1 className="text-2xl font-bold mb-4">📚 Span and Basis</h1>
+            <h1 className="text-2xl font-bold mb-4">📚 Span, Basis, and Dimension</h1>
 
             <div className="grid md:grid-cols-2 gap-6 items-start">
                 <div className="space-y-4">
@@ -30,6 +30,16 @@ const SpanBasisLesson: React.FC = () => {
                     </p>
                     <p>
                         Two vectors are <strong>linearly dependent</strong> if one is a scalar multiple of the other. That means they point in the same or opposite direction.
+                    </p>
+                    <p>
+                        The <strong>dimension</strong> of a space is the number of vectors in its basis. For example:
+                    </p>
+                    <ul className="list-disc ml-6">
+                        <li>A single vector spans a 1D line → dimension 1</li>
+                        <li>Two independent vectors span a 2D plane → dimension 2</li>
+                    </ul>
+                    <p>
+                        If the vectors aren’t independent, they don’t expand the space—you’re still stuck in 1D.
                     </p>
                     <p>
                         To check if two vectors <code>[x₁, y₁]</code> and <code>[x₂, y₂]</code> are dependent:
@@ -53,7 +63,7 @@ const SpanBasisLesson: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center space-y-4'>
-                    <SpanBasisVisualizer onGoalAchieved={() => setGoalAchieved(true)} />
+                    <SpanBasisDimensionVisualizer onGoalAchieved={() => setGoalAchieved(true)} />
                     {!goalAchieved && (
                         <p className="text-sm text-gray-600">
                             🎯 Try to make the vectors linearly <strong>independent</strong>
@@ -67,4 +77,4 @@ const SpanBasisLesson: React.FC = () => {
     );
 };
 
-export default SpanBasisLesson;
+export default SpanBasisDimensionLesson;

@@ -7,7 +7,7 @@ import GradientLesson from "./components/lessons/GradientLesson.tsx";
 import GradientQuiz from "./components/quizzes/GradientQuiz.tsx";
 import LinearCombinationLesson from "./components/lessons/LinearCombinationLesson.tsx";
 import LinearCombinationQuiz from "./components/quizzes/LinearCombinationQuiz.tsx";
-import SpanBasisLesson from "./components/lessons/SpanBasisLesson.tsx";
+import SpanBasisDimensionLesson from "./components/lessons/SpanBasisDimensionLesson.tsx";
 import SpanBasisQuiz from "./components/quizzes/SpanBasisQuiz.tsx";
 import ProjectionLesson from "./components/lessons/ProjectionLesson.tsx";
 import ProjectionQuiz from "./components/quizzes/ProjectionQuiz.tsx";
@@ -201,11 +201,11 @@ export const modules: Module[] = [
             {
                 id: 'span-basis',
                 type: "lesson",
-                title: "Lesson: Span and Basis",
-                listing: "Span and Basis",
+                title: "Lesson: Span, Basis, & Dimension",
+                listing: "Span, Basis, & Dimension",
                 prerequisites: ['linear-combinations-quiz'],
                 path: "/lesson/span-basis",
-                component: SpanBasisLesson,
+                component: SpanBasisDimensionLesson,
                 meta: null,
                 xp: 25
             },
