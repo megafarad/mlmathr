@@ -12,6 +12,7 @@ import {useXp} from "./components/context/XpContext.tsx";
 import {useAuth} from "./components/context/AuthContext.tsx";
 import {modules} from "./modules";
 import ModuleItemPage from "./components/pages/ModuleItemPage.tsx";
+import ExplorePage from "./components/pages/ExplorePage.tsx";
 
 const App: React.FC = () => {
     const {xp} = useXp();
@@ -54,6 +55,7 @@ const App: React.FC = () => {
                 {modules.flatMap(m => m.items).map(item => (
                     <Route key={item.id} path={item.path} element={<ModuleItemPage item={item}/>}/>
                 ))}
+                <Route path="/explore" element={<ExplorePage/>} />
                 <Route path="/auth" element={<AuthPage/>}/>
                 <Route path="/progress" element={<PrivateRoute><ProgressDashboard/></PrivateRoute>}/>
                 <Route path="/roadmap" element={<PrivateRoute><RoadmapPage/></PrivateRoute>}/>

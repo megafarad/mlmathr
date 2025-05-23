@@ -60,12 +60,14 @@ export type ModuleItem = LessonItem | QuizItem;
 
 type Module = {
     title: string;
+    description: string;
     items: ModuleItem[];
 }
 
 export const modules: Module[] = [
     {
         title: 'Vectors & Geometry',
+        description: ' Build a strong foundation in vectors, direction, magnitude, and inner product concepts. This module introduces the geometric intuition behind vectors and prepares you for deeper linear algebra topics.',
         items: [
             {
                 id: 'vectors',
@@ -140,6 +142,7 @@ export const modules: Module[] = [
     },
     {
         title: 'Rates & Direction',
+        description: 'Explore gradients and their connection to slopes and directionality. Learn how vectors can represent change and direction in multi-dimensional spaces.',
         items: [
             {
                 id: 'gradient',
@@ -168,6 +171,7 @@ export const modules: Module[] = [
     },
     {
         title: 'Vector Combinations & Spaces',
+        description: 'Discover how vectors can combine to form new spaces. This module dives into linear combinations, span, basis, and how vectors define and relate to subspaces.',
         items: [
             {
                 id: 'linear-combinations',
@@ -242,6 +246,7 @@ export const modules: Module[] = [
     },
     {
         title: "Matrix Transformations",
+        description: "See how matrices transform space through rotation, scaling, and projection. You'll also learn how to switch coordinate systems and explore the structure of null and column spaces.",
         items: [
             {
                 id: 'matrix-transformations',
@@ -293,6 +298,7 @@ export const modules: Module[] = [
     },
     {
         title: 'Matrix Computation',
+        description: "Get hands-on with computing matrix products, determinants, inverses, and ranks. This module emphasizes how to manipulate and understand matrices numerically and visually.",
         items: [
             {
                 id: 'matrix-multiplication-basics',
@@ -424,7 +430,8 @@ export const modules: Module[] = [
                 id: 'eigenvectors-quiz',
                 type: 'quiz',
                 title: 'Quiz: Eigenvectors & Eigenvalues',
-                description: "Practice identifying eigenvectors and calculating eigenvalues.",                listing: 'Eigenvectors & Eigenvalues',
+                description: "Practice identifying eigenvectors and calculating eigenvalues.",
+                listing: 'Eigenvectors & Eigenvalues',
                 prerequisites: ['eigenvectors'],
                 path: '/quiz/eigenvectors',
                 element: <EigenvectorsQuiz/>,

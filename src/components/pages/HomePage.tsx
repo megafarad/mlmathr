@@ -30,8 +30,8 @@ const HomePage: React.FC = () => {
                         <Link to="/auth" className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">
                             🔐 Log In / Sign Up
                         </Link>
-                        <Link to="/lesson/vectors" className="border border-blue-600 text-blue-600 px-6 py-3 rounded hover:bg-blue-50">
-                            🧪 Try a Lesson
+                        <Link to="/explore" className="border border-blue-600 text-blue-600 px-6 py-3 rounded hover:bg-blue-50">
+                            📘 Explore MLMathr
                         </Link>
                     </div>
                 )}
