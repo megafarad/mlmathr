@@ -297,8 +297,8 @@ export const modules: Module[] = [
         ]
     },
     {
-        title: 'Matrix Computation',
-        description: "Get hands-on with computing matrix products, determinants, inverses, and ranks. This module emphasizes how to manipulate and understand matrices numerically and visually.",
+        title: 'Matrix Operations',
+        description: "Learn how to compute with matrices — including multiplication, determinants, inverses, and other foundational tools. These operations will power the way you manipulate space and data throughout linear algebra.",
         items: [
             {
                 id: 'matrix-multiplication-basics',
@@ -391,7 +391,13 @@ export const modules: Module[] = [
                 element: <MatrixInversesQuiz/>,
                 numberOfQuestions: 3,
                 xp: 20
-            },
+            }
+        ]
+    },
+    {
+        title: "Matrix Properties & Structure",
+        description: "Explore what matrices reveal about space — from dimensionality and independence to special directions that resist change. This module focuses on the deeper structure and meaning behind matrices.",
+        items: [
             {
                 id: 'matrix-rank',
                 type: 'lesson',
