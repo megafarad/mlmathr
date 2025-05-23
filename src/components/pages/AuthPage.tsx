@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import {supabase} from "../../supabase.ts";
+import {constructUrl} from "../../constructUrl.ts";
 
 const AuthPage: React.FC = () => {
     const { login, signup } = useAuth();
@@ -13,6 +15,9 @@ const AuthPage: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
+    const [showResetForm, setShowResetForm] = useState(false);
+    const [resetEmail, setResetEmail] = useState('');
+    const [resetSent, setResetSent] = useState(false);
     const emailRef = useRef<HTMLInputElement>(null);
     const [submitting, setSubmitting] = useState(false);
 
@@ -52,6 +57,24 @@ const AuthPage: React.FC = () => {
             }
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    const handlePasswordReset = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        try {
+            const { error } = await supabase.auth.resetPasswordForEmail(
+                resetEmail,
+                { redirectTo: constructUrl('/reset-password')});
+            if (error) {
+                setError(error.message);
+            } else {
+                setResetSent(true);
+            }
+        } catch (err) {
+            console.error(err);
+            setError('Failed to send reset email.');
         }
     };
 
@@ -97,6 +120,30 @@ const AuthPage: React.FC = () => {
                 </button>
             </form>
 
+            {showResetForm && (
+                <form onSubmit={handlePasswordReset} className="mt-6 space-y-4">
+                    <h3 className="text-sm font-semibold">Reset Password</h3>
+                    <input
+                        type="email"
+                        placeholder="Your email address"
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                        className="w-full border px-3 py-2 rounded"
+                        required
+                    />
+                    <button
+                        type="submit"
+                        className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded"
+                    >
+                        Send Reset Link
+                    </button>
+                    {resetSent && (
+                        <p className="text-green-600 text-sm">✅ Check your email for the reset link.</p>
+                    )}
+                </form>
+            )}
+
+
             {error && <p className="text-red-600 mt-4">{error}</p>}
 
             <p className="mt-4 text-sm">
@@ -108,6 +155,16 @@ const AuthPage: React.FC = () => {
                     {isSignup ? 'Log In' : 'Sign Up'}
                 </button>
             </p>
+            {!showResetForm && !isSignup && (
+                <p className="mt-4 text-sm text-right">
+                    <button
+                        onClick={() => setShowResetForm(true)}
+                        className="text-blue-600 hover:underline"
+                    >
+                        Forgot password?
+                    </button>
+                </p>
+            )}
         </div>
     );
 };
