@@ -14,6 +14,7 @@ import {modules} from "./modules";
 import ModuleItemPage from "./components/pages/ModuleItemPage.tsx";
 import ExplorePage from "./components/pages/ExplorePage.tsx";
 import ResetPasswordPage from "./components/pages/ResetPasswordPage.tsx";
+import GoogleAnalytics from "./components/GoogleAnalytics.tsx";
 
 const App: React.FC = () => {
     const {xp} = useXp();
@@ -36,35 +37,38 @@ const App: React.FC = () => {
         }
     }, [xp]);
     return (
-        <div className="p-6">
-            <header className="relative flex justify-between items-center mb-6">
-                <h1 className="text-xl font-bold">
-                    <Link to="/">MLMathr Lessons</Link>
-                </h1>
-                {user && (<div className="relative">
-                    <span className="text-sm bg-yellow-100 px-3 py-1 rounded-full">⭐ XP: {xp}</span>
-                    {xpFlash && (
-                        <div className="animate-xp-float left-1/2 transform -translate-x-1/2">
-                            +{xpFlash - (xpFlash - 25)} XP
-                        </div>
-                    )}
-                </div>)}
-            </header>
-            <NavBar/>
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                {modules.flatMap(m => m.items).map(item => (
-                    <Route key={item.id} path={item.path} element={<ModuleItemPage item={item}/>}/>
-                ))}
-                <Route path="/explore" element={<ExplorePage/>} />
-                <Route path="/auth" element={<AuthPage/>}/>
-                <Route path='/reset-password' element={<ResetPasswordPage/>}/>
-                <Route path="/progress" element={<PrivateRoute><ProgressDashboard/></PrivateRoute>}/>
-                <Route path="/roadmap" element={<PrivateRoute><RoadmapPage/></PrivateRoute>}/>
-                <Route path="/settings" element={<PrivateRoute><SettingsPage/></PrivateRoute>}/>
-                <Route path="*" element={<p>Choose a lesson to begin 🚀</p>}/>
-            </Routes>
-        </div>
+        <>
+            {import.meta.env.VITE_GA_ID && <GoogleAnalytics/>}
+            <div className="p-6">
+                <header className="relative flex justify-between items-center mb-6">
+                    <h1 className="text-xl font-bold">
+                        <Link to="/">MLMathr Lessons</Link>
+                    </h1>
+                    {user && (<div className="relative">
+                        <span className="text-sm bg-yellow-100 px-3 py-1 rounded-full">⭐ XP: {xp}</span>
+                        {xpFlash && (
+                            <div className="animate-xp-float left-1/2 transform -translate-x-1/2">
+                                +{xpFlash - (xpFlash - 25)} XP
+                            </div>
+                        )}
+                    </div>)}
+                </header>
+                <NavBar/>
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    {modules.flatMap(m => m.items).map(item => (
+                        <Route key={item.id} path={item.path} element={<ModuleItemPage item={item}/>}/>
+                    ))}
+                    <Route path="/explore" element={<ExplorePage/>} />
+                    <Route path="/auth" element={<AuthPage/>}/>
+                    <Route path='/reset-password' element={<ResetPasswordPage/>}/>
+                    <Route path="/progress" element={<PrivateRoute><ProgressDashboard/></PrivateRoute>}/>
+                    <Route path="/roadmap" element={<PrivateRoute><RoadmapPage/></PrivateRoute>}/>
+                    <Route path="/settings" element={<PrivateRoute><SettingsPage/></PrivateRoute>}/>
+                    <Route path="*" element={<p>Choose a lesson to begin 🚀</p>}/>
+                </Routes>
+            </div>
+        </>
     );
 };
 
