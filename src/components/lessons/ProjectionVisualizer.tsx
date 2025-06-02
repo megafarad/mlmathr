@@ -1,102 +1,73 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import {type CanvasVector, GraphCanvas, type Point, toCanvas} from "@sirhc77/canvas-math-kit";
 
 const width = 400;
 const height = 400;
 const scale = 40;
-const origin = { x: width / 2, y: height / 2 };
 
-const toCanvas = (x: number, y: number) => ({
-    x: origin.x + x * scale,
-    y: origin.y - y * scale,
-});
-
-const toVector = (x: number, y: number) => ({
-    x: (x - origin.x) / scale,
-    y: (origin.y - y) / scale,
-});
-
-const dot = (a: number[], b: number[]) => a[0] * b[0] + a[1] * b[1];
-const scaleVec = (v: number[], s: number) => [v[0] * s, v[1] * s];
-const proj = (a: number[], b: number[]) => {
-    const factor = dot(a, b) / dot(a, a);
-    return scaleVec(a, factor);
+const dot = (vectorA: CanvasVector, vectorB: CanvasVector) =>
+    vectorA.x * vectorB.x + vectorA.y * vectorB.y;
+const scaleVec = (vector: CanvasVector, s: number) => {
+    const scaledVector: CanvasVector = {x: vector.x * s, y: vector.y * s, color: 'red', draggable: false, headStyle: 'none' };
+    return scaledVector;
+}
+const proj = (vectorA: CanvasVector, vectorB: CanvasVector) => {
+    const factor = dot(vectorA, vectorB) / dot(vectorA, vectorA);
+    return scaleVec(vectorA, factor);
 };
 
-const formatVec = (v: number[]) => `[${v[0].toFixed(1)}, ${v[1].toFixed(1)}]`;
+const formatVec = (v: CanvasVector) => `[${v.x.toFixed(1)}, ${v.y.toFixed(1)}]`;
 
 interface ProjectionVisualizerProps {
     onGoalAchieved?: () => void;
 }
 
 const ProjectionVisualizer: React.FC<ProjectionVisualizerProps> = ({ onGoalAchieved }) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [a, setA] = useState([2, 1]);
-    const [b, setB] = useState([1, 2]);
-    const [dragging, setDragging] = useState<'a' | 'b' | null>(null);
+    const [vectorA, setVectorA] = useState<CanvasVector>({ x: 2, y: 1, color: 'blue', draggable: true, headStyle: 'both'});
+    const [vectorB, setVectorB] = useState<CanvasVector>({ x: 1, y: 2, color: 'green', draggable: true, headStyle: 'both'});
     const [goalFired, setGoalFired] = useState(false);
 
-    const projVec = proj(a, b);
+    const projVec = proj(vectorA, vectorB);
 
-    const isClose = (v1: number[], v2: number[], tolerance = 0.3) => {
-        return Math.abs(v1[0] - v2[0]) < tolerance && Math.abs(v1[1] - v2[1]) < tolerance;
+    const dotAB = dot(vectorA, vectorB);
+    const dotAA = dot(vectorA, vectorA);
+    const factor = dotAA === 0 ? 0 : dotAB / dotAA;
+
+    const isClose = (v1: CanvasVector, v2: CanvasVector, tolerance = 0.3) => {
+        return Math.abs(v1.x - v2.x) < tolerance && Math.abs(v1.y - v2.y) < tolerance;
     };
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d');
-        if (!canvas || !ctx) return;
+    const maxX = Math.floor(width / (2 * scale));
+    const maxY = Math.floor(height / (2 * scale));
 
-        ctx.clearRect(0, 0, width, height);
 
-        // Grid
-        ctx.strokeStyle = '#eee';
-        for (let x = 0; x <= width; x += scale) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-            ctx.stroke();
+    const handleVectorChange = (updated: CanvasVector[]) => {
+        const [oldVecA, oldVecB] = updated;
+
+        const xA = Math.max(-maxX, Math.min(maxX, Math.round(oldVecA.x)));
+        const yA = Math.max(-maxY, Math.min(maxY, Math.round(oldVecA.y)));
+        const xB = Math.max(-maxX, Math.min(maxX, Math.round(oldVecB.x)));
+        const yB = Math.max(-maxY, Math.min(maxY, Math.round(oldVecB.y)));
+
+        const newVecA = {...oldVecA, x: xA, y: yA}
+        const newVecB = {...oldVecB, x: xB, y: yB}
+
+        setVectorA(newVecA);
+        setVectorB(newVecB);
+
+        const target: CanvasVector = {x: 2, y: 0};
+        if (!goalFired && isClose(projVec, target)) {
+            const newVectorB: CanvasVector =  {x: vectorB.x * dotAA / dotAB, y: vectorB.y * dotAA / dotAB,
+                color: 'green', draggable: true, headStyle: 'both'};
+            setVectorB(newVectorB);
+            setGoalFired(true);
+            onGoalAchieved?.();
         }
-        for (let y = 0; y <= height; y += scale) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-            ctx.stroke();
-        }
+    }
 
-        // Axes
-        ctx.beginPath();
-        ctx.moveTo(0, origin.y);
-        ctx.lineTo(width, origin.y);
-        ctx.strokeStyle = '#aaa';
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(origin.x, 0);
-        ctx.lineTo(origin.x, height);
-        ctx.stroke();
-
-        const drawArrow = (vec: number[], color: string, draggable = true) => {
-            const { x, y } = toCanvas(vec[0], vec[1]);
-            ctx.beginPath();
-            ctx.moveTo(origin.x, origin.y);
-            ctx.lineTo(x, y);
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            if (draggable) {
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, Math.PI * 2);
-                ctx.fillStyle = color;
-                ctx.fill();
-            }
-        };
-
-        drawArrow(a, 'blue');
-        drawArrow(b, 'green');
-        drawArrow(projVec, 'red', false);
-
-        const bCanvas = toCanvas(b[0], b[1]);
-        const pCanvas = toCanvas(projVec[0], projVec[1]);
+    const customDraw = (ctx: CanvasRenderingContext2D, origin: Point, scale: number) => {
+        const bCanvas = toCanvas(vectorB.x, vectorB.y, origin, scale);
+        const pCanvas = toCanvas(projVec.x, projVec.y, origin, scale);
         ctx.setLineDash([4, 4]);
         ctx.beginPath();
         ctx.moveTo(bCanvas.x, bCanvas.y);
@@ -104,57 +75,17 @@ const ProjectionVisualizer: React.FC<ProjectionVisualizerProps> = ({ onGoalAchie
         ctx.strokeStyle = 'gray';
         ctx.stroke();
         ctx.setLineDash([]);
-    }, [a, b, projVec]);
+    }
 
-    useEffect(() => {
-        const target = [2, 0];
-        if (!goalFired && isClose(projVec, target)) {
-            setB(target.map((v) => v * dot(a, a) / dot(a, b))); // snap to make projection exact
-            setGoalFired(true);
-            onGoalAchieved?.();
-        }
-    }, [projVec, a, b, goalFired, onGoalAchieved]);
-
-    const handleMouseDown = (e: React.MouseEvent) => {
-        const rect = canvasRef.current!.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const pos = { x, y };
-
-        const isNear = (vec: number[]) => {
-            const end = toCanvas(vec[0], vec[1]);
-            return Math.hypot(end.x - pos.x, end.y - pos.y) < 10;
-        };
-
-        if (isNear(a)) setDragging('a');
-        else if (isNear(b)) setDragging('b');
-    };
-
-    const handleMouseMove = (e: React.MouseEvent) => {
-        if (!dragging) return;
-        const rect = canvasRef.current!.getBoundingClientRect();
-        const { x, y } = toVector(e.clientX - rect.left, e.clientY - rect.top);
-        const snapped = [Math.round(x), Math.round(y)];
-
-        if (dragging === 'a') setA(snapped);
-        else setB(snapped);
-    };
-
-    const dotAB = dot(a, b);
-    const dotAA = dot(a, a);
-    const factor = dotAA === 0 ? 0 : dotAB / dotAA;
 
     return (
         <div className="space-y-2">
-            <canvas
-                ref={canvasRef}
-                width={width}
-                height={height}
-                className="border cursor-pointer"
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={() => setDragging(null)}
-                onMouseLeave={() => setDragging(null)}
+            <GraphCanvas width={width}
+                         height={height}
+                         scale={scale}
+                         vectors={[vectorA, vectorB, projVec]}
+                         onVectorsChange={handleVectorChange}
+                         customDraw={customDraw}
             />
             <div className="text-center text-sm text-gray-600">
                 🔴 Projection of <strong>b</strong> onto <strong>a</strong> shown in red.
@@ -163,7 +94,7 @@ const ProjectionVisualizer: React.FC<ProjectionVisualizerProps> = ({ onGoalAchie
                 a · b = {dotAB.toFixed(2)}, a · a = {dotAA.toFixed(2)} ⇒ scale = {factor.toFixed(2)}
             </div>
             <div className="text-center text-xs text-gray-500">
-                projₐ(b) = {factor.toFixed(2)} × {formatVec(a)} = <strong>{formatVec(projVec)}</strong>
+                projₐ(b) = {factor.toFixed(2)} × {formatVec(vectorA)} = <strong>{formatVec(projVec)}</strong>
             </div>
         </div>
     );
