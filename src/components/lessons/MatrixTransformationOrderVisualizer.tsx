@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {type CanvasVector, GraphCanvas} from "@sirhc77/canvas-math-kit";
 
 interface Props {
     onGoalAchieved?: () => void;
@@ -8,12 +9,14 @@ interface Props {
 const width = 400;
 const height = 400;
 const origin = { x: width / 2, y: height / 2 };
-const baseVector = [1, 1];
+const baseVector: CanvasVector = { x: 1, y: 1, color: 'gray', headStyle: 'arrow', label: 'Original'};
 
-const applyMatrix = (m: number[][], v: number[]) => [
-    m[0][0] * v[0] + m[0][1] * v[1],
-    m[1][0] * v[0] + m[1][1] * v[1],
-];
+const applyMatrix = (m: number[][], v: CanvasVector, color: string, label: string): CanvasVector => ({
+    x: m[0][0] * v.x + m[0][1] * v.y,
+    y: m[1][0] * v.x + m[1][1] * v.y,
+    color: color,
+    label: label
+});
 
 const multiplyMatrices = (a: number[][], b: number[][]): number[][] => [
     [
@@ -25,18 +28,7 @@ const multiplyMatrices = (a: number[][], b: number[][]): number[][] => [
         a[1][0] * b[0][1] + a[1][1] * b[1][1],
     ],
 ];
-
-const scaleDown = (v: number[], maxLength: number) => {
-    const length = Math.hypot(v[0], v[1]);
-    if (length > maxLength) {
-        const scale = maxLength / length;
-        return [v[0] * scale, v[1] * scale];
-    }
-    return v;
-};
-
 const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
     const [matrixA, setMatrixA] = useState([
         [1, 1],
         [0, 1],
@@ -46,15 +38,15 @@ const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }
         [1, 1],
     ]);
 
-    const bThenA = applyMatrix(matrixA, applyMatrix(matrixB, baseVector));
-    const aThenB = applyMatrix(matrixB, applyMatrix(matrixA, baseVector));
+    const bThenA = applyMatrix(matrixA, applyMatrix(matrixB, baseVector, 'green', 'Bv'), 'green', 'A(Bv)');
+    const aThenB = applyMatrix(matrixB, applyMatrix(matrixA, baseVector, 'purple', 'Av'), 'purple', 'B(Av)');
     const vectorsToMeasure = [baseVector, bThenA, aThenB];
 
-    const maxMag = Math.max(...vectorsToMeasure.map((v) => Math.hypot(v[0], v[1])));
-    const visualRadius = (Math.min(width, height) / 2) * 0.8;
+    const maxMag = Math.max(...vectorsToMeasure.map((v) => Math.hypot(v.x, v.y)));
+    const visualRadius = (Math.min(width, height) / 2);
     const dynamicScale = maxMag > 0 ? visualRadius / maxMag : 40;
 
-    const isOutOfBounds = vectorsToMeasure.some(([x, y]) => {
+    const isOutOfBounds = vectorsToMeasure.some(({x, y}) => {
         const canvasX = origin.x + x * dynamicScale;
         const canvasY = origin.y - y * dynamicScale;
         return canvasX < 0 || canvasX > width || canvasY < 0 || canvasY > height;
@@ -76,89 +68,12 @@ const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }
     }, [ab, ba, onGoalAchieved]);
 
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        const ctx = canvas?.getContext('2d');
-        if (!canvas || !ctx) return;
-
-        ctx.clearRect(0, 0, width, height);
-
-        // Grid lines based on dynamic scale
-        ctx.strokeStyle = '#eee';
-        ctx.lineWidth = 1;
-        const unitLimit = Math.ceil((Math.min(width, height) / 2) / dynamicScale);
-
-        for (let i = -unitLimit; i <= unitLimit; i++) {
-            const x = origin.x + i * dynamicScale;
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-            ctx.stroke();
-
-            const y = origin.y - i * dynamicScale;
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-            ctx.stroke();
-        }
-
-        // Axes
-        ctx.beginPath();
-        ctx.moveTo(0, origin.y);
-        ctx.lineTo(width, origin.y);
-        ctx.strokeStyle = '#aaa';
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(origin.x, 0);
-        ctx.lineTo(origin.x, height);
-        ctx.stroke();
-
-        const toCanvas = (x: number, y: number) => ({
-            x: origin.x + x * dynamicScale,
-            y: origin.y - y * dynamicScale,
-        });
-
-        const drawVec = (v: number[], color: string, label: string) => {
-            const [vx, vy] = scaleDown(v, 8);
-            const { x, y } = toCanvas(vx, vy);
-
-            ctx.beginPath();
-            ctx.moveTo(origin.x, origin.y);
-            ctx.lineTo(x, y);
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            // Arrowhead
-            const angle = Math.atan2(origin.y - y, x - origin.x);
-            const size = 20;
-            ctx.beginPath();
-            ctx.moveTo(x, y);
-            ctx.lineTo(x - size * Math.cos(angle - 0.3), y + size * Math.sin(angle - 0.3));
-            ctx.lineTo(x - size * Math.cos(angle + 0.3), y + size * Math.sin(angle + 0.3));
-            ctx.closePath();
-            ctx.fillStyle = color;
-            ctx.fill();
-
-            // Label
-            ctx.fillStyle = color;
-            ctx.font = '12px sans-serif';
-            ctx.fillText(label, x + 5, y - 5);
-        };
-
-        drawVec(baseVector, 'gray', 'Original');
-        drawVec(bThenA, 'green', 'A(Bv)');
-        drawVec(aThenB, 'purple', 'B(Av)');
-    }, [matrixA, matrixB, dynamicScale, bThenA, aThenB]);
-
     return (
         <div className="space-y-4">
-            <canvas
-                ref={canvasRef}
-                width={width}
-                height={height}
-                className="border"
+            <GraphCanvas width={width}
+                         height={height}
+                         scale={dynamicScale}
+                         vectors={vectorsToMeasure}
             />
 
             {isOutOfBounds && (
@@ -179,11 +94,11 @@ const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }
             <div className="text-sm text-center text-gray-700 space-y-1">
                 <div>
                     <span className="font-semibold text-green-600">A(Bv):</span>{' '}
-                    [{bThenA[0].toFixed(2)}, {bThenA[1].toFixed(2)}]
+                    [{bThenA.x.toFixed(2)}, {bThenA.y.toFixed(2)}]
                 </div>
                 <div>
                     <span className="font-semibold text-purple-600">B(Av):</span>{' '}
-                    [{aThenB[0].toFixed(2)}, {aThenB[1].toFixed(2)}]
+                    [{aThenB.x.toFixed(2)}, {aThenB.y.toFixed(2)}]
                 </div>
             </div>
 
