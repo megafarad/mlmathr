@@ -4,11 +4,11 @@ import {
     drawCircle,
     drawLine,
     GraphCanvas,
-    type Point,
     toCanvas,
-    writeLabel
+    writeLabel,
+    type Point,
+    type DragTarget
 } from "@sirhc77/canvas-math-kit";
-import type {DragTarget} from "@sirhc77/canvas-math-kit/dist/hooks/usePointerDrag";
 
 interface GradientVisualizerProps {
     onGoalAchieved?: () => void;

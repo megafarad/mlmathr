@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {type Point} from "@sirhc77/canvas-math-kit/src/utils/canvasGraphUtils.ts";
-import {drawParallelogram, GraphCanvas, toCanvas} from "@sirhc77/canvas-math-kit";
+import { drawParallelogram, GraphCanvas, toCanvas, type Point } from "@sirhc77/canvas-math-kit";
 
 interface MatrixInversesVisualizerProps {
     onGoalAchieved?: () => void;
