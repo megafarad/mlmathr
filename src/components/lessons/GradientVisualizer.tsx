@@ -39,7 +39,7 @@ const GradientVisualizer: React.FC<GradientVisualizerProps> = ({ onGoalAchieved 
         const pointCanvas = toCanvas(point.x, point.y, origin, scale);
         const gradientEnd = toCanvas(point.x + gradient.x * 0.2, point.y + gradient.y * 0.2, origin, scale);
 
-        drawLine(ctx, pointCanvas, gradientEnd, 'red');
+        drawLine(ctx, pointCanvas, gradientEnd, 'red', 2);
         drawCircle(ctx, pointCanvas, 4, 'red');
         drawArrowhead(ctx, pointCanvas, gradientEnd, 'red');
 
