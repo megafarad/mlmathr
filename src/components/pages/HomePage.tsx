@@ -26,11 +26,11 @@ const HomePage: React.FC = () => {
                         🎯 Go to Dashboard
                     </Link>
                 ) : (
-                    <div className="space-x-4">
-                        <Link to="/auth" className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">
+                    <div className="flex flex-col sm:flex-row sm:space-x-4 space-y-4 sm:space-y-0 items-center justify-center">
+                        <Link to="/auth" className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 w-full sm:w-auto text-center">
                             🔐 Log In / Sign Up
                         </Link>
-                        <Link to="/explore" className="border border-blue-600 text-blue-600 px-6 py-3 rounded hover:bg-blue-50">
+                        <Link to="/explore" className="border border-blue-600 text-blue-600 px-6 py-3 rounded hover:bg-blue-50 w-full sm:w-auto text-center">
                             📘 Explore MLMathr
                         </Link>
                     </div>
