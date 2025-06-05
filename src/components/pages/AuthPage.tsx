@@ -10,8 +10,7 @@ const AuthPage: React.FC = () => {
     const [params] = useSearchParams();
     const redirectTo = params.get('to') || '/progress';
     const showVerifyMessage = params.get('verify') === '1';
-    const isRedirect = params.get('redirect') === '1';
-    const [isSignup, setIsSignup] = useState(() => !showVerifyMessage && !isRedirect);
+    const [isSignup, setIsSignup] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);

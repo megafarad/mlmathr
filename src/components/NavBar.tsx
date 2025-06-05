@@ -43,7 +43,7 @@ const NavBar: React.FC = () => {
                 <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
                 <Link to="/settings" className="text-gray-600 hover:underline">⚙️ Settings</Link>
                 {user ? (
-                    <button onClick={logout} className="text-red-600 hover:underline text-left px-2 py-1">
+                    <button onClick={logout} className="text-red-600 hover:underline text-left px-2 py-1 cursor-pointer">
                         🚪 Log Out
                     </button>
                 ) : (
