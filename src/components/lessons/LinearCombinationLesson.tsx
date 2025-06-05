@@ -62,7 +62,7 @@ const LinearCombinationLesson: React.FC = () => {
                 </div>
 
                 <div className='flex flex-col items-center space-y-4'>
-                    <LinearCombinationVisualizer a={a} b={b} onChange={(a, b) => { setA(a); setB(b); }} />
+                    <LinearCombinationVisualizer a={a} b={b} onChange={(a, b) => { setA(a); setB(b); }} goalFired={goalAchieved} />
                     {!goalAchieved && (
                         <p className="text-sm text-gray-600">
                             🎯 Try setting the result vector to <strong>[3, 2]</strong>

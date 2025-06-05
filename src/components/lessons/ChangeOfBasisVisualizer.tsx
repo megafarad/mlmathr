@@ -1,160 +1,102 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import {type CanvasVector, GraphCanvas} from "@sirhc77/canvas-math-kit";
 
 const width = 400;
 const height = 400;
-const origin = { x: width / 2, y: height / 2 };
 const scale = 40;
 
-const toCanvas = (x: number, y: number) => ({
-    x: origin.x + x * scale,
-    y: origin.y - y * scale,
-});
-
-const drawArrow = (
-    ctx: CanvasRenderingContext2D,
-    x: number,
-    y: number,
-    color: string
-) => {
-    const headlen = 10;
-    const from = toCanvas(0, 0);
-    const to = toCanvas(x, y);
-    const dx = to.x - from.x;
-    const dy = to.y - from.y;
-    const angle = Math.atan2(dy, dx);
-
-    ctx.setLineDash([]);
-    ctx.beginPath();
-    ctx.moveTo(from.x, from.y);
-    ctx.lineTo(to.x, to.y);
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(to.x, to.y);
-    ctx.lineTo(to.x - headlen * Math.cos(angle - Math.PI / 6), to.y - headlen * Math.sin(angle - Math.PI / 6));
-    ctx.lineTo(to.x - headlen * Math.cos(angle + Math.PI / 6), to.y - headlen * Math.sin(angle + Math.PI / 6));
-    ctx.lineTo(to.x, to.y);
-    ctx.fillStyle = color;
-    ctx.fill();
-};
-
-const invert2x2 = (a: number[][]): number[][] | null => {
-    const [[a11, a12], [a21, a22]] = a;
-    const det = a11 * a22 - a12 * a21;
+const invert2x2 = (a: CanvasVector[]): CanvasVector[] | null => {
+    const [basis0, basis1] = a;
+    const det = basis0.x * basis1.y - basis0.y * basis1.x;
     if (Math.abs(det) < 1e-8) return null;
     const invDet = 1 / det;
     return [
-        [ a22 * invDet, -a12 * invDet],
-        [-a21 * invDet,  a11 * invDet],
+        {...basis0, x: basis1.y * invDet, y: -basis1.x * invDet},
+        {...basis1, x: -basis0.y * invDet, y: basis0.x * invDet},
     ];
 };
 
-const applyMatrix = (matrix: number[][], v: number[]): number[] => [
-    matrix[0][0] * v[0] + matrix[0][1] * v[1],
-    matrix[1][0] * v[0] + matrix[1][1] * v[1],
+const applyMatrix = (matrix: CanvasVector[], v: CanvasVector): number[] => [
+    matrix[0].x * v.x + matrix[0].y * v.y,
+    matrix[1].x * v.x + matrix[1].y * v.y,
 ];
 
 interface Props {
     onGoalAchieved?: () => void;
 }
 
-const ChangeOfBasisVisualizer: React.FC<Props> = ({ onGoalAchieved }) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
+const DEFAULT_TARGET_VECTOR: CanvasVector = { x: 2, y: 1, color: 'blue', draggable: false }; // Fixed target vector
 
-    const [basis, setBasis] = useState([
-        [1, 0],
-        [0, 1],
+const areCoordinatesClose = (v1: number[], v2: number[], tolerance = 0.1): boolean => {
+    return Math.abs(v1[0] - v2[0]) < tolerance && Math.abs(v1[1] - v2[1]) < tolerance;
+};
+
+const ChangeOfBasisVisualizer: React.FC<Props> = ({ onGoalAchieved }) => {
+    const [basis, setBasis] = useState<CanvasVector[]>([
+        { x: 1, y: 0, color: 'green', draggable: false },
+        { x: 0, y: 1, color: 'purple', draggable: false }
     ]);
 
-    const [vector] = useState([2, 1]); // Fixed target vector
     const [goalFired, setGoalFired] = useState(false);
 
-    const invBasis = invert2x2(basis);
-    const coordsInNewBasis = invBasis ? applyMatrix(invBasis, vector) : null;
+    const inverseBasis = invert2x2(basis);
+    const newBasisCoords = inverseBasis ? applyMatrix(inverseBasis, DEFAULT_TARGET_VECTOR) : null;
 
     useEffect(() => {
-        const ctx = canvasRef.current?.getContext('2d');
-        if (!ctx) return;
-
-        ctx.clearRect(0, 0, width, height);
-
-        // Grid
-        ctx.strokeStyle = '#eee';
-        for (let x = 0; x <= width; x += scale) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-            ctx.stroke();
-        }
-        for (let y = 0; y <= height; y += scale) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-            ctx.stroke();
-        }
-
-        // Axes
-        ctx.strokeStyle = '#aaa';
-        ctx.beginPath();
-        ctx.moveTo(0, origin.y);
-        ctx.lineTo(width, origin.y);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(origin.x, 0);
-        ctx.lineTo(origin.x, height);
-        ctx.stroke();
-
-        drawArrow(ctx, basis[0][0], basis[1][0], 'green');   // Basis 1
-        drawArrow(ctx, basis[0][1], basis[1][1], 'purple');  // Basis 2
-        drawArrow(ctx, vector[0], vector[1], 'blue');        // Vector
-    }, [basis, vector]);
-
-    useEffect(() => {
-        const isClose = (v1: number[], v2: number[], tol = 0.1) =>
-            Math.abs(v1[0] - v2[0]) < tol && Math.abs(v1[1] - v2[1]) < tol;
-
-        if (!goalFired && coordsInNewBasis && isClose(coordsInNewBasis, [1, 0])) {
+        if (!goalFired && newBasisCoords && areCoordinatesClose(newBasisCoords, [1, 0])) {
             setGoalFired(true);
             onGoalAchieved?.();
         }
-    }, [coordsInNewBasis, onGoalAchieved, goalFired]);
+    }, [newBasisCoords, onGoalAchieved, goalFired]);
+
+    const handleBasisChange = (row: number, col: number, value: number) => {
+        const parsedValue = isNaN(value) ? 0 : value;
+        setBasis(prevBasis => {
+            const updatedBasis = [...prevBasis];
+            updatedBasis[row] = {
+                ...updatedBasis[row],
+                [col === 0 ? 'x' : 'y']: parsedValue
+            };
+            return updatedBasis;
+        });
+    };
 
     return (
         <div className="space-y-4">
-            <canvas ref={canvasRef} width={width} height={height} className="border" />
-
+            <GraphCanvas
+                width={width}
+                height={height}
+                scale={scale}
+                vectors={[DEFAULT_TARGET_VECTOR, basis[0], basis[1]]}
+            />
             <div className="text-center text-sm text-gray-700 space-y-1">
                 <div>🟩 Green = First basis vector</div>
                 <div>🟪 Purple = Second basis vector</div>
-                <div>🟦 Blue = Vector in standard basis: ({vector[0]}, {vector[1]})</div>
-                {coordsInNewBasis ? (
-                    <div>📐 Coordinates in new basis: ({coordsInNewBasis[0].toFixed(2)}, {coordsInNewBasis[1].toFixed(2)})</div>
+                <div>🟦 Blue = Vector in standard basis: ({DEFAULT_TARGET_VECTOR.x}, {DEFAULT_TARGET_VECTOR.y})</div>
+                {newBasisCoords ? (
+                    <div>📐 Coordinates in new basis: ({newBasisCoords[0].toFixed(2)}, {newBasisCoords[1].toFixed(2)})</div>
                 ) : (
                     <div className="text-red-600">⚠️ Basis not invertible</div>
                 )}
             </div>
-
             <div className="grid grid-cols-2 gap-6 max-w-xl mx-auto text-sm">
                 <div>
                     <h3 className="font-semibold mb-1">Basis Vectors</h3>
                     <div className="grid grid-cols-2 gap-2">
-                        {basis.map((row, r) =>
-                            row.map((val, c) => (
+                        {[0, 1].map(row =>
+                            [0, 1].map(col => (
                                 <input
-                                    key={`${r}-${c}`}
+                                    key={`${row}-${col}`}
                                     type="number"
-                                    value={val}
-                                    onChange={(e) => {
-                                        let value = parseFloat(e.target.value);
-                                        if (isNaN(value)) value = 0;
-                                        const newBasis = [...basis];
-                                        newBasis[r] = [...newBasis[r]];
-                                        newBasis[r][c] = value;
-                                        setBasis(newBasis);
-                                    }}
+                                    disabled={goalFired}
+                                    value={row === 0 ? basis[col].x : basis[col].y}
+                                    onChange={(e) =>
+                                        handleBasisChange(
+                                            col,
+                                            row,
+                                            parseFloat(e.target.value)
+                                        )
+                                    }
                                     className="border px-2 py-1 w-16 text-center rounded"
                                 />
                             ))

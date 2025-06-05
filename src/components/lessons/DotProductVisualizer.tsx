@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import {type CanvasVector, GraphCanvas} from "@sirhc77/canvas-math-kit";
 
 const width = 300;
 const height = 300;
-const origin = { x: width / 2, y: height / 2 };
 const scale = 15;
 
 interface DotProductVisualizerProps {
@@ -10,8 +10,8 @@ interface DotProductVisualizerProps {
 }
 
 const DotProductVisualizer: React.FC<DotProductVisualizerProps> = ({ onGoalAchieved }) => {
-    const [vecA, setVecA] = useState({ x: 2, y: 3 });
-    const [vecB, setVecB] = useState({ x: -1, y: 2 });
+    const [vecA, setVecA] = useState<CanvasVector>({ x: 2, y: 3, color: 'blue', draggable: true, headStyle: 'both' });
+    const [vecB, setVecB] = useState<CanvasVector>({ x: -1, y: 2, color: 'green', draggable: true, headStyle: 'both' });
     const [goalFired, setGoalFired] = useState(false);
 
     const dotProduct = (a: typeof vecA, b: typeof vecB) => a.x * b.x + a.y * b.y;
@@ -34,126 +34,35 @@ const DotProductVisualizer: React.FC<DotProductVisualizerProps> = ({ onGoalAchie
     const maxX = Math.floor(width / (2 * scale));
     const maxY = Math.floor(height / (2 * scale));
 
-    const snapToPerpendicular = (fixed: typeof vecA, movable: typeof vecA) => {
-        const dot = dotProduct(fixed, movable);
-        const projLength = dot / magnitude(fixed);
-        return {
-            x: movable.x - projLength * (fixed.x / magnitude(fixed)),
-            y: movable.y - projLength * (fixed.y / magnitude(fixed)),
-        };
-    };
+    const handleVectorChange = (updated: CanvasVector[]) => {
+        const [oldVecA, oldVecB] = updated;
+        
+        const xA = Math.max(-maxX, Math.min(maxX, Math.round(oldVecA.x)));
+        const yA = Math.max(-maxY, Math.min(maxY, Math.round(oldVecA.y)));
+        const xB = Math.max(-maxX, Math.min(maxX, Math.round(oldVecB.x)));
+        const yB = Math.max(-maxY, Math.min(maxY, Math.round(oldVecB.y)));
+        
+        const newVecA = {...oldVecA, x: xA, y: yA}
+        const newVecB = {...oldVecB, x: xB, y: yB}
+        
+        setVecA(newVecA);
+        setVecB(newVecB);
 
-    const handleDrag = (setVec: React.Dispatch<React.SetStateAction<{ x: number; y: number }>>, isB: boolean) =>
-        (e: React.MouseEvent<SVGCircleElement, MouseEvent>) => {
-            const bounds = (e.target as SVGElement).ownerSVGElement!.getBoundingClientRect();
+        if (!goalFired && label === 'Perpendicular') {
+            onGoalAchieved?.();
+            setGoalFired(true);
+        }
 
-            const onMouseMove = (moveEvent: MouseEvent) => {
-                const x = moveEvent.clientX - bounds.left;
-                const y = moveEvent.clientY - bounds.top;
-
-                const newVec = {
-                    x: Math.max(-maxX, Math.min(maxX, Math.round((x - origin.x) / scale))),
-                    y: Math.max(-maxY, Math.min(maxY, Math.round((origin.y - y) / scale))),
-                };
-
-                const newDot = isB ? dotProduct(vecA, newVec) : dotProduct(newVec, vecB);
-
-                // Snap if very close to perpendicular
-                if (Math.abs(newDot) < 0.2) {
-                    const snapped = isB
-                        ? snapToPerpendicular(vecA, newVec)
-                        : snapToPerpendicular(vecB, newVec);
-                    const rounded = {
-                        x: Math.round(snapped.x),
-                        y: Math.round(snapped.y),
-                    };
-                    setVec(rounded);
-
-                    if (!goalFired) {
-                        setGoalFired(true);
-                        onGoalAchieved?.();
-                    }
-                } else {
-                    setVec(newVec);
-                }
-            };
-
-            const onMouseUp = () => {
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-            };
-
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
-        };
-
-    const drawVector = (
-        vec: { x: number; y: number },
-        color: string,
-        onDrag: (e: React.MouseEvent<SVGCircleElement, MouseEvent>) => void
-    ) => {
-        const x = origin.x + vec.x * scale;
-        const y = origin.y - vec.y * scale;
-
-        return (
-            <>
-                <line
-                    x1={origin.x}
-                    y1={origin.y}
-                    x2={x}
-                    y2={y}
-                    stroke={color}
-                    strokeWidth={2}
-                    markerEnd="url(#arrow)"
-                />
-                <circle
-                    cx={x}
-                    cy={y}
-                    r={6}
-                    fill={color}
-                    className="cursor-pointer"
-                    onMouseDown={onDrag}
-                />
-            </>
-        );
-    };
+    }
 
     return (
         <div className="flex flex-col items-center space-y-4">
-            <svg width={width} height={height} className="border border-gray-300">
-                {/* Grid */}
-                {Array.from({ length: Math.floor(width / scale) }, (_, i) => {
-                    const x = i * scale;
-                    return <line key={`v-${i}`} x1={x} y1={0} x2={x} y2={height} stroke="#eee" />;
-                })}
-                {Array.from({ length: Math.floor(height / scale) }, (_, i) => {
-                    const y = i * scale;
-                    return <line key={`h-${i}`} x1={0} y1={y} x2={width} y2={y} stroke="#eee" />;
-                })}
-
-                {/* Axes */}
-                <line x1={0} y1={origin.y} x2={width} y2={origin.y} stroke="#ccc" />
-                <line x1={origin.x} y1={0} x2={origin.x} y2={height} stroke="#ccc" />
-
-                {/* Vectors */}
-                {drawVector(vecA, 'blue', handleDrag(setVecA, false))}
-                {drawVector(vecB, 'green', handleDrag(setVecB, true))}
-
-                <defs>
-                    <marker
-                        id="arrow"
-                        markerWidth="10"
-                        markerHeight="10"
-                        refX="6"
-                        refY="3"
-                        orient="auto"
-                        markerUnits="strokeWidth"
-                    >
-                        <path d="M0,0 L0,6 L9,3 z" fill="black" />
-                    </marker>
-                </defs>
-            </svg>
-
+            <GraphCanvas width={width}
+                         height={height}
+                         scale={scale}
+                         vectors={[vecA, vecB]}
+                         locked={goalFired}
+                         onVectorsChange={handleVectorChange}/>
             <div className="text-center">
                 <p>🟦 Vector A: [{vecA.x}, {vecA.y}]</p>
                 <p>🟩 Vector B: [{vecB.x}, {vecB.y}]</p>

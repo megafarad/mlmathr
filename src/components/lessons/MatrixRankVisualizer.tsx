@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import {type CanvasVector, GraphCanvas} from "@sirhc77/canvas-math-kit";
 
 interface MatrixRankVisualizerProps {
     onGoalAchieved?: () => void;
@@ -6,14 +7,7 @@ interface MatrixRankVisualizerProps {
 
 const width = 400;
 const height = 400;
-const origin = { x: width / 2, y: height / 2 };
 const scale = 40;
-
-const toCanvas = (x: number, y: number) => ({
-    x: origin.x + x * scale,
-    y: origin.y - y * scale,
-});
-
 const computeRank = (m: number[][]) => {
     const [a, b] = m[0];
     const [c, d] = m[1];
@@ -27,7 +21,6 @@ const computeRank = (m: number[][]) => {
 };
 
 const MatrixRankVisualizer: React.FC<MatrixRankVisualizerProps> = ({ onGoalAchieved }) => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
     const [matrix, setMatrix] = useState([
         [1, 0],
         [0, 1],
@@ -46,71 +39,18 @@ const MatrixRankVisualizer: React.FC<MatrixRankVisualizerProps> = ({ onGoalAchie
     // … existing canvas–drawing effect …
     useEffect(() => {
         setRank(computeRank(matrix));
-        // drawing code unchanged …
-        const ctx = canvasRef.current?.getContext('2d');
-        if (!ctx) return;
-        ctx.clearRect(0, 0, width, height);
-        ctx.strokeStyle = '#eee';
-        for (let x = 0; x <= width; x += scale) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-            ctx.stroke();
-        }
-        for (let y = 0; y <= height; y += scale) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-            ctx.stroke();
-        }
-        ctx.strokeStyle = '#aaa';
-        ctx.beginPath();
-        ctx.moveTo(0, origin.y);
-        ctx.lineTo(width, origin.y);
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(origin.x, 0);
-        ctx.lineTo(origin.x, height);
-        ctx.stroke();
-        const drawArrow = (v: number[], color: string) => {
-            const head = toCanvas(v[0], v[1]);
-            const base = toCanvas(0, 0);
-            const dx = head.x - base.x;
-            const dy = head.y - base.y;
-            const len = Math.hypot(dx, dy);
-            if (len === 0) return;
-            const angle = Math.atan2(dy, dx);
-            const headlen = 10;
-            ctx.beginPath();
-            ctx.moveTo(base.x, base.y);
-            ctx.lineTo(head.x, head.y);
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(head.x, head.y);
-            ctx.lineTo(
-                head.x - headlen * Math.cos(angle - Math.PI / 6),
-                head.y - headlen * Math.sin(angle - Math.PI / 6)
-            );
-            ctx.lineTo(
-                head.x - headlen * Math.cos(angle + Math.PI / 6),
-                head.y - headlen * Math.sin(angle + Math.PI / 6)
-            );
-            ctx.closePath();
-            ctx.fillStyle = color;
-            ctx.fill();
-        };
-        const [a, b] = matrix[0];
-        const [c, d] = matrix[1];
-        drawArrow([a, c], 'blue');
-        drawArrow([b, d], 'green');
     }, [matrix]);
+
+    const vector0: CanvasVector = { x: matrix[0][0], y: matrix[1][0], color: 'blue', headStyle: 'arrow'};
+    const vector1: CanvasVector = { x: matrix[0][1], y: matrix[1][1], color: 'green', headStyle: 'arrow' };
 
     return (
         <div className="space-y-4">
-            <canvas ref={canvasRef} width={width} height={height} className="border" />
-
+            <GraphCanvas width={width}
+                         height={height}
+                         scale={scale}
+                         vectors={[vector0, vector1]}
+            />
             <div className="text-center text-md font-semibold">Rank: {rank}</div>
 
             <div className="grid grid-cols-2 gap-6 max-w-md mx-auto text-sm">
@@ -123,6 +63,7 @@ const MatrixRankVisualizer: React.FC<MatrixRankVisualizerProps> = ({ onGoalAchie
                                     key={`${r}-${c}`}
                                     type="number"
                                     value={val}
+                                    disabled={goalFired}
                                     onChange={(e) => {
                                         const v = parseFloat(e.target.value) || 0;
                                         const m = matrix.map((row) => [...row]);

@@ -12,12 +12,6 @@ const VectorLesson: React.FC = () => {
     const magnitudeGoal = 10;
     const tolerance = 0.3;
 
-    const handleMagnitudeChange = (mag: number) => {
-        if (!goalAchieved && Math.abs(mag - magnitudeGoal) < tolerance) {
-            setGoalAchieved(true);
-        }
-    };
-
     return (
         <div className="flex flex-col lg:flex-row lg:items-start gap-6 relative">
             {goalAchieved && <Confetti numberOfPieces={200} recycle={false} />}
@@ -52,10 +46,9 @@ const VectorLesson: React.FC = () => {
             </div>
 
             <div className="flex flex-col items-center space-y-4">
-                <VectorVisualizer
-                    onMagnitudeChange={handleMagnitudeChange}
-                    snapToMagnitude={goalAchieved ? undefined : 10}
-                    snapTolerance={tolerance}
+                <VectorVisualizer onGoalAchieved={() => setGoalAchieved(true)}
+                                  goalMagnitude={magnitudeGoal}
+                                  goalTolerance={tolerance}
                 />
                 {!goalAchieved && (
                     <p className="text-sm text-gray-600">

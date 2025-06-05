@@ -1,11 +1,9 @@
 import React from 'react';
 import {modules} from '../../modules';
-import {useAuth} from "../context/AuthContext.tsx";
 import {useXp} from "../context/XpContext.tsx";
 import {Link} from "react-router-dom";
 
 const ExplorePage: React.FC = () => {
-    const { user } = useAuth();
     const { isUnlocked, hasCompleted } = useXp();
 
     return (
@@ -29,16 +27,12 @@ const ExplorePage: React.FC = () => {
                                             {item.type === 'lesson' ? '📘' : '🧪'} {item.title}
                                         </span>
                                         {
-                                            user ? (
-                                                isUnlocked(item.id) ? (
-                                                    <Link to={item.path} className="text-blue-600 hover:underline">
-                                                        {hasCompleted(item.id) ? '✅ View' : '➡️ Start'}
-                                                    </Link>
-                                                ) : (
-                                                    <span className="text-gray-400">🔒 Locked</span>
-                                                )
+                                            isUnlocked(item.id) ? (
+                                                <Link to={item.path} className="text-blue-600 hover:underline">
+                                                    {hasCompleted(item.id) ? '✅ View' : '➡️ Start'}
+                                                </Link>
                                             ) : (
-                                                <span className="text-sm text-gray-500">🔒 Sign in</span>
+                                                <span className="text-gray-400">🔒 Locked</span>
                                             )
                                         }
                                     </div>

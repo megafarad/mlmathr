@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { drawParallelogram, GraphCanvas, toCanvas, type Point } from "@sirhc77/canvas-math-kit";
 
 interface MatrixInversesVisualizerProps {
     onGoalAchieved?: () => void;
@@ -6,13 +7,7 @@ interface MatrixInversesVisualizerProps {
 
 const width = 400;
 const height = 400;
-const origin = { x: width / 2, y: height / 2 };
 const scale = 40;
-
-const toCanvas = (x: number, y: number) => ({
-    x: origin.x + x * scale,
-    y: origin.y - y * scale,
-});
 
 const applyMatrix = (matrix: number[][], point: number[]) => [
     matrix[0][0] * point[0] + matrix[0][1] * point[1],
@@ -36,7 +31,7 @@ const square = [
     [0, 1],
 ];
 
-const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onGoalAchieved }) => {    const canvasRef = useRef<HTMLCanvasElement>(null);
+const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onGoalAchieved }) => {
     const [matrix, setMatrix] = useState([
         [1, 1],
         [2, 3],
@@ -49,39 +44,7 @@ const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onG
         setInverse(invertMatrix(matrix));
     }, [matrix]);
 
-    useEffect(() => {
-        const ctx = canvasRef.current?.getContext('2d');
-        if (!ctx) return;
-        ctx.clearRect(0, 0, width, height);
-
-        // Grid
-        ctx.strokeStyle = '#eee';
-        for (let x = 0; x <= width; x += scale) {
-            ctx.beginPath();
-            ctx.moveTo(x, 0);
-            ctx.lineTo(x, height);
-            ctx.stroke();
-        }
-        for (let y = 0; y <= height; y += scale) {
-            ctx.beginPath();
-            ctx.moveTo(0, y);
-            ctx.lineTo(width, y);
-            ctx.stroke();
-        }
-
-        // Axes
-        ctx.strokeStyle = '#aaa';
-        ctx.beginPath();
-        ctx.moveTo(0, origin.y);
-        ctx.lineTo(width, origin.y);
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.moveTo(origin.x, 0);
-        ctx.lineTo(origin.x, height);
-        ctx.stroke();
-
-        // Shape
+    const customDraw = (ctx: CanvasRenderingContext2D, origin: Point, scale: number) => {
         const getPoints = (): number[][] => {
             if (step === 'original') return square;
             if (step === 'afterA') return square.map(p => applyMatrix(matrix, p));
@@ -89,21 +52,15 @@ const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onG
                 return square.map(p => applyMatrix(inverse, applyMatrix(matrix, p)));
             return square;
         };
-
         const points = getPoints();
-        ctx.fillStyle = 'rgba(255, 0, 0, 0.4)';
-        ctx.beginPath();
-        points.forEach(([x, y], i) => {
-            const pt = toCanvas(x, y);
-            if (i === 0) {
-                ctx.moveTo(pt.x, pt.y);
-            } else {
-                ctx.lineTo(pt.x, pt.y);
-            }
-        });
-        ctx.closePath();
-        ctx.fill();
-    }, [matrix, inverse, step]);
+
+        const p0 = toCanvas(points[0][0], points[0][1], origin, scale);
+        const p1 = toCanvas(points[1][0], points[1][1], origin, scale);
+        const p2 = toCanvas(points[2][0], points[2][1], origin, scale);
+        const p3 = toCanvas(points[3][0], points[3][1], origin, scale);
+
+        drawParallelogram(ctx, p0, p1, p2, p3, 'rgba(255, 0, 0, 0.4)');
+    }
 
     useEffect(() => {
         if (goalFired || step !== 'afterInverse' || !inverse) return;
@@ -131,24 +88,29 @@ const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onG
     }, [step, matrix, inverse, goalFired, onGoalAchieved]);
     return (
         <div className="space-y-4">
-            <canvas ref={canvasRef} width={width} height={height} className="border" />
+            <GraphCanvas width={width}
+                         height={height}
+                         scale={scale}
+                         customDraw={customDraw} />
 
             <div className="flex justify-center space-x-4">
                 <button
                     onClick={() => setStep('original')}
+                    disabled={goalFired}
                     className={`px-3 py-1 rounded ${step === 'original' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
                 >
                     Original
                 </button>
                 <button
                     onClick={() => setStep('afterA')}
+                    disabled={goalFired}
                     className={`px-3 py-1 rounded ${step === 'afterA' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
                 >
                     After A
                 </button>
                 <button
                     onClick={() => setStep('afterInverse')}
-                    disabled={!inverse}
+                    disabled={!inverse || goalFired}
                     className={`px-3 py-1 rounded ${step === 'afterInverse' ? 'bg-blue-500 text-white' : 'bg-gray-200'} ${!inverse ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                     After A⁻¹
@@ -165,6 +127,7 @@ const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onG
                                     key={`${r}-${c}`}
                                     type="number"
                                     value={val}
+                                    disabled={goalFired}
                                     onChange={(e) => {
                                         let value = parseFloat(e.target.value);
                                         if (isNaN(value)) value = 0;

@@ -22,6 +22,7 @@ const MatrixMultiplicationVisualizer: React.FC<Props> = ({ onGoalAchieved }) => 
     const [matrixA, setMatrixA] = useState(defaultA);
     const [matrixB, setMatrixB] = useState(defaultB);
     const [selectedCell, setSelectedCell] = useState<[number, number] | null>(null);
+    const [goalFired, setGoalFired] = useState(false);
 
     const getColumn = (matrix: number[][], colIndex: number): number[] =>
         matrix.map(row => row[colIndex]);
@@ -43,6 +44,7 @@ const MatrixMultiplicationVisualizer: React.FC<Props> = ({ onGoalAchieved }) => 
                             key={`${r}-${c}`}
                             type="number"
                             value={val}
+                            disabled={goalFired}
                             onChange={e => onChange(r, c, parseFloat(e.target.value))}
                             className={`w-12 h-12 text-center border m-0.5 rounded ${
                                 (highlight.row === r || highlight.col === c) ? 'bg-yellow-100' : ''
@@ -88,12 +90,16 @@ const MatrixMultiplicationVisualizer: React.FC<Props> = ({ onGoalAchieved }) => 
                             {row.map((val, c) => (
                                 <button
                                     key={`${r}-${c}`}
+                                    disabled={goalFired}
                                     onClick={() => {
                                         setSelectedCell([r, c]);
                                         const selectedRow = matrixA[r];
                                         const selectedCol = getColumn(matrixB, c);
                                         const result = dotProduct(selectedRow, selectedCol);
-                                        if (result === 28) onGoalAchieved?.();
+                                        if (result === 28) {
+                                            setGoalFired(true);
+                                            onGoalAchieved?.();
+                                        }
                                     }}
                                     className="w-12 h-12 border m-0.5 rounded bg-gray-100 hover:bg-gray-200"
                                 >
