@@ -96,19 +96,21 @@ const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onG
             <div className="flex justify-center space-x-4">
                 <button
                     onClick={() => setStep('original')}
+                    disabled={goalFired}
                     className={`px-3 py-1 rounded ${step === 'original' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
                 >
                     Original
                 </button>
                 <button
                     onClick={() => setStep('afterA')}
+                    disabled={goalFired}
                     className={`px-3 py-1 rounded ${step === 'afterA' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
                 >
                     After A
                 </button>
                 <button
                     onClick={() => setStep('afterInverse')}
-                    disabled={!inverse}
+                    disabled={!inverse || goalFired}
                     className={`px-3 py-1 rounded ${step === 'afterInverse' ? 'bg-blue-500 text-white' : 'bg-gray-200'} ${!inverse ? 'opacity-50 cursor-not-allowed' : ''}`}
                 >
                     After A⁻¹
@@ -125,6 +127,7 @@ const MatrixInversesVisualizer: React.FC<MatrixInversesVisualizerProps> = ({ onG
                                     key={`${r}-${c}`}
                                     type="number"
                                     value={val}
+                                    disabled={goalFired}
                                     onChange={(e) => {
                                         let value = parseFloat(e.target.value);
                                         if (isNaN(value)) value = 0;

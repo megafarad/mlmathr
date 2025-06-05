@@ -40,6 +40,7 @@ const NullColumnSpaceVisualizer: React.FC<Props> = ({ onGoalAchieved, matrix }) 
                          scale={scale}
                          snap={1}
                          vectors={[vector, transformed]}
+                         locked={goalFired}
                          onVectorsChange={vectors => {
                              setVector(vectors[0]);
                          }}

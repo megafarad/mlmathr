@@ -88,6 +88,7 @@ const ChangeOfBasisVisualizer: React.FC<Props> = ({ onGoalAchieved }) => {
                                 <input
                                     key={`${row}-${col}`}
                                     type="number"
+                                    disabled={goalFired}
                                     value={row === 0 ? basis[col].x : basis[col].y}
                                     onChange={(e) =>
                                         handleBasisChange(

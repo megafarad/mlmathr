@@ -45,6 +45,7 @@ const MatrixTransformationsVisualizer: React.FC<Props> = ({ onGoalAchieved }) =>
                          height={height}
                          scale={scale}
                          snap={1}
+                         locked={goalFired}
                          vectors={[vector, transformed]}
                          onVectorsChange={vectors => {
                              setVector(vectors[0]);
@@ -65,6 +66,7 @@ const MatrixTransformationsVisualizer: React.FC<Props> = ({ onGoalAchieved }) =>
                             key={`${i}-${j}`}
                             type="number"
                             value={matrix[i][j]}
+                            disabled={goalFired}
                             onChange={(e) => {
                                 const newMatrix = [...matrix];
                                 newMatrix[i][j] = parseFloat(e.target.value);

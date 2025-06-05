@@ -84,6 +84,7 @@ const ProjectionVisualizer: React.FC<ProjectionVisualizerProps> = ({ onGoalAchie
                          height={height}
                          scale={scale}
                          vectors={[vectorA, vectorB, projVec]}
+                         locked={goalFired}
                          onVectorsChange={handleVectorChange}
                          customDraw={customDraw}
             />

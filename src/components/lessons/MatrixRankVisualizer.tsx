@@ -63,6 +63,7 @@ const MatrixRankVisualizer: React.FC<MatrixRankVisualizerProps> = ({ onGoalAchie
                                     key={`${r}-${c}`}
                                     type="number"
                                     value={val}
+                                    disabled={goalFired}
                                     onChange={(e) => {
                                         const v = parseFloat(e.target.value) || 0;
                                         const m = matrix.map((row) => [...row]);

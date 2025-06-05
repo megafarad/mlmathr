@@ -38,6 +38,8 @@ const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }
         [1, 1],
     ]);
 
+    const [goalFired, setGoalFired] = useState(false);
+
     const bThenA = applyMatrix(matrixA, applyMatrix(matrixB, baseVector, 'green', 'Bv'), 'green', 'A(Bv)');
     const aThenB = applyMatrix(matrixB, applyMatrix(matrixA, baseVector, 'purple', 'Av'), 'purple', 'B(Av)');
     const vectorsToMeasure = [baseVector, bThenA, aThenB];
@@ -63,6 +65,7 @@ const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }
         };
 
         if (matricesAreEqual(ab, ba)) {
+            setGoalFired(true);
             onGoalAchieved?.();
         }
     }, [ab, ba, onGoalAchieved]);
@@ -129,6 +132,7 @@ const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }
                                     key={`A-${r}-${c}`}
                                     type="number"
                                     value={val}
+                                    disabled={goalFired}
                                     onChange={(e) => {
                                         const newMatrix = [...matrixA];
                                         newMatrix[r] = [...newMatrix[r]];
@@ -151,6 +155,7 @@ const MatrixTransformationOrderVisualizer: React.FC<Props> = ({ onGoalAchieved }
                                     key={`B-${r}-${c}`}
                                     type="number"
                                     value={val}
+                                    disabled={goalFired}
                                     onChange={(e) => {
                                         const newMatrix = [...matrixB];
                                         newMatrix[r] = [...newMatrix[r]];

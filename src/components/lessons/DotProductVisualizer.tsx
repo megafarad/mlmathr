@@ -12,6 +12,7 @@ interface DotProductVisualizerProps {
 const DotProductVisualizer: React.FC<DotProductVisualizerProps> = ({ onGoalAchieved }) => {
     const [vecA, setVecA] = useState<CanvasVector>({ x: 2, y: 3, color: 'blue', draggable: true, headStyle: 'both' });
     const [vecB, setVecB] = useState<CanvasVector>({ x: -1, y: 2, color: 'green', draggable: true, headStyle: 'both' });
+    const [goalFired, setGoalFired] = useState(false);
 
     const dotProduct = (a: typeof vecA, b: typeof vecB) => a.x * b.x + a.y * b.y;
     const magnitude = (v: typeof vecA) => Math.sqrt(v.x ** 2 + v.y ** 2);
@@ -47,8 +48,9 @@ const DotProductVisualizer: React.FC<DotProductVisualizerProps> = ({ onGoalAchie
         setVecA(newVecA);
         setVecB(newVecB);
 
-        if (label === 'Perpendicular') {
+        if (!goalFired && label === 'Perpendicular') {
             onGoalAchieved?.();
+            setGoalFired(true);
         }
 
     }
@@ -59,6 +61,7 @@ const DotProductVisualizer: React.FC<DotProductVisualizerProps> = ({ onGoalAchie
                          height={height}
                          scale={scale}
                          vectors={[vecA, vecB]}
+                         locked={goalFired}
                          onVectorsChange={handleVectorChange}/>
             <div className="text-center">
                 <p>🟦 Vector A: [{vecA.x}, {vecA.y}]</p>

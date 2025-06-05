@@ -72,6 +72,7 @@ const DeterminantsVisualizer: React.FC<DeterminantsVisualizerProps> = ({ onGoalA
                                     key={`${r}-${c}`}
                                     type="number"
                                     value={val}
+                                    disabled={goalFired}
                                     onChange={(e) => {
                                         let value = parseFloat(e.target.value);
                                         if (isNaN(value)) value = 0;

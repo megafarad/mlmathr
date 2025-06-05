@@ -62,6 +62,7 @@ const GradientVisualizer: React.FC<GradientVisualizerProps> = ({ onGoalAchieved 
                      height={height}
                      scale={scale}
                      snap={0.5}
+                     locked={goalFired}
                      customDraw={customDraw}
                      customDragTargets={[point]}
                      onCustomDragTargetsChange={(targets) => {setPoint(targets[0])}}/>

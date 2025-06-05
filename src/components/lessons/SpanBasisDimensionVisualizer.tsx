@@ -54,6 +54,7 @@ const SpanBasisDimensionVisualizer: React.FC<SpanBasisVisualizerProps> = ({ onGo
                          scale={scale}
                          vectors={[v1, v2]}
                          snap={1}
+                         locked={goalFired}
                          onVectorsChange={([v1, v2]) => {
                              setV1(v1);
                              setV2(v2);

@@ -44,6 +44,7 @@ const EigenvectorVisualizer: React.FC<EigenvectorVisualizerProps> = ({ onGoalAch
         [2, 1],
         [1, 2],
     ]);
+    const [goalFired, setGoalFired] = useState(false);
 
     const displayVectors:  CanvasVector[] = [...unitVectors.map(v => ({ ...v.v, color: v.isEig ? 'red' : 'blue'})),
         ...unitVectors.map(v => ({ ...v.Av, color: v.isEig ? 'red' : 'blue'}))]
@@ -69,6 +70,7 @@ const EigenvectorVisualizer: React.FC<EigenvectorVisualizerProps> = ({ onGoalAch
 
         if (onGoalAchieved && redCount >= 2 && redCount <= 4) {
             // We allow a small range (2–4) because directions ±v count as two
+            setGoalFired(true);
             onGoalAchieved();
         }
 
@@ -97,6 +99,7 @@ const EigenvectorVisualizer: React.FC<EigenvectorVisualizerProps> = ({ onGoalAch
                                     key={`${r}-${c}`}
                                     type="number"
                                     value={val}
+                                    disabled={goalFired}
                                     onChange={(e) => {
                                         let value = parseFloat(e.target.value);
                                         if (isNaN(value)) value = 0;
