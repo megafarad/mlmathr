@@ -7,9 +7,7 @@ import ProgressDashboard from "./components/pages/ProgressDashboard.tsx";
 import AuthPage from "./components/pages/AuthPage.tsx";
 import RoadmapPage from "./components/pages/RoadmapPage.tsx";
 import SettingsPage from "./components/pages/SettingsPage.tsx";
-import PrivateRoute from "./components/PrivateRoute.tsx";
 import {useXp} from "./components/context/XpContext.tsx";
-import {useAuth} from "./components/context/AuthContext.tsx";
 import {modules} from "./modules";
 import ModuleItemPage from "./components/pages/ModuleItemPage.tsx";
 import ExplorePage from "./components/pages/ExplorePage.tsx";
@@ -17,7 +15,6 @@ import ResetPasswordPage from "./components/pages/ResetPasswordPage.tsx";
 
 const App: React.FC = () => {
     const {xp} = useXp();
-    const { user } = useAuth();
     const [xpFlash, setXpFlash] = useState<number | null>(null);
     const location = useLocation();
 
@@ -41,14 +38,14 @@ const App: React.FC = () => {
                 <h1 className="text-xl font-bold">
                     <Link to="/">MLMathr Lessons</Link>
                 </h1>
-                {user && (<div className="relative">
+                <div className="relative">
                     <span className="text-sm bg-yellow-100 px-3 py-1 rounded-full">⭐ XP: {xp}</span>
                     {xpFlash && (
                         <div className="animate-xp-float left-1/2 transform -translate-x-1/2">
                             +{xpFlash - (xpFlash - 25)} XP
                         </div>
                     )}
-                </div>)}
+                </div>
             </header>
             <NavBar/>
             <Routes>
@@ -59,9 +56,9 @@ const App: React.FC = () => {
                 <Route path="/explore" element={<ExplorePage/>} />
                 <Route path="/auth" element={<AuthPage/>}/>
                 <Route path='/reset-password' element={<ResetPasswordPage/>}/>
-                <Route path="/progress" element={<PrivateRoute><ProgressDashboard/></PrivateRoute>}/>
-                <Route path="/roadmap" element={<PrivateRoute><RoadmapPage/></PrivateRoute>}/>
-                <Route path="/settings" element={<PrivateRoute><SettingsPage/></PrivateRoute>}/>
+                <Route path="/progress" element={<ProgressDashboard/>}/>
+                <Route path="/roadmap" element={<RoadmapPage/>}/>
+                <Route path="/settings" element={<SettingsPage/>}/>
                 <Route path="*" element={<p>Choose a lesson to begin 🚀</p>}/>
             </Routes>
         </div>

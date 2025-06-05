@@ -38,17 +38,14 @@ const NavBar: React.FC = () => {
 
             <nav
                 className={`flex-col md:flex-row md:flex gap-4 px-4 md:px-6 ${menuOpen ? 'flex' : 'hidden'} md:items-center`}>
+                <ModuleAccordionMenu/>
+                <Link to="/progress" className="text-purple-600 hover:underline">📊 Dashboard</Link>
+                <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
+                <Link to="/settings" className="text-gray-600 hover:underline">⚙️ Settings</Link>
                 {user ? (
-                    <>
-                        <ModuleAccordionMenu/>
-                        <Link to="/progress" className="text-purple-600 hover:underline">📊 Dashboard</Link>
-                        <Link to="/roadmap" className="text-purple-600 hover:underline">🗺️ Roadmap</Link>
-                        <Link to="/settings" className="text-gray-600 hover:underline">⚙️ Settings</Link>
-                        <button onClick={logout} className="text-red-600 hover:underline text-left px-2 py-1">
-                            🚪 Log Out
-                        </button>
-
-                    </>
+                    <button onClick={logout} className="text-red-600 hover:underline text-left px-2 py-1">
+                        🚪 Log Out
+                    </button>
                 ) : (
                     <Link to="/auth" className="text-blue-600 hover:underline">
                         🔐 Log In / Sign Up
