@@ -12,6 +12,7 @@ import {modules} from "./modules";
 import ModuleItemPage from "./components/pages/ModuleItemPage.tsx";
 import ExplorePage from "./components/pages/ExplorePage.tsx";
 import ResetPasswordPage from "./components/pages/ResetPasswordPage.tsx";
+import GoogleAnalytics from "./components/GoogleAnalytics.tsx";
 
 const App: React.FC = () => {
     const {xp} = useXp();
